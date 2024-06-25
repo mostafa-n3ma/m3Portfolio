@@ -1,5 +1,9 @@
 plugins {
     alias(libs.plugins.kotlin.multiplatform) apply false
+    alias(libs.plugins.jetbrains.compose) apply false
+    alias(libs.plugins.kobweb.library) apply false
+    alias(libs.plugins.serialization.plugin) apply false
+    alias (libs.plugins.mongodb.realm) apply false
 }
 
 subprojects {
