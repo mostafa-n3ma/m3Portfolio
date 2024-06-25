@@ -2,6 +2,7 @@ package org.example.m3portfolio.pages
 
 import androidx.compose.runtime.*
 import com.varabyte.kobweb.compose.foundation.layout.Box
+import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.fillMaxSize
@@ -14,5 +15,9 @@ fun HomePage() {
     // TODO: Replace the following with your own content
     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Text("بسم الله الرحمن الرحيم")
+        Column ()
+        {
+            Text("")
+        }
     }
 }
