@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 // Website entity
 @Serializable
 data class Website(
-    val _id:Int?=null,
+    val _id:String,
     val title: String,
     val link: String
 )

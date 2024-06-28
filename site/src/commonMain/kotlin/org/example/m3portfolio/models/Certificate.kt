@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Certificate(
-    val _id:Int?=null,
+    val _id:String,
     val title: String,
     val from: String,
     val link: String,

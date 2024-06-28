@@ -2,9 +2,11 @@ package org.example.m3portfolio.models
 import kotlinx.serialization.Serializable
 
 
+
+
 @Serializable
 data class Info(
-    val _id:Int?=null,
+    var _id: String = "",
     val name: String="",
     val imageUrl: String="",
     val role: String="",

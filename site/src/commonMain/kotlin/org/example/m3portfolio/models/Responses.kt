@@ -42,7 +42,7 @@ sealed class ApiProjectResponse {
 
     @Serializable
     @SerialName("success")
-    class Success(val data: Project):ApiProjectResponse()
+    class Success(val data: List<Project>):ApiProjectResponse()
 
     @Serializable
     @SerialName("error")
@@ -71,7 +71,7 @@ sealed class ApiCertificateResponse {
 
     @Serializable
     @SerialName("success")
-    class Success(val data: Certificate):ApiCertificateResponse()
+    class Success(val data: List<Certificate>):ApiCertificateResponse()
 
     @Serializable
     @SerialName("error")
@@ -101,7 +101,7 @@ sealed class ApiWebsiteResponse {
 
     @Serializable
     @SerialName("success")
-    class Success(val data: Website):ApiWebsiteResponse()
+    class Success(val data: List<Website>):ApiWebsiteResponse()
 
     @Serializable
     @SerialName("error")

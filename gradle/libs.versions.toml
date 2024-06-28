@@ -16,6 +16,8 @@ coroutines = "1.7.3"
 mongodb = "1.13.0"
 mongodb-kotlin = "4.11.0"
 coil = "2.5.0"
+mongo-realm = "1.16.0"
+
 
 
 [libraries]
@@ -28,6 +30,7 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines"}
 mongodb-sync = { module = "io.realm.kotlin:library-sync", version.ref = "mongodb" }
 mongodb-kotlin-driver = { module = "org.mongodb:mongodb-driver-kotlin-coroutine", version.ref = "mongodb-kotlin" }
+mongodb-realm = { module = "io.realm.kotlin:library-base", version.ref = "mongo-realm" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 
 
@@ -37,4 +40,4 @@ kobweb-application = { id = "com.varabyte.kobweb.application", version.ref = "ko
 kobweb-library = { id = "com.varabyte.kobweb.library", version.ref = "kobweb" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 serialization-plugin = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-mongodb-realm = { id = "io.realm.kotlin", version.ref = "mongodb"}
+mongodb-realm = { id = "io.realm.kotlin", version.ref = "mongo-realm"}

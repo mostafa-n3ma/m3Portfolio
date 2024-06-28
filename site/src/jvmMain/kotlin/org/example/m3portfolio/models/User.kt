@@ -1,8 +1,10 @@
 package org.example.m3portfolio.models
 
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import org.bson.codecs.ObjectIdGenerator
 
+@Serializable
 actual data class User(
     @SerialName(value = "_id")
     actual val _id:String = ObjectIdGenerator().generate().toString(),
@@ -12,6 +14,7 @@ actual data class User(
 
 
 
+@Serializable
 actual data class UserWithoutPassword(
     @SerialName(value = "_id")
     actual val _id: String=ObjectIdGenerator().generate().toString(),

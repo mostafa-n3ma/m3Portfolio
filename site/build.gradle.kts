@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.jetbrains.compose)
     alias(libs.plugins.kobweb.application)
     alias(libs.plugins.serialization.plugin)
+    alias(libs.plugins.mongodb.realm)
     // alias(libs.plugins.kobwebx.markdown)
 }
 
@@ -61,6 +62,8 @@ kotlin {
             compileOnly(libs.kobweb.api) // Provided by Kobweb backend at runtime
             implementation(libs.mongodb.kotlin.driver)
             implementation(libs.kotlinx.serialization)
+            implementation(libs.mongodb.realm)
+
         }
     }
 }

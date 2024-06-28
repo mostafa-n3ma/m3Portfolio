@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Project(
-    val _id:Int?=null,
+    val _id:String,
     val title: String,
     val description: String,
     val techStack: String,
