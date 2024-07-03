@@ -19,12 +19,12 @@ import org.example.m3portfolio.util.requestUserCheck
 import org.example.m3portfolio.util.requestWebsitesData
 import org.jetbrains.compose.web.dom.Text
 
-@Page
+@Page()
 @Composable
 fun HomePage() {
     val scope = rememberCoroutineScope()
     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text("بسم الله الرحمن الرحيم")
+        Text("\nm3protfolio 99 بسم الله الرحمن الرحيم")
         scope.launch {
 //            println("entering the scope //projects")
 //            requestInfoData(
@@ -111,16 +111,7 @@ fun HomePage() {
 //
 
 
-            val user = requestUserCheck(
-                User(
-                    username = "mostafa",
-                    password = "123456789"
-                )
-            )
 
-            user.let {
-                println(it.toString())
-            }
 
 
 
