@@ -9,6 +9,8 @@ import org.example.m3portfolio.models.Website
 interface MongoRepository {
 
     suspend fun checkUserExistence(user: User):User?
+    suspend fun checkUserId(id:String):Boolean
+
     suspend fun readInfo():List<Info>
     suspend fun readCertificates():List<Certificate>
 

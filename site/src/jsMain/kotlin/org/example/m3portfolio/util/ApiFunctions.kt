@@ -92,3 +92,22 @@ suspend fun requestUserCheck(user: User):UserWithoutPassword?{
         null
     }
 }
+
+
+suspend fun requestIdCheck(id:String):Boolean{
+    return try {
+        val result = window.api.tryPost(
+            apiPath = ApiPaths.USER_CHECK_ID_PATH,
+            body = Json.encodeToString(id).encodeToByteArray()
+        )
+
+        result?.decodeToString()?.let {
+            Json.decodeFromString<Boolean>(it)
+        }?:false
+
+    }catch (e:Exception){
+        println(e.message.toString())
+        false
+    }
+}
+

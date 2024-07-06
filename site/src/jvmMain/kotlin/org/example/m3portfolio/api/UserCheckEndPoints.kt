@@ -48,6 +48,29 @@ suspend fun userCheck(context: ApiContext){
 
 
 
+@Api(routeOverride = ApiPaths.USER_CHECK_ID_PATH)
+suspend fun checkId(context: ApiContext){
+    try {
+        val requestedId = context.req.body?.decodeToString()?.let { Json.decodeFromString<String>(it) }
+        val result: Boolean? = requestedId?.let {
+            context.data.getValue<MongoDB>().checkUserId(it)
+        }
+        if (result !=null){
+            context.res.setBody(result)
+        }else{
+            context.res.setBody(false)
+        }
+
+    }catch (e:Exception){
+        context.res.setBody(false)
+    }
+}
+
+
+
+
+
+
 private fun hashPassword(password: String): String {
     val messageDigest = MessageDigest.getInstance("SHA-256")
     val hashBytes = messageDigest.digest(password.toByteArray(StandardCharsets.UTF_8))

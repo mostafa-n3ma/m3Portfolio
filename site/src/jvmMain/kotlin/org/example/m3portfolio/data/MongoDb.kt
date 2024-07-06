@@ -5,6 +5,7 @@ import com.mongodb.kotlin.client.coroutine.MongoClient
 import com.varabyte.kobweb.api.data.add
 import com.varabyte.kobweb.api.init.InitApi
 import com.varabyte.kobweb.api.init.InitApiContext
+import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.toList
 import org.example.m3portfolio.Constants.DATABASE_NAME
@@ -49,6 +50,15 @@ class MongoDB(private val context: InitApiContext):MongoRepository {
         }catch (e:Exception){
             context.logger.error(e.message.toString())
             null
+        }
+    }
+
+    override suspend fun checkUserId(id: String): Boolean {
+        return try {
+            userCollection.find(Filters.eq(User::_id.name,id)).count() > 0
+        }catch (e:Exception){
+            context.logger.error(e.message.toString())
+            false
         }
     }
 
