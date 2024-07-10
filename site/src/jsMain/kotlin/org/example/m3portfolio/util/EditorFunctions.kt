@@ -8,13 +8,13 @@ import org.w3c.dom.HTMLTextAreaElement
 
 
 // update it when adding new text areas for others like descriptions and experiences and other
-fun getEditor(): HTMLTextAreaElement = document.getElementById(Ids.info_BiotextArea) as HTMLTextAreaElement
-fun applyToBioDiv() {
-    document.getElementById(Ids.info_BiotextAreaDiv)?.innerHTML = getEditor().value
+fun getEditor(id:String): HTMLTextAreaElement = document.getElementById(id) as HTMLTextAreaElement
+fun applyToPreview(preview_id:String, editor_id:String) {
+    document.getElementById(preview_id)?.innerHTML = getEditor(editor_id).value
 }
 //only bio add adjust if other
-fun getSelectedIntRange(): IntRange? {
-    val editor = getEditor()
+fun getSelectedIntRange(editor_id: String): IntRange? {
+    val editor = getEditor(editor_id)
     val start = editor.selectionStart
     val end = editor.selectionEnd
     return if (start != null && end != null) {
@@ -24,45 +24,51 @@ fun getSelectedIntRange(): IntRange? {
 
 
 //only bio add adjust if other
-fun getSelectedText(): String? {
+fun getSelectedText(editor_id: String): String? {
     //updating from the first fun getSelectedText()
 // after getting the selection rang out side from the fun getSelectedIntRang()
-    val range = getSelectedIntRange()
+    val range = getSelectedIntRange(editor_id)
     return if (range != null) {
-        getEditor().value.substring(range)
+        getEditor(editor_id).value.substring(range)
     } else null
 }
 
 
 //only bio add adjust if other
-fun applyStyle(controlStyle: ControlStyle) {
-    val selectedText = getSelectedText()
-    val selectedIntRange = getSelectedIntRange()
+fun applyStyle(controlStyle: ControlStyle,editor_id: String,preview_id: String) {
+    val selectedText = getSelectedText(editor_id)
+    val selectedIntRange = getSelectedIntRange(editor_id)
     if (selectedIntRange != null && selectedText != null) {
-        getEditor().value = getEditor().value.replaceRange(
+        getEditor(editor_id).value = getEditor(editor_id).value.replaceRange(
             range = selectedIntRange,
             replacement = controlStyle.style
         )
-        document.getElementById(Ids.info_BiotextAreaDiv)?.innerHTML = getEditor().value
+        document.getElementById(preview_id)?.innerHTML = getEditor(editor_id).value
     }
 }
 
 
 fun applyControlStyle(
     editorControl: EditorControlIcons,
+    editor_id: String,
+    preview_id: String,
     onLinkViewClicked: () -> Unit,
     onImageViewClicked: () -> Unit
 ) {
     when (editorControl) {
         EditorControlIcons.BoLd -> {
             applyStyle(
-                ControlStyle.Bold(selectedText = getSelectedText())
+                ControlStyle.Bold(selectedText = getSelectedText(editor_id)),
+                editor_id = editor_id,
+                preview_id = preview_id
             )
         }
 
         EditorControlIcons.Italic -> {
             applyStyle(
-                ControlStyle.Italic(selectedText = getSelectedText())
+                ControlStyle.Italic(selectedText = getSelectedText(editor_id)),
+                editor_id = editor_id,
+                preview_id = preview_id
             )
         }
 
@@ -72,13 +78,17 @@ fun applyControlStyle(
 
         EditorControlIcons.Title -> {
             applyStyle(
-                ControlStyle.Title(selectedText = getSelectedText())
+                ControlStyle.Title(selectedText = getSelectedText(editor_id)),
+                editor_id = editor_id,
+                preview_id = preview_id
             )
         }
 
         EditorControlIcons.Subtitle -> {
             applyStyle(
-                ControlStyle.Subtitle(selectedText = getSelectedText())
+                ControlStyle.Subtitle(selectedText = getSelectedText(editor_id)),
+                editor_id = editor_id,
+                preview_id = preview_id
             )
         }
 
