@@ -9,8 +9,12 @@ import org.example.m3portfolio.models.ApiCertificateResponse
 import org.example.m3portfolio.models.ApiInfoResponse
 import org.example.m3portfolio.models.ApiProjectResponse
 import org.example.m3portfolio.models.ApiWebsiteResponse
+import org.example.m3portfolio.models.Info
 import org.example.m3portfolio.models.User
 import org.example.m3portfolio.models.UserWithoutPassword
+
+
+
 
 suspend fun requestInfoData(
     onSuccess:(ApiInfoResponse)->Unit,
@@ -25,6 +29,18 @@ suspend fun requestInfoData(
         onError(e)
     }
 
+}
+
+suspend fun requestInfoDataUpdate(info: Info):Boolean{
+    return try {
+        window.api.tryPost(
+            apiPath = ApiPaths.UPDATE_INFO_PATH,
+            body = Json.encodeToString(info).encodeToByteArray()
+        )?.decodeToString().toBoolean()
+    }catch (e:Exception){
+        println(e.message)
+        false
+    }
 }
 
 

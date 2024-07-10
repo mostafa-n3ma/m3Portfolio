@@ -7,7 +7,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import com.varabyte.kobweb.compose.css.CSSTransition
 import com.varabyte.kobweb.compose.css.Cursor
 import com.varabyte.kobweb.compose.css.FontWeight
 import com.varabyte.kobweb.compose.css.Overflow
@@ -35,7 +34,6 @@ import com.varabyte.kobweb.compose.ui.modifiers.overflow
 import com.varabyte.kobweb.compose.ui.modifiers.padding
 import com.varabyte.kobweb.compose.ui.modifiers.position
 import com.varabyte.kobweb.compose.ui.modifiers.scrollBehavior
-import com.varabyte.kobweb.compose.ui.modifiers.size
 import com.varabyte.kobweb.compose.ui.modifiers.textShadow
 import com.varabyte.kobweb.compose.ui.modifiers.transition
 import com.varabyte.kobweb.compose.ui.modifiers.translateX
@@ -43,7 +41,6 @@ import com.varabyte.kobweb.compose.ui.modifiers.width
 import com.varabyte.kobweb.compose.ui.modifiers.zIndex
 import com.varabyte.kobweb.compose.ui.thenIf
 import com.varabyte.kobweb.core.rememberPageContext
-import com.varabyte.kobweb.silk.components.graphics.Image
 import com.varabyte.kobweb.silk.components.icons.fa.FaBars
 import com.varabyte.kobweb.silk.components.icons.fa.FaXmark
 import com.varabyte.kobweb.silk.components.icons.fa.IconSize
@@ -56,7 +53,6 @@ import kotlinx.coroutines.launch
 import org.example.m3portfolio.Constants.FONT_FAMILY
 import org.example.m3portfolio.Measurements.COLLAPSED_PANEL_HEIGHT
 import org.example.m3portfolio.Measurements.SIDE_PANEL_WIDTH
-import org.example.m3portfolio.Res
 import org.example.m3portfolio.models.Theme
 import org.example.m3portfolio.navigation.Screen
 import org.example.m3portfolio.styles.NavigationItemStyle
@@ -74,7 +70,7 @@ fun SidePanel(
 
     var breakpoint = rememberBreakpoint()
     if (breakpoint >Breakpoint.MD){
-        SidePanelInternal()
+        SidePanelInternal(breakpoint = breakpoint)
     }else{
         CollapsedSidePanel(onMenuClicked = onMenuClicked)
     }
@@ -85,7 +81,7 @@ fun SidePanel(
 
 
 @Composable
-fun SidePanelInternal() {
+fun SidePanelInternal(breakpoint: Breakpoint) {
         Column(
             modifier = Modifier
                 .padding(leftRight = 40.px, top = 50.px)
@@ -96,7 +92,7 @@ fun SidePanelInternal() {
                 .backgroundColor(Theme.PrimaryLight.rgb)
         ){
 
-            NavigationItems()
+            NavigationItems(breakpoint = breakpoint)
 
 
         }
@@ -105,10 +101,11 @@ fun SidePanelInternal() {
 
 @Composable
 fun NavigationItem(
-    modifier: Modifier=Modifier,
-    selected:Boolean = false,
-    title:String,
-    onClick: ()-> Unit
+    modifier: Modifier = Modifier,
+    selected: Boolean = false,
+    title: String,
+    onClick: () -> Unit,
+    breakpoint: Breakpoint
 ) {
     SpanText(
         text = title,
@@ -124,7 +121,10 @@ fun NavigationItem(
                         color = Colors.White
                     )
                     .fontFamily(FONT_FAMILY)
-                    .fontSize(28.px)
+                    .fontSize(
+                        if (breakpoint < Breakpoint.MD) 16.px
+                        else 28.px
+                    )
                     .fontWeight(FontWeight.Bold)
             )
             .onClick {
@@ -135,15 +135,16 @@ fun NavigationItem(
 }
 
 @Composable
-fun NavigationItems() {
+fun NavigationItems(breakpoint: Breakpoint) {
     val context = rememberPageContext()
     NavigationItem(
         modifier = Modifier.margin(bottom = 24.px),
-        selected = context.route.path == Screen.AdminInfo.route,
+        selected = context.route.path == Screen.AdminHome.route,
         title = "Info",
         onClick = {
-            context.router.navigateTo(Screen.AdminInfo.route)
+            context.router.navigateTo(Screen.AdminHome.route)
         }
+        ,breakpoint = breakpoint
     )
 
     NavigationItem(
@@ -152,7 +153,8 @@ fun NavigationItems() {
         title = "Experience",
         onClick = {
             context.router.navigateTo(Screen.AdminExperience.route)
-        }
+        },
+        breakpoint = breakpoint
     )
     NavigationItem(
         modifier = Modifier.margin(bottom = 24.px),
@@ -160,7 +162,8 @@ fun NavigationItems() {
         title = "Projects",
         onClick = {
             context.router.navigateTo(Screen.AdminProjects.route)
-        }
+        },
+        breakpoint = breakpoint
     )
     NavigationItem(
         modifier = Modifier.margin(bottom = 24.px),
@@ -168,7 +171,8 @@ fun NavigationItems() {
         title = "Certificates",
         onClick = {
             context.router.navigateTo(Screen.AdminCertificates.route)
-        }
+        },
+        breakpoint = breakpoint
     )
 
     NavigationItem(
@@ -177,7 +181,8 @@ fun NavigationItems() {
         title = "Websites",
         onClick = {
             context.router.navigateTo(Screen.AdminWebsites.route)
-        }
+        },
+        breakpoint = breakpoint
     )
 
 

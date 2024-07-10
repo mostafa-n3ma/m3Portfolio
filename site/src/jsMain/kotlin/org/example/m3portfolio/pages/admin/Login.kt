@@ -38,7 +38,6 @@ import com.varabyte.kobweb.core.rememberPageContext
 import com.varabyte.kobweb.silk.components.graphics.Image
 import com.varabyte.kobweb.silk.components.style.toModifier
 import com.varabyte.kobweb.silk.components.text.SpanText
-import com.varabyte.kobweb.silk.components.text.SpanTextStyle
 import kotlinx.browser.document
 import kotlinx.browser.localStorage
 import kotlinx.coroutines.delay
@@ -47,15 +46,14 @@ import org.example.m3portfolio.Constants.FONT_FAMILY
 import org.example.m3portfolio.Constants.REMEMBERED_STORAGE_VALUE
 import org.example.m3portfolio.Constants.USER_ID_STORAGE_VALUE
 import org.example.m3portfolio.Constants.USER_NAME_STORAGE_VALUE
-import org.example.m3portfolio.Ids.passweordInput
-import org.example.m3portfolio.Ids.userNameInput
+import org.example.m3portfolio.Ids.login_passweordInput
+import org.example.m3portfolio.Ids.login_userNameInput
 import org.example.m3portfolio.Res
 import org.example.m3portfolio.models.Theme
 import org.example.m3portfolio.models.User
 import org.example.m3portfolio.models.UserWithoutPassword
 import org.example.m3portfolio.navigation.Screen
 import org.example.m3portfolio.styles.LoginInputStyle
-import org.example.m3portfolio.util.isUserLoggedIn
 import org.example.m3portfolio.util.requestUserCheck
 import org.jetbrains.compose.web.attributes.InputType
 import org.jetbrains.compose.web.css.LineStyle
@@ -63,7 +61,6 @@ import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.dom.Button
 import org.jetbrains.compose.web.dom.Input
 import org.w3c.dom.HTMLInputElement
-import org.w3c.dom.get
 import org.w3c.dom.set
 
 @Page
@@ -97,7 +94,7 @@ fun LoginScreen() {
             Input(
                 type = InputType.Text,
                 attrs = LoginInputStyle.toModifier()
-                    .id(userNameInput).margin(bottom = 12.px)
+                    .id(login_userNameInput).margin(bottom = 12.px)
                     .width(350.px)
                     .height(54.px)
                     .padding(leftRight = 20.px)
@@ -117,7 +114,7 @@ fun LoginScreen() {
             Input(
                 type = InputType.Password,
                 attrs = LoginInputStyle.toModifier()
-                    .id(passweordInput)
+                    .id(login_passweordInput)
                     .margin(bottom = 20.px)
                     .width(350.px)
                     .height(54.px)
@@ -161,9 +158,9 @@ fun LoginScreen() {
                    .onClick {
                        scope.launch {
                            val username: String =
-                               (document.getElementById(userNameInput) as HTMLInputElement).value
+                               (document.getElementById(login_userNameInput) as HTMLInputElement).value
                            val password: String =
-                               (document.getElementById(passweordInput) as HTMLInputElement).value
+                               (document.getElementById(login_passweordInput) as HTMLInputElement).value
                            if (username.isNotEmpty() && password.isNotEmpty()) {
                                val user: UserWithoutPassword? = requestUserCheck(
                                    User(

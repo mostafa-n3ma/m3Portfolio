@@ -11,6 +11,7 @@ import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.fillMaxSize
 import com.varabyte.kobweb.compose.ui.modifiers.maxWidth
+import com.varabyte.kobweb.silk.theme.breakpoint.rememberBreakpoint
 import org.example.m3portfolio.Measurements.PAGE_WIDTH
 import org.jetbrains.compose.web.css.px
 
@@ -20,6 +21,7 @@ fun AdminPanelLayout(
     content: @Composable () -> Unit
 ) {
     var overFlowMenuOpened by remember { mutableStateOf(false) }
+    val breakpoint = rememberBreakpoint()
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -39,7 +41,7 @@ fun AdminPanelLayout(
                 OverFlowSidePanel(onMenuClose = {
                     overFlowMenuOpened = false
                 },
-                    content = { NavigationItems() }
+                    content = { NavigationItems(breakpoint) }
                 )
             }
 

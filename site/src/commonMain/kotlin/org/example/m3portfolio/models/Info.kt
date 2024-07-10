@@ -17,11 +17,11 @@ data class Info(
     val github: String="",
     val bio: String="",
     val education: String="",
-    val experience: List<String> = listOf(""),
     val skills: String="",
     val resumeLink: String="",
     val extra: String=""
 )
+
 
 
 

@@ -12,6 +12,7 @@ interface MongoRepository {
     suspend fun checkUserId(id:String):Boolean
 
     suspend fun readInfo():List<Info>
+    suspend fun updateInfo(info: Info):Boolean
     suspend fun readCertificates():List<Certificate>
 
     suspend fun readProjects():List<Project>
