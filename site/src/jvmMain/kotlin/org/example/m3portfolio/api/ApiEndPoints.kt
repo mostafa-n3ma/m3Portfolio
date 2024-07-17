@@ -3,13 +3,16 @@ package org.example.m3portfolio.api
 import com.varabyte.kobweb.api.Api
 import com.varabyte.kobweb.api.ApiContext
 import com.varabyte.kobweb.api.data.getValue
+import org.bson.codecs.ObjectIdGenerator
 import org.example.m3portfolio.ApiPaths
 import org.example.m3portfolio.data.MongoDB
 import org.example.m3portfolio.models.ApiCertificateResponse
+import org.example.m3portfolio.models.ApiExperienceResponse
 import org.example.m3portfolio.models.ApiInfoResponse
 import org.example.m3portfolio.models.ApiProjectResponse
 import org.example.m3portfolio.models.ApiWebsiteResponse
 import org.example.m3portfolio.models.Certificate
+import org.example.m3portfolio.models.Experience
 import org.example.m3portfolio.models.Info
 import org.example.m3portfolio.models.Project
 import org.example.m3portfolio.models.Website
@@ -39,6 +42,57 @@ suspend fun updateInfoData(context: ApiContext) {
         context.res.setBody(e.message)
     }
 }
+
+
+
+
+
+//@Api(routeOverride = ApiPaths.READ_EXPERIENCE_PATH)
+//suspend fun getExperienceData(context: ApiContext){
+//    try {
+//        val experiences = context.data.getValue<MongoDB>().readExperience()
+//        context.res.setBody(ApiExperienceResponse.Success(data = experiences))
+//
+//    }catch (e:Exception){
+//        context.res.setBody(ApiExperienceResponse.Error(message = e.message.toString()))
+//    }
+//}
+//
+//
+//
+//
+//@Api(routeOverride = ApiPaths.UPDATE_EXPERIENCE_PATH)
+//suspend fun updateExperienceData(context: ApiContext){
+//    try {
+//        val updatedExperience = context.req.getBody<Experience>()
+//        context.res.setBody(
+//            updatedExperience?.let { context.data.getValue<MongoDB>().updateExperience(it)
+//            }?:false.toString()
+//        )
+//
+//    }catch (e:Exception){
+//        context.res.setBody(e.message)
+//    }
+//}
+//
+//@Api(routeOverride = ApiPaths.ADD_EXPERIENCE_PATH)
+//suspend fun addExperienceData(context: ApiContext){
+//    try {
+//        val experience = context.req.getBody<Experience>()
+//        val newExperience = experience?.copy(_id = ObjectIdGenerator().generate().toString())
+//        context.res.setBody(
+//            newExperience?.let {
+//                context.data.getValue<MongoDB>().insertExperience(it)
+//            }?:false.toString()
+//        )
+//
+//    }catch (e:Exception){
+//        context.res.setBody(e.message)
+//    }
+//}
+//
+
+
 
 
 @Api(routeOverride = ApiPaths.READ_CERTIFICATES_PATH)

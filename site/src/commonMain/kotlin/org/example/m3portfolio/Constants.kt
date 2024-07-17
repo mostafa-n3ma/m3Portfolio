@@ -26,18 +26,39 @@ object Measurements{
 
 
 object ApiPaths{
+    //info
     const val READ_INFO_PATH = "readinfo"
     const val UPDATE_INFO_PATH = "updateinfo"
 
+    //experience
+    const val READ_EXPERIENCE_PATH = "readexperince"
+    const val UPDATE_EXPERIENCE_PATH = "updateexperince"
+    const val ADD_EXPERIENCE_PATH = "addexperince"
 
 
 
+    // project
     const val READ_PROJECTS_PATH = "readprojects"
+    const val UPDATE_PROJECTS_PATH = "updateprojects"
+    const val ADD_PROJECTS_PATH =    "addprojects"
+
+
+
+    //certificates
     const val READ_CERTIFICATES_PATH = "readcertificates"
+
+
+    //websites
     const val READ_WEBSITE_PATH = "readwebsites"
 
+
+
+    // user check
     const val USER_CHECK_PATH = "usercheck"
     const val USER_CHECK_ID_PATH = "useridcheck"
+
+
+
 }
 
 

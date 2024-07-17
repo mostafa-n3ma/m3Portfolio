@@ -34,6 +34,38 @@ object ApiInfoResponseSerializer: JsonContentPolymorphicSerializer<ApiInfoRespon
 
 
 
+
+
+@Serializable(ApiExperienceResponseSerializer::class)
+sealed class ApiExperienceResponse {
+    @Serializable
+    @SerialName("idle")
+    object Idle:ApiExperienceResponse()
+
+    @Serializable
+    @SerialName("success")
+    class Success(val data: List<Experience>):ApiExperienceResponse()
+
+    @Serializable
+    @SerialName("error")
+    class Error(val message:String):ApiExperienceResponse()
+}
+
+
+object ApiExperienceResponseSerializer: JsonContentPolymorphicSerializer<ApiExperienceResponse>(ApiExperienceResponse::class){
+    override fun selectDeserializer(element: JsonElement)= when{
+        "data" in element.jsonObject -> ApiExperienceResponse.Success.serializer()
+        "message" in element.jsonObject ->ApiExperienceResponse.Error.serializer()
+        else-> ApiExperienceResponse.Idle.serializer()
+    }
+
+}
+
+
+
+
+
+
 @Serializable(ApiProjectResponseSerializer::class)
 sealed class ApiProjectResponse {
     @Serializable

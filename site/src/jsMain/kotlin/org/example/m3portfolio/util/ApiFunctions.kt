@@ -6,9 +6,11 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.example.m3portfolio.ApiPaths
 import org.example.m3portfolio.models.ApiCertificateResponse
+import org.example.m3portfolio.models.ApiExperienceResponse
 import org.example.m3portfolio.models.ApiInfoResponse
 import org.example.m3portfolio.models.ApiProjectResponse
 import org.example.m3portfolio.models.ApiWebsiteResponse
+import org.example.m3portfolio.models.Experience
 import org.example.m3portfolio.models.Info
 import org.example.m3portfolio.models.User
 import org.example.m3portfolio.models.UserWithoutPassword
@@ -42,6 +44,56 @@ suspend fun requestInfoDataUpdate(info: Info):Boolean{
         false
     }
 }
+
+
+
+
+//
+//suspend fun requestExperienceData(
+//    onSuccess: (ApiExperienceResponse) -> Unit,
+//    onError: (Exception) -> Unit
+//){
+//
+//    return try {
+//        val resultExperience = window.api.tryGet(
+//            apiPath = ApiPaths.READ_EXPERIENCE_PATH
+//        )?.decodeToString()
+//        onSuccess(Json.decodeFromString(resultExperience.toString()))
+//    }catch (e:Exception){
+//        onError(e)
+//    }
+//
+//}
+//
+//suspend fun requestExperienceDataUpdate(experience: Experience):Boolean{
+//    return try {
+//        window.api.tryPost(
+//            apiPath = ApiPaths.UPDATE_EXPERIENCE_PATH,
+//            body = Json.encodeToString(experience).encodeToByteArray()
+//        )?.decodeToString().toBoolean()
+//    }catch (e:Exception){
+//        println(e.message)
+//        false
+//    }
+//}
+//
+//
+//suspend fun requestExperienceAdd(experience: Experience):Boolean{
+//    return try {
+//        window.api.tryPost(
+//            apiPath = ApiPaths.ADD_EXPERIENCE_PATH,
+//            body = Json.encodeToString(experience).encodeToByteArray()
+//        )?.decodeToString().toBoolean()
+//    }catch (e:Exception){
+//        println(e.message)
+//        false
+//    }
+//}
+//
+//
+//
+
+
 
 
 

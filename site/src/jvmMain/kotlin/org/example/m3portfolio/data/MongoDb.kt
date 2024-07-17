@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.toList
 import org.example.m3portfolio.Constants.DATABASE_NAME
 import org.example.m3portfolio.models.Certificate
+import org.example.m3portfolio.models.Experience
 import org.example.m3portfolio.models.Info
 import org.example.m3portfolio.models.Project
 import org.example.m3portfolio.models.User
@@ -33,6 +34,7 @@ class MongoDB(private val context: InitApiContext) : MongoRepository {
 
     val database = client.getDatabase(DATABASE_NAME)
     private val infoCollection = database.getCollection<Info>("info")
+//    private val experienceCollection = database.getCollection<Experience>("experiance")
     private val certificatesCollection = database.getCollection<Certificate>("certificates")
     private val projectsCollection = database.getCollection<Project>("projects")
     private val websitesCollection = database.getCollection<Website>("websites")
@@ -89,6 +91,33 @@ class MongoDB(private val context: InitApiContext) : MongoRepository {
                 )
             ).wasAcknowledged()
     }
+//
+//    override suspend fun readExperience(): List<Experience> {
+//        return experienceCollection
+//            .find()
+//            .toList()
+//    }
+//
+//    override suspend fun insertExperience(experience: Experience): Boolean {
+//        return experienceCollection
+//            .insertOne(experience)
+//            .wasAcknowledged()
+//    }
+//
+//    override suspend fun updateExperience(experience: Experience): Boolean {
+//        return experienceCollection
+//            .updateOne(
+//                Filters.eq(Experience::_id.name,experience._id),
+//                mutableListOf(
+//                    Updates.set(Experience::description.name,experience.description),
+//                    Updates.set(Experience::duration.name,experience.duration),
+//                    Updates.set(Experience::image.name,experience.image),
+//                    Updates.set(Experience::location.name,experience.location),
+//                    Updates.set(Experience::projects.name,experience.projects),
+//                    Updates.set(Experience::role.name,experience.role),
+//                )
+//            ).wasAcknowledged()
+//    }
 
     override suspend fun readCertificates(): List<Certificate> {
         return certificatesCollection

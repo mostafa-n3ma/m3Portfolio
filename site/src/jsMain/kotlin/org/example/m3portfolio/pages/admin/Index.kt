@@ -110,7 +110,6 @@ data class InfoScreenUiState(
 @Composable
 fun InfoScreenContent() {
     val breakpoint = rememberBreakpoint()
-    val context = rememberPageContext()
     var uiState by remember { mutableStateOf(InfoScreenUiState()) }
     val scope = rememberCoroutineScope()
 
