@@ -43,8 +43,8 @@ import com.varabyte.kobweb.silk.style.breakpoint.Breakpoint
 import com.varabyte.kobweb.silk.style.toModifier
 import kotlinx.browser.document
 import org.example.m3portfolio.Constants.FONT_FAMILY
-import org.example.m3portfolio.Ids
-import org.example.m3portfolio.Ids.info_BiotextAreaDiv
+import org.example.m3portfolio.Ids.info_Bio_editor
+import org.example.m3portfolio.Ids.info_Bio_preview
 import org.example.m3portfolio.models.ControlStyle
 import org.example.m3portfolio.models.EditorControlIcons
 import org.example.m3portfolio.models.Theme
@@ -62,14 +62,16 @@ import org.jetbrains.compose.web.dom.TextArea
 
 
 @Composable
-fun bioEditorComponent(editorVisibility: Boolean) {
+fun EditorComponent(editor_id: String,
+                    preview_id: String,
+                    editorVisibility: Boolean) {
     Box(
         modifier = Modifier.fillMaxWidth()
     ) {
 
         TextArea(
             attrs = Modifier
-                .id(Ids.info_BiotextArea)
+                .id(editor_id)
                 .fillMaxWidth()
                 .height(400.px)
                 .maxHeight(400.px)
@@ -89,7 +91,9 @@ fun bioEditorComponent(editorVisibility: Boolean) {
                     // this code will add the break tag <br> to the div element to make new line to the text
                     if (it.code == "Enter") {
                         applyStyle(
-                            ControlStyle.Break(selectedText = getSelectedText())
+                            ControlStyle.Break(selectedText = getSelectedText(editor_id)),
+                            editor_id = editor_id,
+                            preview_id = preview_id,
                         )
                     }
                 }
@@ -103,7 +107,7 @@ fun bioEditorComponent(editorVisibility: Boolean) {
 
         Div(
             attrs = Modifier
-                .id(info_BiotextAreaDiv)
+                .id(preview_id)
                 .fillMaxWidth()
                 .height(400.px)
                 .maxHeight(400.px)
@@ -130,6 +134,8 @@ fun bioEditorComponent(editorVisibility: Boolean) {
 @Composable
 fun EditorControllersPanel(
     breakpoint: Breakpoint,
+    editor_id: String,
+    preview_id: String,
     editorVisibility: Boolean,
     onEditorVisibilityChanged: () -> Unit,
     onLinkViewClicked: () -> Unit,
@@ -152,7 +158,9 @@ fun EditorControllersPanel(
                             applyControlStyle(
                                 editorControl = it,
                                 onLinkViewClicked = onLinkViewClicked,
-                                onImageViewClicked = onImageViewClicked
+                                onImageViewClicked = onImageViewClicked,
+                                editor_id = editor_id,
+                                preview_id = preview_id
                             )
                         }
                     )
@@ -184,7 +192,7 @@ fun EditorControllersPanel(
                         .noBorder()
                         .onClick {
                             onEditorVisibilityChanged()
-                            document.getElementById(info_BiotextAreaDiv)?.innerHTML = getEditor().value
+                            document.getElementById(info_Bio_preview)?.innerHTML = getEditor(info_Bio_editor).value
                             // a fun to actually write and run js code here
                             // it will be cared by kotlin and run on the website as js code
                             // so the next line of code in js is to run and init the highlight.js library from the preview button

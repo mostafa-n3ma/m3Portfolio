@@ -28,7 +28,6 @@ import com.varabyte.kobweb.compose.ui.modifiers.maxWidth
 import com.varabyte.kobweb.compose.ui.modifiers.padding
 import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.core.Page
-import com.varabyte.kobweb.core.rememberPageContext
 import com.varabyte.kobweb.silk.components.text.SpanText
 import com.varabyte.kobweb.silk.style.breakpoint.Breakpoint
 import com.varabyte.kobweb.silk.theme.breakpoint.rememberBreakpoint
@@ -36,6 +35,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.example.m3portfolio.Constants.FONT_FAMILY
 import org.example.m3portfolio.Ids.info_AddressField
+import org.example.m3portfolio.Ids.info_Bio_editor
+import org.example.m3portfolio.Ids.info_Bio_preview
 import org.example.m3portfolio.Ids.info_EducationField
 import org.example.m3portfolio.Ids.info_EmailField
 import org.example.m3portfolio.Ids.info_ExtraField
@@ -52,14 +53,14 @@ import org.example.m3portfolio.components.ControlPopup
 import org.example.m3portfolio.components.EditorControllersPanel
 import org.example.m3portfolio.components.FinalButton
 import org.example.m3portfolio.components.MessagePopup
-import org.example.m3portfolio.components.bioEditorComponent
+import org.example.m3portfolio.components.EditorComponent
 import org.example.m3portfolio.models.ApiInfoResponse
 import org.example.m3portfolio.models.ControlStyle
 import org.example.m3portfolio.models.EditorControlIcons
 import org.example.m3portfolio.models.Theme
 import org.example.m3portfolio.util.applyControlStyle
 import org.example.m3portfolio.util.applyStyle
-import org.example.m3portfolio.util.applyToBioDiv
+import org.example.m3portfolio.util.applyToPreview
 import org.example.m3portfolio.util.calculateInfoPageValues
 import org.example.m3portfolio.util.getEditor
 import org.example.m3portfolio.util.getSelectedText
@@ -87,7 +88,7 @@ fun HomeScreen() {
 }
 
 data class InfoScreenUiState(
-    var id : String = "",
+    var id: String = "",
     var name: String = "",
     var imageUrl: String = "",
     var role: String = "",
@@ -102,7 +103,7 @@ data class InfoScreenUiState(
     var resumeLink: String = "",
     var extra: String = "",
     var editorVisibility: Boolean = true,
-    var messagePopup:String = "",
+    var messagePopup: String = "",
     var linkPopup: Boolean = false,
     var imagePopup: Boolean = false
 )
@@ -143,8 +144,8 @@ fun InfoScreenContent() {
                             resumeLink = apiResponse.data.resumeLink,
                             extra = apiResponse.data.extra
                         )
-                        getEditor().value = uiState.bio
-                        applyToBioDiv()
+                        getEditor(id = info_Bio_editor).value = uiState.bio
+                        applyToPreview(preview_id = info_Bio_preview, editor_id = info_Bio_editor)
                     }
                 }
             },
@@ -168,7 +169,7 @@ fun InfoScreenContent() {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(bottom = 60.px)
-                .margin(topBottom =  50.px)
+                .margin(topBottom = 50.px)
                 .maxWidth(700.px),
             verticalArrangement = Arrangement.spacedBy(30.px),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -475,10 +476,16 @@ fun InfoScreenContent() {
                     },
                     onImageViewClicked = {
                         uiState = uiState.copy(imagePopup = true)
-                    }
+                    },
+                    editor_id = info_Bio_editor,
+                    preview_id = info_Bio_preview
                 )
 
-                bioEditorComponent(uiState.editorVisibility)
+                EditorComponent(
+                    editor_id = info_Bio_editor,
+                    preview_id = info_Bio_preview,
+                    editorVisibility = uiState.editorVisibility
+                )
 
 
             }
@@ -626,7 +633,7 @@ fun InfoScreenContent() {
             FinalButton(
                 onClick = {
                     scope.launch {
-                        if (requestInfoDataUpdate(calculateInfoPageValues().copy(_id = uiState.id))){
+                        if (requestInfoDataUpdate(calculateInfoPageValues().copy(_id = uiState.id))) {
                             uiState = uiState.copy(messagePopup = "info data updated")
                             delay(3000)
                             uiState = uiState.copy(messagePopup = "")
@@ -639,25 +646,34 @@ fun InfoScreenContent() {
         }
 
     }
-    if (uiState.messagePopup.isNotEmpty()){
+    if (uiState.messagePopup.isNotEmpty()) {
         MessagePopup(
             message = uiState.messagePopup,
             onDialogDismiss = {
-                uiState = uiState.copy(messagePopup = "")}
+                uiState = uiState.copy(messagePopup = "")
+            }
         )
     }
-    if (uiState.linkPopup){
+    if (uiState.linkPopup) {
         ControlPopup(
             editorControl = EditorControlIcons.Link,
-            onDialogDismiss = {uiState = uiState.copy(linkPopup = false)},
-            onAddClick = {href,title->
+            onDialogDismiss = { uiState = uiState.copy(linkPopup = false) },
+            onAddClick = { href, title ->
                 applyControlStyle(
                     editorControl = EditorControlIcons.Link,
                     onImageViewClicked = {},
+                    editor_id = info_Bio_editor,
+                    preview_id = info_Bio_preview,
                     onLinkViewClicked = {
-                            applyStyle(
-                                ControlStyle.Link(href = href, title = title, selectedText = getSelectedText())
-                            )
+                        applyStyle(
+                            ControlStyle.Link(
+                                href = href,
+                                title = title,
+                                selectedText = getSelectedText(editor_id = info_Bio_editor)
+                            ),
+                            editor_id = info_Bio_editor,
+                            preview_id = info_Bio_preview,
+                        )
                     }
                 )
             }
@@ -666,17 +682,27 @@ fun InfoScreenContent() {
 
 
 
-    if (uiState.imagePopup){
+    if (uiState.imagePopup) {
         ControlPopup(
             editorControl = EditorControlIcons.Image,
             onDialogDismiss = { uiState = uiState.copy(imagePopup = false) },
-            onAddClick = {url, desription->
+            onAddClick = { url, desription ->
                 applyControlStyle(
                     editorControl = EditorControlIcons.Image,
                     onImageViewClicked = {
-                                         applyStyle(ControlStyle.Image(selectedText = getSelectedText(), imageUrl = url, alt = desription))
+                        applyStyle(
+                            ControlStyle.Image(
+                                selectedText = getSelectedText(editor_id = info_Bio_editor),
+                                imageUrl = url,
+                                alt = desription
+                            ),
+                            editor_id = info_Bio_editor,
+                            preview_id = info_Bio_preview,
+                        )
                     },
-                    onLinkViewClicked = {}
+                    onLinkViewClicked = {},
+                    editor_id = info_Bio_editor,
+                    preview_id = info_Bio_preview,
                 )
             }
         )

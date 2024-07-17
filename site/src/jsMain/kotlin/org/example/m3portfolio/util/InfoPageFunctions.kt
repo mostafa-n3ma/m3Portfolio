@@ -14,7 +14,7 @@ fun calculateInfoPageValues(): Info {
         email =getElementValue(Ids.info_EmailField,InputType.InputField),
         linkedIn =getElementValue(Ids.info_LinkedInField,InputType.InputField),
         github =getElementValue(Ids.info_GithubField,InputType.InputField),
-        bio =getElementValue(Ids.info_BiotextArea,InputType.TextArea),//
+        bio =getElementValue(Ids.info_Bio_editor,InputType.TextArea),//
         education =getElementValue(Ids.info_EducationField,InputType.InputField),
         skills =getElementValue(Ids.info_SkillsField,InputType.InputField),
         resumeLink =getElementValue(Ids.info_ResumeLinkField,InputType.InputField),
