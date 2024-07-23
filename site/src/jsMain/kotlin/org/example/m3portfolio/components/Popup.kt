@@ -201,3 +201,74 @@ fun ControlPopup(
         }
     }
 }
+
+
+@Composable
+fun ImageUrlPopup(
+    onDialogDismiss: () -> Unit,
+    onAddClick: (String) -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .width(100.vw)
+            .height(100.vh)
+            .position(Position.Fixed)
+            .zIndex(19),
+        contentAlignment = Alignment.Center
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .backgroundColor(Theme.HalfBlack.rgb)
+                .onClick { onDialogDismiss() }
+        )
+        Column(
+            modifier = Modifier
+                .width(500.px)
+                .padding(all = 24.px)
+                .backgroundColor(Colors.White)
+                .borderRadius(r = 4.px)
+        ) {
+            Input(
+                type = InputType.Text,
+                attrs = Modifier
+                    .id(linkHrefInput)
+                    .fillMaxWidth()
+                    .height(54.px)
+                    .padding(left = 20.px)
+                    .margin(bottom = 12.px)
+                    .fontFamily(FONT_FAMILY)
+                    .fontSize(14.px)
+                    .noBorder()
+                    .borderRadius(r = 4.px)
+                    .backgroundColor(Theme.Item_bk_light.rgb)
+                    .toAttrs {
+                        attr(
+                            "placeholder",
+                             "Image URL"
+                        )
+                    }
+            )
+            Button(
+                attrs = Modifier
+                    .onClick {
+                        val url =
+                            (document.getElementById(linkHrefInput) as HTMLInputElement).value
+                        onAddClick(url)
+                        onDialogDismiss()
+                    }
+                    .fillMaxWidth()
+                    .height(54.px)
+                    .borderRadius(r = 4.px)
+                    .backgroundColor(Theme.PrimaryLight.rgb)
+                    .color(Colors.White)
+                    .noBorder()
+                    .fontFamily(FONT_FAMILY)
+                    .fontSize(14.px)
+                    .toAttrs()
+            ) {
+                SpanText(text = "Add")
+            }
+        }
+    }
+}

@@ -452,44 +452,6 @@ fun InfoScreenContent() {
             }
 
 
-            //bio
-            Column(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                SpanText(
-                    text = "Bio: ",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fontFamily(FONT_FAMILY)
-                        .fontSize(32.px)
-                        .fontWeight(FontWeight.Bold)
-                )
-
-                EditorControllersPanel(
-                    breakpoint = breakpoint,
-                    editorVisibility = uiState.editorVisibility,
-                    onEditorVisibilityChanged = {
-                        uiState = uiState.copy(editorVisibility = !uiState.editorVisibility)
-                    },
-                    onLinkViewClicked = {
-                        uiState = uiState.copy(linkPopup = true)
-                    },
-                    onImageViewClicked = {
-                        uiState = uiState.copy(imagePopup = true)
-                    },
-                    editor_id = info_Bio_editor,
-                    preview_id = info_Bio_preview
-                )
-
-                EditorComponent(
-                    editor_id = info_Bio_editor,
-                    preview_id = info_Bio_preview,
-                    editorVisibility = uiState.editorVisibility
-                )
-
-
-            }
-
 
             //education
             Column(
@@ -596,6 +558,45 @@ fun InfoScreenContent() {
             }
 
 
+            //bio
+            Column(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                SpanText(
+                    text = "Bio: ",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fontFamily(FONT_FAMILY)
+                        .fontSize(32.px)
+                        .fontWeight(FontWeight.Bold)
+                )
+
+                EditorControllersPanel(
+                    breakpoint = breakpoint,
+                    editorVisibility = uiState.editorVisibility,
+                    onEditorVisibilityChanged = {
+                        uiState = uiState.copy(editorVisibility = !uiState.editorVisibility)
+                    },
+                    onLinkViewClicked = {
+                        uiState = uiState.copy(linkPopup = true)
+                    },
+                    onImageViewClicked = {
+                        uiState = uiState.copy(imagePopup = true)
+                    },
+                    editor_id = info_Bio_editor,
+                    preview_id = info_Bio_preview
+                )
+
+                EditorComponent(
+                    editor_id = info_Bio_editor,
+                    preview_id = info_Bio_preview,
+                    breakpoint = breakpoint,
+                    editorVisibility = uiState.editorVisibility
+                )
+
+
+            }
+
             //extra
             Column(
                 modifier = Modifier.fillMaxSize()
@@ -630,6 +631,7 @@ fun InfoScreenContent() {
 
             }
 
+
             FinalButton(
                 onClick = {
                     scope.launch {
@@ -640,7 +642,7 @@ fun InfoScreenContent() {
                         }
                     }
                 },
-                text = "Update",
+                label = "Update",
                 color = Colors.Orange
             )
         }

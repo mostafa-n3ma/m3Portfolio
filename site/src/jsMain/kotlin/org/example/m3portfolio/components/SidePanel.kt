@@ -123,7 +123,7 @@ fun NavigationItem(
                     .fontFamily(FONT_FAMILY)
                     .fontSize(
                         if (breakpoint < Breakpoint.MD) 16.px
-                        else 28.px
+                        else 20.px
                     )
                     .fontWeight(FontWeight.Bold)
             )

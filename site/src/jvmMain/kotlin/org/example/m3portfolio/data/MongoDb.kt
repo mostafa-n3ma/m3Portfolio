@@ -7,6 +7,7 @@ import com.varabyte.kobweb.api.data.add
 import com.varabyte.kobweb.api.init.InitApi
 import com.varabyte.kobweb.api.init.InitApiContext
 import kotlinx.coroutines.flow.count
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.toList
 import org.example.m3portfolio.Constants.DATABASE_NAME
@@ -34,7 +35,7 @@ class MongoDB(private val context: InitApiContext) : MongoRepository {
 
     val database = client.getDatabase(DATABASE_NAME)
     private val infoCollection = database.getCollection<Info>("info")
-//    private val experienceCollection = database.getCollection<Experience>("experiance")
+    private val experienceCollection = database.getCollection<Experience>("experiances")
     private val certificatesCollection = database.getCollection<Certificate>("certificates")
     private val projectsCollection = database.getCollection<Project>("projects")
     private val websitesCollection = database.getCollection<Website>("websites")
@@ -91,33 +92,87 @@ class MongoDB(private val context: InitApiContext) : MongoRepository {
                 )
             ).wasAcknowledged()
     }
-//
-//    override suspend fun readExperience(): List<Experience> {
-//        return experienceCollection
-//            .find()
-//            .toList()
-//    }
-//
-//    override suspend fun insertExperience(experience: Experience): Boolean {
-//        return experienceCollection
-//            .insertOne(experience)
-//            .wasAcknowledged()
-//    }
-//
-//    override suspend fun updateExperience(experience: Experience): Boolean {
-//        return experienceCollection
-//            .updateOne(
-//                Filters.eq(Experience::_id.name,experience._id),
-//                mutableListOf(
-//                    Updates.set(Experience::description.name,experience.description),
-//                    Updates.set(Experience::duration.name,experience.duration),
-//                    Updates.set(Experience::image.name,experience.image),
-//                    Updates.set(Experience::location.name,experience.location),
-//                    Updates.set(Experience::projects.name,experience.projects),
-//                    Updates.set(Experience::role.name,experience.role),
-//                )
-//            ).wasAcknowledged()
-//    }
+
+    override suspend fun readExperience(): List<Experience> {
+        return experienceCollection
+            .find()
+            .toList()
+    }
+
+    override suspend fun readExperienceById(id: String): List<Experience> {
+        return experienceCollection
+            .find(
+                Filters.eq(Experience::_id.name, id)
+            )
+            .toList()
+    }
+
+    override suspend fun insertExperience(experience: Experience): Boolean {
+        return experienceCollection
+            .insertOne(experience)
+            .wasAcknowledged()
+    }
+
+    override suspend fun updateExperience(experience: Experience): Boolean {
+        return experienceCollection
+            .updateOne(
+                Filters.eq(Experience::_id.name, experience._id),
+                mutableListOf(
+                    Updates.set(Experience::description.name, experience.description),
+                    Updates.set(Experience::duration.name, experience.duration),
+                    Updates.set(Experience::image.name, experience.image),
+                    Updates.set(Experience::location.name, experience.location),
+                    Updates.set(Experience::projects.name, experience.projects),
+                    Updates.set(Experience::role.name, experience.role),
+                )
+            ).wasAcknowledged()
+    }
+
+
+
+    override suspend fun readProjects(): List<Project> {
+        return projectsCollection
+            .find()
+            .toList()
+    }
+
+    override suspend fun readProjectById(id: String): List<Project> {
+        return projectsCollection
+            .find(
+                Filters.eq(Project::_id.name,id)
+            )
+            .toList()
+    }
+
+    override suspend fun insertProject(project: Project): Boolean {
+       return projectsCollection
+           .insertOne(project)
+           .wasAcknowledged()
+    }
+
+    override suspend fun updateProject(project: Project): Boolean {
+        return projectsCollection
+            .updateOne(
+                Filters.eq(Project::_id.name,project._id),
+                mutableListOf(
+                    Updates.set(Project:: title.name,project.title),
+                    Updates.set(Project:: description.name,project.description),
+                    Updates.set(Project:: techStack.name,project.techStack),
+                    Updates.set(Project:: repoLink.name,project.repoLink),
+                    Updates.set(Project:: videoLink.name,project.videoLink),
+                    Updates.set(Project:: mainImageLink.name,project.mainImageLink),
+                    Updates.set(Project:: imagesList.name,project.imagesList),
+                    Updates.set(Project:: date.name,project.date),
+                )
+            ).wasAcknowledged()
+    }
+
+    override suspend fun deleteSelectedProjects(ids: List<String>): Boolean {
+        return projectsCollection
+            .deleteMany(Filters.`in`(Project::_id.name,ids))
+            .wasAcknowledged()
+    }
+
 
     override suspend fun readCertificates(): List<Certificate> {
         return certificatesCollection
@@ -125,11 +180,6 @@ class MongoDB(private val context: InitApiContext) : MongoRepository {
             .toList()
     }
 
-    override suspend fun readProjects(): List<Project> {
-        return projectsCollection
-            .find()
-            .toList()
-    }
 
     override suspend fun readWebsites(): List<Website> {
         return websitesCollection

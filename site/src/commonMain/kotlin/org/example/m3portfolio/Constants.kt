@@ -9,6 +9,9 @@ object Constants{
 
     const val FONT_FAMILY = "Roboto"
 
+    const val EXPERIENCE_ID_PARAM = "expId"
+    const val PROJECT_ID_PARAM = "projectid"
+
 }
 
 object Measurements{
@@ -32,6 +35,7 @@ object ApiPaths{
 
     //experience
     const val READ_EXPERIENCE_PATH = "readexperince"
+    const val READ_EXPERIENCE_BY_ID_PATH = "readexperincebyid"
     const val UPDATE_EXPERIENCE_PATH = "updateexperince"
     const val ADD_EXPERIENCE_PATH = "addexperince"
 
@@ -39,8 +43,10 @@ object ApiPaths{
 
     // project
     const val READ_PROJECTS_PATH = "readprojects"
+    const val READ_PROJECTS_BY_ID_PATH = "readprojectsbyid"
     const val UPDATE_PROJECTS_PATH = "updateprojects"
     const val ADD_PROJECTS_PATH =    "addprojects"
+    const val DELETE_PROJECTS_PATH =    "deleteprojects"
 
 
 
@@ -115,6 +121,27 @@ object Ids{
 
 
 
+    //Experience Screen
+    const val exp_description_Editor = "exp_description_Editor"
+    const val exp_description_Preview = "exp_description_Preview"
+    const val exp_duration_Field = "exp_duration_Field"
+    const val exp_image_Field = "exp_image_Field"
+    const val exp_location_Field = "exp_location_Field"
+    const val exp_projects_Field = "exp_projects_Field"
+    const val exp_role_Field = "exp_role_Field"
+
+
+    const val project_title_field = "project_title_field"
+    const val project_description_editor = "project_description_editor"
+    const val project_description_preview = "project_description_preview"
+    const val project_techStack_field = "project_techStack_field"
+    const val project_repoLink_field = "project_repoLink_field"
+    const val project_videoLink_field = "project_videoLink_field"
+    const val project_mainImageLink_field = "project_mainImageLink_field"
+
+
+
+    const val project_date_field = "project_date_field"
 
 
 }

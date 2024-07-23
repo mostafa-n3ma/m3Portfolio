@@ -75,3 +75,14 @@ fun getElementValue(id:String,type:InputType):String{
     }
 }
 
+
+
+
+
+fun listToString(list: List<String>): String {
+    return list.joinToString(separator = ",")
+}
+
+fun stringToList(string: String): List<String> {
+    return string.split(",").map { it.trim() }
+}

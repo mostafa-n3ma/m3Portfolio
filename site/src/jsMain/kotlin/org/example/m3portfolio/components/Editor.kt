@@ -62,9 +62,12 @@ import org.jetbrains.compose.web.dom.TextArea
 
 
 @Composable
-fun EditorComponent(editor_id: String,
-                    preview_id: String,
-                    editorVisibility: Boolean) {
+fun EditorComponent(
+    editor_id: String,
+    preview_id: String,
+    editorVisibility: Boolean,
+    breakpoint: Breakpoint
+) {
     Box(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -73,8 +76,11 @@ fun EditorComponent(editor_id: String,
             attrs = Modifier
                 .id(editor_id)
                 .fillMaxWidth()
-                .height(400.px)
-                .maxHeight(400.px)
+                .height(1000.px)
+                .maxHeight(
+                    if (breakpoint < Breakpoint.MD) 500.px
+                    else 1000.px
+                )
                 .resize(Resize.None)
                 .margin(top = 8.px)
                 .padding(all = 20.px)
@@ -109,8 +115,11 @@ fun EditorComponent(editor_id: String,
             attrs = Modifier
                 .id(preview_id)
                 .fillMaxWidth()
-                .height(400.px)
-                .maxHeight(400.px)
+                .height(1000.px)
+                .maxHeight(
+                    if (breakpoint < Breakpoint.MD) 500.px
+                    else 1000.px
+                )
                 .resize(Resize.None)
                 .margin(top = 8.px)
                 .padding(all = 20.px)

@@ -15,16 +15,22 @@ interface MongoRepository {
     suspend fun readInfo():List<Info>
     suspend fun updateInfo(info: Info):Boolean
 
-//    suspend fun readExperience():List<Experience>
-//    suspend fun insertExperience(experience: Experience):Boolean
-//    suspend fun updateExperience(experience: Experience):Boolean
+    suspend fun readExperience():List<Experience>
+    suspend fun readExperienceById(id:String):List<Experience>
+    suspend fun insertExperience(experience: Experience):Boolean
+    suspend fun updateExperience(experience: Experience):Boolean
 
 
+    suspend fun readProjects():List<Project>
+    suspend fun readProjectById(id: String):List<Project>
+    suspend fun insertProject(project: Project):Boolean
+    suspend fun updateProject(project: Project):Boolean
+
+    suspend fun deleteSelectedProjects(ids: List<String>):Boolean
 
 
     suspend fun readCertificates():List<Certificate>
 
-    suspend fun readProjects():List<Project>
 
     suspend fun readWebsites():List<Website>
 }
