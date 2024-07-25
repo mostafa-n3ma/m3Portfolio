@@ -7,9 +7,9 @@ import kotlinx.serialization.Serializable
 data class Experience(
     var _id: String = "",
     val description: String = "",
-    val duration: String = "",//
-    val image: String = "",//
-    val location: String = "",//
+    val duration: String = "",
+    val image: String = "",
+    val location: String = "",
     val projects: String = "",
-    val role: String = "" //
+    val role: String = "",
 )

@@ -25,12 +25,26 @@ interface MongoRepository {
     suspend fun readProjectById(id: String):List<Project>
     suspend fun insertProject(project: Project):Boolean
     suspend fun updateProject(project: Project):Boolean
-
     suspend fun deleteSelectedProjects(ids: List<String>):Boolean
 
 
     suspend fun readCertificates():List<Certificate>
+    suspend fun readCertificatesById(id:String):List<Certificate>
+    suspend fun insertCertificate(certificate: Certificate):Boolean
+    suspend fun updateCertificate(certificate: Certificate):Boolean
+    suspend fun deleteSelectedCertificates(ids:List<String>):Boolean
 
 
     suspend fun readWebsites():List<Website>
+    suspend fun readWebsitesById(id:String):List<Website>
+    suspend fun insertWebsite(website: Website):Boolean
+    suspend fun updateWebsite(website: Website):Boolean
+    suspend fun deleteSelectedWebsites(ids:List<String>):Boolean
+
+
+
+
+
+
+
 }

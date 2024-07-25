@@ -180,11 +180,75 @@ class MongoDB(private val context: InitApiContext) : MongoRepository {
             .toList()
     }
 
+    override suspend fun readCertificatesById(id: String): List<Certificate> {
+        return certificatesCollection
+            .find(
+                Filters.eq(Certificate::_id.name,id)
+            )
+            .toList()
+    }
+
+    override suspend fun insertCertificate(certificate: Certificate): Boolean {
+        return certificatesCollection
+            .insertOne(certificate)
+            .wasAcknowledged()
+    }
+
+    override suspend fun updateCertificate(certificate: Certificate): Boolean {
+        return certificatesCollection
+            .updateOne(
+                Filters.eq(Certificate::_id.name,certificate._id),
+                mutableListOf(
+                    Updates.set(Certificate::title.name,certificate.title),
+                    Updates.set(Certificate::from.name,certificate.from),
+                    Updates.set(Certificate::link.name,certificate.link),
+                    Updates.set(Certificate::date.name,certificate.date),
+                    Updates.set(Certificate::thumbnailLink.name,certificate.thumbnailLink),
+                )
+            ).wasAcknowledged()
+    }
+
+    override suspend fun deleteSelectedCertificates(ids: List<String>): Boolean {
+        return certificatesCollection
+            .deleteMany(Filters.`in`(Certificate::_id.name,ids)).wasAcknowledged()
+    }
+
 
     override suspend fun readWebsites(): List<Website> {
         return websitesCollection
             .find()
             .toList()
+    }
+
+    override suspend fun readWebsitesById(id: String): List<Website> {
+        return websitesCollection
+            .find(
+                Filters.eq(Website::_id.name,id)
+            )
+            .toList()
+    }
+
+    override suspend fun insertWebsite(website: Website): Boolean {
+        return websitesCollection
+            .insertOne(website)
+            .wasAcknowledged()
+    }
+
+    override suspend fun updateWebsite(website: Website): Boolean {
+        return websitesCollection
+            .updateOne(
+                Filters.eq(Website::_id.name,website._id),
+                mutableListOf(
+                    Updates.set(Website::title.name,website.title),
+                    Updates.set(Website::link.name,website.link),
+                    Updates.set(Website::icon.name,website.icon),
+                )
+            ).wasAcknowledged()
+    }
+
+    override suspend fun deleteSelectedWebsites(ids: List<String>): Boolean {
+        return websitesCollection
+            .deleteMany(Filters.`in`(Website::_id.name,ids)).wasAcknowledged()
     }
 }
 

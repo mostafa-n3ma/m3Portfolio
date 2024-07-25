@@ -56,6 +56,7 @@ import org.example.m3portfolio.util.applyToPreview
 import org.example.m3portfolio.util.calculateExperiencePageValues
 import org.example.m3portfolio.util.getEditor
 import org.example.m3portfolio.util.getSelectedText
+import org.example.m3portfolio.util.isUserLoggedIn
 import org.example.m3portfolio.util.requestExperienceAdd
 import org.example.m3portfolio.util.requestExperienceDataById
 import org.example.m3portfolio.util.requestExperienceDataUpdate
@@ -85,10 +86,13 @@ fun EditPage() {
         context.route.params.contains(EXPERIENCE_ID_PARAM)
     }
 
-    AdminPanelLayout {
-        ExperienceEditScreen(hasIdParam)
+    isUserLoggedIn {
+        AdminPanelLayout {
+            ExperienceEditScreen(hasIdParam)
 
+        }
     }
+
 
 
 }

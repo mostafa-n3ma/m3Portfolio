@@ -7,16 +7,19 @@ import kotlinx.serialization.json.Json
 import org.example.m3portfolio.ApiPaths
 import org.example.m3portfolio.Constants
 import org.example.m3portfolio.Constants.EXPERIENCE_ID_PARAM
+import org.example.m3portfolio.Constants.WEBSITE_ID_PARAM
 import org.example.m3portfolio.models.ApiCertificateResponse
 import org.example.m3portfolio.models.ApiExperienceResponse
 import org.example.m3portfolio.models.ApiInfoResponse
 import org.example.m3portfolio.models.ApiProjectResponse
 import org.example.m3portfolio.models.ApiWebsiteResponse
+import org.example.m3portfolio.models.Certificate
 import org.example.m3portfolio.models.Experience
 import org.example.m3portfolio.models.Info
 import org.example.m3portfolio.models.Project
 import org.example.m3portfolio.models.User
 import org.example.m3portfolio.models.UserWithoutPassword
+import org.example.m3portfolio.models.Website
 
 
 suspend fun requestInfoData(
@@ -186,6 +189,56 @@ suspend fun requestCertificatesData(
 }
 
 
+suspend fun requestCertificateById(id:String):ApiCertificateResponse{
+    return try {
+        val selectedCertificate = window.api.tryGet(
+            apiPath = "${ApiPaths.READ_CERTIFICATES_BY_ID_PATH}?${Constants.CERTIFICATE_ID_PARAM}=$id"
+        )?.decodeToString()
+        ApiCertificateResponse.Success(data = Json.decodeFromString<List<Certificate>>(selectedCertificate.toString()))
+    }catch (e:Exception){
+        ApiCertificateResponse.Error(message = e.message.toString())
+    }
+}
+
+
+suspend fun requestCertificateDataUpdate(certificate: Certificate):Boolean{
+    return try {
+        window.api.tryPost(
+            apiPath = ApiPaths.UPDATE_CERTIFICATES_PATH,
+            body = Json.encodeToString(certificate).encodeToByteArray()
+        )?.decodeToString().toBoolean()
+    }catch (e:Exception){
+        println(e.message)
+        false
+    }
+}
+
+
+suspend fun requestCertificateDataAdd(certificate: Certificate):Boolean{
+    return try {
+        window.api.tryPost(
+            apiPath = ApiPaths.ADD_CERTIFICATES_PATH,
+            body = Json.encodeToString(certificate).encodeToByteArray()
+        )?.decodeToString().toBoolean()
+    }catch (e:Exception){
+        println(e.message)
+        false
+    }
+}
+
+suspend fun requestDeletingCertificates(ids:List<String>):Boolean{
+    return try {
+        window.api.tryPost(
+            apiPath = ApiPaths.DELETE_CERTIFICATES_PATH,
+            body = Json.encodeToString(ids).encodeToByteArray()
+        )?.decodeToString().toBoolean()
+    }catch (e:Exception){
+        println(e.message)
+        false
+    }
+}
+
+
 
 
 
@@ -203,6 +256,72 @@ suspend fun requestWebsitesData(
     }
 
 }
+
+
+suspend fun requestWebsiteById(id: String):ApiWebsiteResponse{
+    return try {
+        val selectedWebsite = window.api.tryGet(
+            apiPath = "${ApiPaths.READ_WEBSITE_BY_ID_PATH}?$WEBSITE_ID_PARAM=$id"
+        )?.decodeToString()
+        ApiWebsiteResponse.Success(data = Json.decodeFromString<List<Website>>(selectedWebsite.toString()))
+    }catch (e:Exception){
+        ApiWebsiteResponse.Error(message = e.message.toString())
+    }
+}
+
+
+suspend fun requestWebsiteDataUpdate(website: Website):Boolean{
+    return try {
+        window.api.tryPost(
+            apiPath = ApiPaths.UPDATE_WEBSITE_PATH,
+            body = Json.encodeToString(website).encodeToByteArray()
+        )?.decodeToString().toBoolean()
+    }catch (e:Exception){
+        println(e.message)
+        false
+    }
+}
+
+
+suspend fun requestWebsiteDataAdd(website: Website):Boolean{
+    return try {
+        window.api.tryPost(
+            apiPath = ApiPaths.ADD_WEBSITE_PATH,
+            body = Json.encodeToString(website).encodeToByteArray()
+        )?.decodeToString().toBoolean()
+    }catch (e:Exception){
+        println(e.message)
+        false
+    }
+}
+
+
+suspend fun requestDeletingWebsites(ids:List<String>):Boolean{
+    return try {
+        window.api.tryPost(
+            apiPath = ApiPaths.DELETE_WEBSITES_PATH,
+            body = Json.encodeToString(ids).encodeToByteArray()
+        )?.decodeToString().toBoolean()
+    }catch (e:Exception){
+        println(e.message)
+        false
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 suspend fun requestUserCheck(user: User): UserWithoutPassword? {

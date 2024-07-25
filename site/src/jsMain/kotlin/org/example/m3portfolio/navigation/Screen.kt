@@ -1,8 +1,10 @@
 package org.example.m3portfolio.navigation
 
 import org.example.m3portfolio.Constants
+import org.example.m3portfolio.Constants.CERTIFICATE_ID_PARAM
 import org.example.m3portfolio.Constants.EXPERIENCE_ID_PARAM
 import org.example.m3portfolio.Constants.PROJECT_ID_PARAM
+import org.example.m3portfolio.Constants.WEBSITE_ID_PARAM
 import org.example.m3portfolio.Ids
 
 sealed class Screen(val route:String) {
@@ -24,12 +26,15 @@ sealed class Screen(val route:String) {
 
 
 
-    object AdminCertificates:Screen(route = "/admin/certificates")
-    object AdminWebsites:Screen(route = "/admin/websites")
+    object AdminCertificates:Screen(route = "/admin/certificates/")
+    object AdminCertificatesEdit:Screen(route = "/admin/certificates/edit"){
+        fun passCertificateId(id: String) = "/admin/certificates/edit?${CERTIFICATE_ID_PARAM}=$id"
+    }
 
 
-
-
-
+    object AdminWebsites:Screen(route = "/admin/websites/")
+    object AdminWebsiteEdit:Screen(route = "/admin/websites/edit"){
+        fun passWebsiteId(id: String) = "/admin/websites/edit?$WEBSITE_ID_PARAM=$id"
+    }
 
 }

@@ -1,9 +1,11 @@
 package org.example.m3portfolio.util
 
 import org.example.m3portfolio.Ids
+import org.example.m3portfolio.models.Certificate
 import org.example.m3portfolio.models.Experience
 import org.example.m3portfolio.models.Info
 import org.example.m3portfolio.models.Project
+import org.example.m3portfolio.models.Website
 
 
 fun calculateInfoPageValues(): Info {
@@ -44,6 +46,25 @@ fun calculatingProjectPageValues():Project{
         videoLink = getElementValue(Ids.project_videoLink_field,InputType.InputField),
         mainImageLink = getElementValue(Ids.project_mainImageLink_field,InputType.InputField),
         date =getElementValue(Ids.project_date_field,InputType.InputField),
+    )
+}
+
+
+fun calculatingCertificatePageValues():Certificate{
+    return Certificate(
+        title = getElementValue(Ids.certificate_title_field,InputType.InputField),
+        from = getElementValue(Ids.certificate_from_field,InputType.InputField),
+        link = getElementValue(Ids.certificate_link_field,InputType.InputField),
+        date = getElementValue(Ids.certificate_date_field,InputType.InputField),
+    )
+}
+
+
+fun calculatingWebsitePageValues():Website{
+    return Website(
+        title = getElementValue(Ids.website_title_field,InputType.InputField),
+        icon = getElementValue(Ids.website_icon_field,InputType.InputField),
+        link = getElementValue(Ids.website_link_field,InputType.InputField),
     )
 }
 

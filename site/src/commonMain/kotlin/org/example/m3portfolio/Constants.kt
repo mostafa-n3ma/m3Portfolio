@@ -11,6 +11,8 @@ object Constants{
 
     const val EXPERIENCE_ID_PARAM = "expId"
     const val PROJECT_ID_PARAM = "projectid"
+    const val CERTIFICATE_ID_PARAM = "certificateid"
+    const val WEBSITE_ID_PARAM = "websiteid"
 
 }
 
@@ -52,10 +54,18 @@ object ApiPaths{
 
     //certificates
     const val READ_CERTIFICATES_PATH = "readcertificates"
+    const val READ_CERTIFICATES_BY_ID_PATH = "readcertificatesbyid"
+    const val UPDATE_CERTIFICATES_PATH = "updatecertificates"
+    const val ADD_CERTIFICATES_PATH = "addcertificates"
+    const val DELETE_CERTIFICATES_PATH = "deletecertificates"
 
 
     //websites
     const val READ_WEBSITE_PATH = "readwebsites"
+    const val READ_WEBSITE_BY_ID_PATH = "readwebsitesbyid"
+    const val UPDATE_WEBSITE_PATH = "upadatewebsites"
+    const val ADD_WEBSITE_PATH = "addwebsites"
+    const val DELETE_WEBSITES_PATH = "deleteebsites"
 
 
 
@@ -75,6 +85,7 @@ object ApiPaths{
 object Res{
     object Image{
         const val my_image = "/mostafa_n3ma.svg"
+        const val certificateIcon = "/certificateIco.png"
     }
 
     object Icon{
@@ -138,10 +149,22 @@ object Ids{
     const val project_repoLink_field = "project_repoLink_field"
     const val project_videoLink_field = "project_videoLink_field"
     const val project_mainImageLink_field = "project_mainImageLink_field"
-
-
-
     const val project_date_field = "project_date_field"
+
+
+
+    const val certificate_title_field = "certificate_title_field"
+    const val certificate_from_field = "certificate_from_field"
+    const val certificate_link_field = "certificate_link_field"
+    const val certificate_date_field = "certificate_date_field"
+    const val certificate_thumbnailInput_field = "certificate_thumbnailInput_field"
+
+
+
+    const val website_title_field = "website_title_field"
+    const val website_link_field = "website_link_field"
+    const val website_icon_field = "website_icon_field"
+
 
 
 }

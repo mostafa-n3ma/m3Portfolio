@@ -198,6 +198,67 @@ suspend fun getCertificatesData(context: ApiContext) {
 }
 
 
+@Api(routeOverride = ApiPaths.READ_CERTIFICATES_BY_ID_PATH)
+suspend fun getCertificateById(context: ApiContext){
+    try {
+        val id = context.req.params[Constants.CERTIFICATE_ID_PARAM]
+        if (!id.isNullOrEmpty()){
+            val selectedCertificate = context.data.getValue<MongoDB>().readCertificatesById(id)
+            context.res.setBody(selectedCertificate)
+        }else{
+            context.res.setBody(
+                "Error Certificate does not exist"
+            )
+        }
+    }catch (e:Exception){
+        context.res.setBody(e.message)
+    }
+}
+
+
+
+@Api(routeOverride = ApiPaths.UPDATE_CERTIFICATES_PATH)
+suspend fun updateCertificateData(context: ApiContext){
+    return try {
+        val updatedCertificate = context.req.getBody<Certificate>()
+        context.res.setBody(
+            updatedCertificate?.let {
+                context.data.getValue<MongoDB>().updateCertificate(it)
+            }
+        )
+    }catch (e:Exception){
+        context.res.setBody(e.message)
+    }
+}
+
+
+@Api(routeOverride = ApiPaths.ADD_CERTIFICATES_PATH)
+suspend fun addCertificateData(context: ApiContext){
+    return try {
+        val newCertificate = context.req.getBody<Certificate>()
+        context.res.setBody(
+            newCertificate?.let {
+                context.data.getValue<MongoDB>().insertCertificate(it.copy(_id = ObjectIdGenerator().generate().toString()))
+            }
+        )
+    }catch (e:Exception){
+        context.res.setBody(e.message)
+    }
+}
+
+@Api(routeOverride = ApiPaths.DELETE_CERTIFICATES_PATH)
+suspend fun deleteSelectedCertificatesData(context: ApiContext){
+    return try{
+        val deletedCertificatesIdsList = context.req.getBody<List<String>>()
+        context.res.setBody(
+            deletedCertificatesIdsList?.let {
+                context.data.getValue<MongoDB>().deleteSelectedCertificates(it)
+            }
+        )
+    }catch (e:Exception){
+        context.res.setBody(e.message)
+    }
+}
 
 
 
@@ -211,6 +272,69 @@ suspend fun getWebsitesData(context: ApiContext) {
         context.res.setBody(ApiWebsiteResponse.Error(e.message.toString()))
     }
 }
+
+@Api(routeOverride = ApiPaths.READ_WEBSITE_BY_ID_PATH)
+suspend fun getWebsiteById(context: ApiContext){
+    try {
+        val id = context.req.params[Constants.WEBSITE_ID_PARAM]
+        if (!id.isNullOrEmpty()){
+            val selectedWebsite = context.data.getValue<MongoDB>().readWebsitesById(id)
+            context.res.setBody(selectedWebsite)
+        }else{
+            context.res.setBody("Error website does not Exist")
+        }
+    }catch (e:Exception){
+        context.res.setBody(e.message)
+    }
+}
+
+
+
+@Api(routeOverride = ApiPaths.UPDATE_WEBSITE_PATH)
+suspend fun updateWebsiteData(context: ApiContext){
+    return try {
+        val updatedWebsite = context.req.getBody<Website>()
+        context.res.setBody(
+            updatedWebsite?.let {
+                context.data.getValue<MongoDB>().updateWebsite(it)
+            }
+        )
+    }catch (e:Exception){
+        context.res.setBody(e.message)
+    }
+}
+
+
+@Api(routeOverride = ApiPaths.ADD_WEBSITE_PATH)
+suspend fun addWebsiteData(context: ApiContext){
+    return try {
+        val newWebsite = context.req.getBody<Website>()
+        context.res.setBody(
+            newWebsite?.let {
+                context.data.getValue<MongoDB>().insertWebsite(it.copy(_id = ObjectIdGenerator().generate().toString()))
+            }
+        )
+    }catch (e:Exception){
+        context.res.setBody(e.message)
+    }
+}
+
+
+
+@Api(routeOverride = ApiPaths.DELETE_WEBSITES_PATH)
+suspend fun deleteWebsiteData(context: ApiContext){
+    return try {
+        val deletedWebsitesIdsList = context.req.getBody<List<String>>()
+        context.res.setBody(
+            deletedWebsitesIdsList?.let {
+                context.data.getValue<MongoDB>().deleteSelectedWebsites(it)
+            }
+        )
+    }catch (e:Exception){
+        context.res.setBody(e.message)
+    }
+}
+
 
 
 
