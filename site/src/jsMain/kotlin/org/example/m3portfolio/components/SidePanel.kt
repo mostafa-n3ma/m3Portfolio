@@ -68,7 +68,7 @@ fun SidePanel(
     onMenuClicked : ()-> Unit)
 {
 
-    var breakpoint = rememberBreakpoint()
+    val breakpoint = rememberBreakpoint()
     if (breakpoint >Breakpoint.MD){
         SidePanelInternal(breakpoint = breakpoint)
     }else{

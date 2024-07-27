@@ -87,7 +87,7 @@ fun LoginScreen() {
                     .width(100.px)
                     .borderRadius(r = 10.px)
                 ,
-                src = Res.Image.my_image,
+                src = Res.Image.my_image_svg,
                 description = "my image mostafa nema"
             )
 

@@ -7,19 +7,28 @@ object Constants{
     const val USER_ID_STORAGE_VALUE = "userId"
     const val USER_NAME_STORAGE_VALUE = "username"
 
-    const val FONT_FAMILY = "Roboto"
+    const val FONT_FAMILY = "RobotoRegular"
+    const val ROBOTO_CONDENSED = "RobotoCondensedBold"
+    const val ROBOTO_REGULAR = "RobotoRegular"
 
     const val EXPERIENCE_ID_PARAM = "expId"
     const val PROJECT_ID_PARAM = "projectid"
     const val CERTIFICATE_ID_PARAM = "certificateid"
     const val WEBSITE_ID_PARAM = "websiteid"
 
+    enum class Languages( name:String){
+        EN("English"),
+        AR("Arabic")
+    }
+    const val LANGUAGE_STORAGE_VALUE = "display_language"
+    const val COLOR_MODE = "colorMode"
+
 }
 
 object Measurements{
     const val SIDE_PANEL_WIDTH = 150
     const val PAGE_WIDTH = 1920
-    const val HEADER_HEIGHT = 100
+    const val HEADER_HEIGHT = 54
     const val COLLAPSED_PANEL_HEIGHT = 50
 }
 
@@ -84,8 +93,22 @@ object ApiPaths{
 
 object Res{
     object Image{
-        const val my_image = "/mostafa_n3ma.svg"
+        const val my_image_jpg = "/me_j.jpg"
+        const val my_image_svg = "/me_vector.svg"
         const val certificateIcon = "/certificateIco.png"
+        const val language = "/language.png"
+        const val android_ic = "/android_ic.png"
+        const val android_studio_ic = "/android_studio_ic.png"
+        const val compos_ic = "/compos_ic.png"
+        const val java_ic = "/java_ic.png"
+        const val kotlin_ic = "/kotlin_ic.png"
+        const val Github = "/Github.png"
+
+
+
+
+
+
     }
 
     object Icon{
@@ -96,6 +119,8 @@ object Res{
         const val subtitle = "/subTitle.svg"
         const val image = "/image.svg"
         const val checkmark = "/checkmark.svg"
+        const val sun = "/sun.png"
+        const val moon = "/moon.png"
     }
 }
 
@@ -104,17 +129,18 @@ object Res{
 
 object Ids{
 
+
     //control popup
     const val linkHrefInput = "linkHrefInput"
     const val linkTitleInput = "linkTitleInput"
 
 
-
+//Admin
     //login screen
     const val login_userNameInput = " usernameInput"
     const val login_passweordInput = " passwordinput"
 
-    // Info Screen
+    //Admin Info Screen
     const val info_NameField = "info_NameField"
     const val info_ImageUrlField = "info_ImageUrlField"
     const val info_RoleField = "info_RoleField"
@@ -132,7 +158,7 @@ object Ids{
 
 
 
-    //Experience Screen
+    //Admin Experience Screen
     const val exp_description_Editor = "exp_description_Editor"
     const val exp_description_Preview = "exp_description_Preview"
     const val exp_duration_Field = "exp_duration_Field"
@@ -141,7 +167,7 @@ object Ids{
     const val exp_projects_Field = "exp_projects_Field"
     const val exp_role_Field = "exp_role_Field"
 
-
+//Admin Project Screen
     const val project_title_field = "project_title_field"
     const val project_description_editor = "project_description_editor"
     const val project_description_preview = "project_description_preview"
@@ -153,6 +179,7 @@ object Ids{
 
 
 
+    //Admin Certificates Screen
     const val certificate_title_field = "certificate_title_field"
     const val certificate_from_field = "certificate_from_field"
     const val certificate_link_field = "certificate_link_field"
@@ -161,10 +188,18 @@ object Ids{
 
 
 
+    //Admin Websites Screen
     const val website_title_field = "website_title_field"
     const val website_link_field = "website_link_field"
     const val website_icon_field = "website_icon_field"
 
+
+
+
+
+
+    //Main Home Index Screen
+    const val mainSectionBioDiv = "mainSectionBioDiv"
 
 
 }
