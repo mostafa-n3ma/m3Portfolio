@@ -64,6 +64,7 @@ import org.example.m3portfolio.models.Project
 import org.example.m3portfolio.models.Theme
 import org.example.m3portfolio.models.Website
 import org.example.m3portfolio.sections.MainSection
+import org.example.m3portfolio.sections.ProjectsSection
 import org.example.m3portfolio.styles.GithubBtnStyle
 import org.example.m3portfolio.util.noBorder
 import org.example.m3portfolio.util.requestCertificatesData
@@ -107,6 +108,7 @@ fun HomePage() {
 
     MainHeaderPanel {
         MainSection(breakpoint = breakpoint,bigObject = bigObject.value,context = context )
+        ProjectsSection(breakpoint = breakpoint,bigObject = bigObject.value,context = context )
     }
 }
 
@@ -148,7 +150,7 @@ fun fetchApiData(bigObject: MutableState<BigObjectUiState>) {
                     ApiCertificateResponse.Idle -> println("Certificates: Response stile Ideal")
                     is ApiCertificateResponse.Success -> {
                         println("Certificates: success")
-                        println(response.data.toString())
+//                        println(response.data.toString())
                     }
                 }
             },
@@ -168,7 +170,10 @@ fun fetchApiData(bigObject: MutableState<BigObjectUiState>) {
                     ApiProjectResponse.Idle -> println("projects: Response stile Ideal")
                     is ApiProjectResponse.Success ->{
                         println("projects: success")
-                        println(response.data)
+//                        println(response.data)
+                        bigObject.value = bigObject.value.copy(
+                            projectsList = response.data
+                        )
                     }
                 }
 
@@ -190,7 +195,7 @@ fun fetchApiData(bigObject: MutableState<BigObjectUiState>) {
                     ApiWebsiteResponse.Idle -> println("websites: Response stile Ideal")
                     is ApiWebsiteResponse.Success ->{
                         println("websites: success")
-                        println(response.data)
+//                        println(response.data)
                     }
                 }
 
