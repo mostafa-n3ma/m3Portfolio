@@ -23,6 +23,12 @@ object Constants{
     const val LANGUAGE_STORAGE_VALUE = "display_language"
     const val COLOR_MODE = "colorMode"
 
+
+    const val MAIN_SECTION = "MAIN_section"
+    const val PROJECTS_SECTION = "projects_section"
+    const val CERTIFICATES_SECTION = "CERTIFICATES_section"
+    const val ABOUT_ME_SECTION = "about_me_section"
+
 }
 
 object Measurements{

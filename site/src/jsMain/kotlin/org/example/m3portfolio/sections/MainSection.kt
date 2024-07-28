@@ -53,6 +53,7 @@ import org.example.m3portfolio.styles.GithubBtnStyle
 import org.example.m3portfolio.util.noBorder
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.px
+import org.jetbrains.compose.web.css.vh
 import org.jetbrains.compose.web.dom.Div
 
 @Composable
@@ -68,6 +69,7 @@ fun MainSection(
     Box(
         modifier = Modifier
             .fillMaxWidth()
+            .id(Constants.MAIN_SECTION)
 //            .height(100.vh)
             .padding(top = if (breakpoint <= Breakpoint.MD) 0.px else Measurements.HEADER_HEIGHT.px)
 //            .backgroundColor(Theme.PrimaryLight.rgb),

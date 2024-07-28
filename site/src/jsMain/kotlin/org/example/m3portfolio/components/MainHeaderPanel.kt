@@ -10,6 +10,7 @@ import androidx.compose.runtime.setValue
 import com.varabyte.kobweb.compose.css.Cursor
 import com.varabyte.kobweb.compose.css.FontWeight
 import com.varabyte.kobweb.compose.css.Overflow
+import com.varabyte.kobweb.compose.css.ScrollBehavior
 import com.varabyte.kobweb.compose.css.Transition
 import com.varabyte.kobweb.compose.foundation.layout.Arrangement
 import com.varabyte.kobweb.compose.foundation.layout.Box
@@ -28,12 +29,14 @@ import com.varabyte.kobweb.compose.ui.modifiers.fontFamily
 import com.varabyte.kobweb.compose.ui.modifiers.fontSize
 import com.varabyte.kobweb.compose.ui.modifiers.fontWeight
 import com.varabyte.kobweb.compose.ui.modifiers.height
+import com.varabyte.kobweb.compose.ui.modifiers.id
 import com.varabyte.kobweb.compose.ui.modifiers.margin
 import com.varabyte.kobweb.compose.ui.modifiers.maxWidth
 import com.varabyte.kobweb.compose.ui.modifiers.onClick
 import com.varabyte.kobweb.compose.ui.modifiers.overflow
 import com.varabyte.kobweb.compose.ui.modifiers.padding
 import com.varabyte.kobweb.compose.ui.modifiers.position
+import com.varabyte.kobweb.compose.ui.modifiers.scrollBehavior
 import com.varabyte.kobweb.compose.ui.modifiers.textShadow
 import com.varabyte.kobweb.compose.ui.modifiers.transition
 import com.varabyte.kobweb.compose.ui.modifiers.translateY
@@ -49,6 +52,7 @@ import com.varabyte.kobweb.silk.style.breakpoint.Breakpoint
 import com.varabyte.kobweb.silk.style.toModifier
 import com.varabyte.kobweb.silk.theme.breakpoint.rememberBreakpoint
 import com.varabyte.kobweb.silk.theme.colors.ColorMode
+import kotlinx.browser.document
 import kotlinx.browser.localStorage
 import kotlinx.coroutines.launch
 import org.example.m3portfolio.Constants
@@ -75,13 +79,15 @@ fun MainHeaderPanel(
 
     Box(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+        ,
         contentAlignment = Alignment.Center
     ){
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .scrollBehavior(ScrollBehavior.Smooth)
                 .maxWidth(Measurements.PAGE_WIDTH.px)
         ) {
             HeaderPanel(
@@ -111,6 +117,7 @@ fun MainHeaderPanel(
 
 
         }
+
     }
 }
 
@@ -255,7 +262,7 @@ fun HeaderNavigationItems(breakpoint: Breakpoint) {
             selected = context.route.path == "",
             title = "Home",
             onClick = {
-                context.router.navigateTo("")
+                document.getElementById(Constants.MAIN_SECTION)?.scrollIntoView()
             },
             breakpoint = breakpoint
         )
@@ -264,7 +271,8 @@ fun HeaderNavigationItems(breakpoint: Breakpoint) {
             selected = context.route.path == "",
             title = "Projects",
             onClick = {
-                context.router.navigateTo("")
+//                context.router.navigateTo("")
+                document.getElementById(Constants.PROJECTS_SECTION)?.scrollIntoView()
             },
             breakpoint = breakpoint
         )
@@ -273,7 +281,7 @@ fun HeaderNavigationItems(breakpoint: Breakpoint) {
             selected = context.route.path == "",
             title = "Certificates",
             onClick = {
-                context.router.navigateTo("")
+                document.getElementById(Constants.CERTIFICATES_SECTION)?.scrollIntoView()
             },
             breakpoint = breakpoint
         )
@@ -282,7 +290,7 @@ fun HeaderNavigationItems(breakpoint: Breakpoint) {
             selected = context.route.path == "",
             title = "About Me",
             onClick = {
-                context.router.navigateTo("")
+                document.getElementById(Constants.ABOUT_ME_SECTION)?.scrollIntoView()
             },
             breakpoint = breakpoint
         )
