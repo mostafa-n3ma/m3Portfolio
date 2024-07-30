@@ -18,6 +18,9 @@ data class Info(
     val bio: String="",
     val education: String="",
     val skills: String="",
+    val programLanguages: String="",
+    val tools: String="",
+    val frameWorks: String="",
     val resumeLink: String="",
     val extra: String=""
 )

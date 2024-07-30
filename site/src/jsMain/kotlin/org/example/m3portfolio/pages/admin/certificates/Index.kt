@@ -42,6 +42,7 @@ import com.varabyte.kobweb.silk.components.layout.SimpleGrid
 import com.varabyte.kobweb.silk.components.layout.numColumns
 import com.varabyte.kobweb.silk.components.text.SpanText
 import com.varabyte.kobweb.silk.style.breakpoint.Breakpoint
+import com.varabyte.kobweb.silk.style.toModifier
 import com.varabyte.kobweb.silk.theme.breakpoint.rememberBreakpoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -56,6 +57,7 @@ import org.example.m3portfolio.models.ApiCertificateResponse
 import org.example.m3portfolio.models.Certificate
 import org.example.m3portfolio.models.Theme
 import org.example.m3portfolio.navigation.Screen
+import org.example.m3portfolio.styles.ItemStyle
 import org.example.m3portfolio.util.ControllersHeader
 import org.example.m3portfolio.util.isUserLoggedIn
 import org.example.m3portfolio.util.requestCertificatesData
@@ -200,7 +202,7 @@ fun CertificatesScreenContent(
         ) {
             certificatesList.forEach { certificateItem ->
                 Box(
-                    modifier = Modifier
+                    modifier = ItemStyle.toModifier()
                         .height(400.px)
                         .width(500.px)
                         .margin(all = 10.px)

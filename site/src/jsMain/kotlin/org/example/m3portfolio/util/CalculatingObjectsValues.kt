@@ -21,6 +21,9 @@ fun calculateInfoPageValues(): Info {
         bio =getElementValue(Ids.info_Bio_editor,InputType.TextArea),//
         education =getElementValue(Ids.info_EducationField,InputType.InputField),
         skills =getElementValue(Ids.info_SkillsField,InputType.InputField),
+        programLanguages =getElementValue(Ids.info_programmingLAnguagesField,InputType.InputField),
+        tools =getElementValue(Ids.info_toolsField,InputType.InputField),
+        frameWorks =getElementValue(Ids.info_framworksField,InputType.InputField),
         resumeLink =getElementValue(Ids.info_ResumeLinkField,InputType.InputField),
         extra =getElementValue(Ids.info_ExtraField,InputType.InputField),
     )
@@ -40,6 +43,7 @@ fun calculateExperiencePageValues():Experience{
 fun calculatingProjectPageValues():Project{
     return Project(
         title = getElementValue(Ids.project_title_field,InputType.InputField),
+        subTitle = getElementValue(Ids.project_sub_title_field,InputType.InputField),
         description = getElementValue(Ids.project_description_editor,InputType.TextArea),
         techStack = getElementValue(Ids.project_techStack_field,InputType.InputField),
         repoLink = getElementValue(Ids.project_repoLink_field,InputType.InputField),

@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 data class Project(
     val _id:String="",
     val title: String="",
+    val subTitle:String = "",
     val description: String="",
     val techStack: String="",
     val repoLink: String="",

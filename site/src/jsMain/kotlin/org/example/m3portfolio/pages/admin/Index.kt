@@ -34,6 +34,7 @@ import com.varabyte.kobweb.silk.theme.breakpoint.rememberBreakpoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.example.m3portfolio.Constants.FONT_FAMILY
+import org.example.m3portfolio.Ids
 import org.example.m3portfolio.Ids.info_AddressField
 import org.example.m3portfolio.Ids.info_Bio_editor
 import org.example.m3portfolio.Ids.info_Bio_preview
@@ -54,6 +55,7 @@ import org.example.m3portfolio.components.EditorControllersPanel
 import org.example.m3portfolio.components.FinalButton
 import org.example.m3portfolio.components.MessagePopup
 import org.example.m3portfolio.components.EditorComponent
+import org.example.m3portfolio.components.FieldComponent
 import org.example.m3portfolio.models.ApiInfoResponse
 import org.example.m3portfolio.models.ControlStyle
 import org.example.m3portfolio.models.EditorControlIcons
@@ -100,6 +102,9 @@ data class InfoScreenUiState(
     var bio: String = "",
     var education: String = "",
     var skills: String = "",
+    val programLanguages: String="",
+    val tools: String="",
+    val frameWorks: String="",
     var resumeLink: String = "",
     var extra: String = "",
     var editorVisibility: Boolean = true,
@@ -141,11 +146,15 @@ fun InfoScreenContent() {
                             bio = apiResponse.data.bio,
                             education = apiResponse.data.education,
                             skills = apiResponse.data.skills,
+                            programLanguages = apiResponse.data.programLanguages,
+                            tools = apiResponse.data.tools,
+                            frameWorks = apiResponse.data.frameWorks,
                             resumeLink = apiResponse.data.resumeLink,
                             extra = apiResponse.data.extra
                         )
                         getEditor(id = info_Bio_editor).value = uiState.bio
                         applyToPreview(preview_id = info_Bio_preview, editor_id = info_Bio_editor)
+                        println(uiState)
                     }
                 }
             },
@@ -521,6 +530,41 @@ fun InfoScreenContent() {
                 )
 
             }
+
+            Column(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                FieldComponent(
+                    tag = "Programming Languages:(split by ' , ')",
+                    inputField_id = Ids.info_programmingLAnguagesField,
+                    placeHolder = "add programming languages here",
+                    value = uiState.programLanguages,
+                )
+            }
+
+            Column(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                FieldComponent(
+                    tag = "Tools :(split by ' , ')",
+                    inputField_id = Ids.info_toolsField,
+                    placeHolder = "add Tools here",
+                    value = uiState.tools
+                )
+
+            }
+
+            Column(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                FieldComponent(
+                    tag = "FrameWorks :(split by ' , ')",
+                    inputField_id = Ids.info_framworksField,
+                    placeHolder = "add Tools here",
+                    value = uiState.frameWorks
+                )
+            }
+
 
 
             //resumeLink

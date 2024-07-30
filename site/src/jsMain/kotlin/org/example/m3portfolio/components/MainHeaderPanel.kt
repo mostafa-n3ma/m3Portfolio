@@ -88,7 +88,6 @@ fun MainHeaderPanel(
             modifier = Modifier
                 .fillMaxSize()
                 .scrollBehavior(ScrollBehavior.Smooth)
-                .maxWidth(Measurements.PAGE_WIDTH.px)
         ) {
             HeaderPanel(
                 breakpoint = breakpoint,

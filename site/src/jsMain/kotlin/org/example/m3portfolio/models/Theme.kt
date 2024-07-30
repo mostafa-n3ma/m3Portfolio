@@ -19,6 +19,7 @@ enum class Theme(
 
     PrimaryDark(hex = "#101B3C", rgb = rgb(r = 16, g = 27, b = 60)),
     Them_bk_dark(hex = "#44436A", rgb = rgb(r = 68, g = 67, b = 106)),
+    Them_bk_dark_2(hex = "#696988", rgb = rgb(r = 105, g = 105, b = 136)),
     Item_bk_dark(hex = "#F7F5F5", rgb = rgb(r = 247, g = 245, b = 245)),
 
 

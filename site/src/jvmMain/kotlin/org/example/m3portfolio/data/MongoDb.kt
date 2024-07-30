@@ -87,6 +87,9 @@ class MongoDB(private val context: InitApiContext) : MongoRepository {
                     Updates.set(Info::bio.name, info.bio),
                     Updates.set(Info::education.name, info.education),
                     Updates.set(Info::skills.name, info.skills),
+                    Updates.set(Info::programLanguages.name, info.programLanguages),
+                    Updates.set(Info::tools.name, info.tools),
+                    Updates.set(Info::frameWorks.name, info.frameWorks),
                     Updates.set(Info::resumeLink.name, info.resumeLink),
                     Updates.set(Info::extra.name, info.extra)
                 )
@@ -156,6 +159,7 @@ class MongoDB(private val context: InitApiContext) : MongoRepository {
                 Filters.eq(Project::_id.name,project._id),
                 mutableListOf(
                     Updates.set(Project:: title.name,project.title),
+                    Updates.set(Project:: subTitle.name,project.subTitle),
                     Updates.set(Project:: description.name,project.description),
                     Updates.set(Project:: techStack.name,project.techStack),
                     Updates.set(Project:: repoLink.name,project.repoLink),

@@ -270,7 +270,7 @@ fun ProjectsContent(
                         )
 
                         SpanText(
-                            text = projectItem.description.take(200)
+                            text = projectItem.subTitle.take(200)
                         )
                     }
 

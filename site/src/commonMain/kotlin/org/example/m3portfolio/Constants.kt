@@ -111,6 +111,19 @@ object Res{
         const val Github = "/Github.png"
 
 
+        const val c_plus = "/c_plus.png"
+        const val figma = "/figma.png"
+
+        const val intellij = "/intellij.png"
+        const val mongo_compass = "/mongo_compass.png"
+
+        const val postmen = "/postmen.png"
+        const val python = "/python.png"
+
+        const val sql = "/sql.png"
+        const val vs_code = "/vs_code.png"
+
+
 
 
 
@@ -159,6 +172,9 @@ object Ids{
     const val info_Bio_preview = "info_BioFieldDiv"
     const val info_EducationField = "info_EducationField"
     const val info_SkillsField = "info_SkillsField"
+    const val info_programmingLAnguagesField = "info_programmingLAnguagesField"
+    const val info_toolsField = "info_toolsField"
+    const val info_framworksField = "info_framworksField"
     const val info_ResumeLinkField = "info_ResumeLinkField"
     const val info_ExtraField = "info_ExtraField"
 
@@ -175,6 +191,7 @@ object Ids{
 
 //Admin Project Screen
     const val project_title_field = "project_title_field"
+    const val project_sub_title_field = "project_sub_title_field"
     const val project_description_editor = "project_description_editor"
     const val project_description_preview = "project_description_preview"
     const val project_techStack_field = "project_techStack_field"

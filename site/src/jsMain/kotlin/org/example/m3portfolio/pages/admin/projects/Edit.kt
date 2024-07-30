@@ -73,6 +73,7 @@ import org.jetbrains.compose.web.css.px
 data class ProjectUiState(
     val _id: String = "",
     val title: String = "",
+    val subTitle:String = "",
     val description: String = "",
     val techStack: String = "",
     val repoLink: String = "",
@@ -133,6 +134,7 @@ fun ProjectEditScreen(hasIdPAram: Boolean) {
                     uiState = uiState.copy(
                         _id = result.data.first()._id,
                         title = result.data.first().title,
+                        subTitle = result.data.first().subTitle,
                         description = result.data.first().description,
                         techStack = result.data.first().techStack,
                         repoLink = result.data.first().repoLink,
@@ -182,6 +184,13 @@ fun ProjectEditScreen(hasIdPAram: Boolean) {
                 inputField_id = Ids.project_title_field,
                 placeHolder = "add title here",
                 value = uiState.title
+            )
+
+            FieldComponent(
+                tag = "SubTitle",
+                inputField_id = Ids.project_sub_title_field,
+                placeHolder = "add subTitle here",
+                value = uiState.subTitle
             )
 
             EditorControllersPanel(
