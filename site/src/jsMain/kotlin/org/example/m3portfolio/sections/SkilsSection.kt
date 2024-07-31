@@ -24,6 +24,7 @@ import com.varabyte.kobweb.compose.ui.modifiers.fillMaxWidth
 import com.varabyte.kobweb.compose.ui.modifiers.fontFamily
 import com.varabyte.kobweb.compose.ui.modifiers.fontSize
 import com.varabyte.kobweb.compose.ui.modifiers.fontWeight
+import com.varabyte.kobweb.compose.ui.modifiers.id
 import com.varabyte.kobweb.compose.ui.modifiers.margin
 import com.varabyte.kobweb.compose.ui.modifiers.maxWidth
 import com.varabyte.kobweb.compose.ui.modifiers.opacity
@@ -82,7 +83,11 @@ fun SkillsSection(
 
 
     Box(
-        modifier = Modifier.fillMaxWidth().maxWidth(100.vw).backgroundColor(
+        modifier = Modifier
+            .id(Constants.SKILLS_SECTION)
+            .fillMaxWidth()
+            .maxWidth(100.vw)
+            .backgroundColor(
             if (colorMode.isLight) Theme.Them_bk_light.rgb
             else Theme.Them_bk_dark.rgb
         )

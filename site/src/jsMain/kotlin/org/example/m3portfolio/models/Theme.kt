@@ -13,7 +13,6 @@ enum class Theme(
     PrimaryLight(hex = "#3B4E9E", rgb = rgb(r = 59, g = 78, b = 158)),
     Them_bk_light(hex = "#F7F5F5", rgb = rgb(r = 247, g = 245, b = 245)),
     Item_bk_light(hex = "#FFFFFF", rgb = rgb(r = 255, g = 255, b = 255)),
-    gradient_light_from(hex ="00D4FF" ,rgb = rgb(r = 0, g = 212, b = 255)),
     gradient_light_to(hex ="090979" ,rgb = rgb(r = 9, g = 9, b = 121)),
 
 
@@ -24,6 +23,7 @@ enum class Theme(
 
 
     HalfBlack(hex = "#000000", rgba(r = 0, g = 0, b = 0, a = 0.5)),
+    HalfWhite(hex = "#000000", rgba(r = 255, g = 255, b = 255, a = 0.7)),
 
 
 }

@@ -27,7 +27,8 @@ object Constants{
     const val MAIN_SECTION = "MAIN_section"
     const val PROJECTS_SECTION = "projects_section"
     const val CERTIFICATES_SECTION = "CERTIFICATES_section"
-    const val ABOUT_ME_SECTION = "about_me_section"
+    const val SKILLS_SECTION = "SKILLS_SECTION"
+    const val EXPERIENCE_SECTION = "EXPERIENCE_SECTION"
 
 }
 

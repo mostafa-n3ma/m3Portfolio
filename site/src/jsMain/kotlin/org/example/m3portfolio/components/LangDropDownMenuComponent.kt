@@ -92,18 +92,17 @@ fun LangDropDown() {
         Ul(
             attrs = Modifier
                 .classNames("dropdown-menu")
-                .width(50.px)
+                .fillMaxWidth()
                 .toAttrs()
         ) {
             Constants.Languages.values().forEach { LangItem ->
                 Li(
-                    attrs = Modifier.width(50.px).toAttrs()
+                    attrs = Modifier.fillMaxWidth().toAttrs()
                 ) {
                     A(
                         attrs = Modifier
                             .classNames("dropdown-item")
                             .color(Colors.Black)
-                            .width(50.px)
                             .fontFamily(FONT_FAMILY)
                             .fontSize(16.px)
                             .onClick {

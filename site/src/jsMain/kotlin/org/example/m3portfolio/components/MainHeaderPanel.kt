@@ -29,9 +29,7 @@ import com.varabyte.kobweb.compose.ui.modifiers.fontFamily
 import com.varabyte.kobweb.compose.ui.modifiers.fontSize
 import com.varabyte.kobweb.compose.ui.modifiers.fontWeight
 import com.varabyte.kobweb.compose.ui.modifiers.height
-import com.varabyte.kobweb.compose.ui.modifiers.id
 import com.varabyte.kobweb.compose.ui.modifiers.margin
-import com.varabyte.kobweb.compose.ui.modifiers.maxWidth
 import com.varabyte.kobweb.compose.ui.modifiers.onClick
 import com.varabyte.kobweb.compose.ui.modifiers.overflow
 import com.varabyte.kobweb.compose.ui.modifiers.padding
@@ -87,6 +85,7 @@ fun MainHeaderPanel(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+//                .zIndex(2)
                 .scrollBehavior(ScrollBehavior.Smooth)
         ) {
             HeaderPanel(
@@ -97,14 +96,20 @@ fun MainHeaderPanel(
                 overFlowMenuOpened = overFlowMenuOpened
             )
 
+            var close by remember{ mutableStateOf(true) }
             if (overFlowMenuOpened){
                 overFlowHeaderPanel(
                     onMenuClose = {
                         overFlowMenuOpened = !overFlowMenuOpened
                     },
                     content = {
+
                         // Header NavigationItems
-                        HeaderNavigationItems(breakpoint)
+                        HeaderNavigationItems(
+                            breakpoint,
+                            onItemClicked = {
+                                overFlowMenuOpened =false
+                        })
                         LangDropDown()
                     },
                     breakpoint = breakpoint
@@ -229,7 +234,7 @@ fun HeaderPanelInternal(breakpoint: Breakpoint) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(10.px)
             ){
-                HeaderNavigationItems(breakpoint = breakpoint)
+                HeaderNavigationItems(breakpoint = breakpoint) {}
 
             }
 
@@ -253,7 +258,7 @@ fun HeaderPanelInternal(breakpoint: Breakpoint) {
 }
 
 @Composable
-fun HeaderNavigationItems(breakpoint: Breakpoint) {
+fun HeaderNavigationItems(breakpoint: Breakpoint, onItemClicked: () -> Unit ) {
     val context = rememberPageContext()
 
         HeaderNavigationItem(
@@ -262,6 +267,7 @@ fun HeaderNavigationItems(breakpoint: Breakpoint) {
             title = "Home",
             onClick = {
                 document.getElementById(Constants.MAIN_SECTION)?.scrollIntoView()
+                onItemClicked()
             },
             breakpoint = breakpoint
         )
@@ -272,6 +278,7 @@ fun HeaderNavigationItems(breakpoint: Breakpoint) {
             onClick = {
 //                context.router.navigateTo("")
                 document.getElementById(Constants.PROJECTS_SECTION)?.scrollIntoView()
+                onItemClicked()
             },
             breakpoint = breakpoint
         )
@@ -281,20 +288,34 @@ fun HeaderNavigationItems(breakpoint: Breakpoint) {
             title = "Certificates",
             onClick = {
                 document.getElementById(Constants.CERTIFICATES_SECTION)?.scrollIntoView()
+                onItemClicked()
             },
             breakpoint = breakpoint
         )
+
+
+    HeaderNavigationItem(
+        modifier = Modifier.margin(right = 10.px),
+        selected = context.route.path == "",
+        title = "Skills",
+        onClick = {
+            document.getElementById(Constants.SKILLS_SECTION)?.scrollIntoView()
+            onItemClicked()
+
+        },
+        breakpoint = breakpoint
+    )
+
         HeaderNavigationItem(
             modifier = Modifier.margin(right = 10.px),
             selected = context.route.path == "",
-            title = "About Me",
+            title = "Experience",
             onClick = {
-                document.getElementById(Constants.ABOUT_ME_SECTION)?.scrollIntoView()
+                document.getElementById(Constants.EXPERIENCE_SECTION)?.scrollIntoView()
+                onItemClicked()
             },
             breakpoint = breakpoint
         )
-
-
 
 }
 
