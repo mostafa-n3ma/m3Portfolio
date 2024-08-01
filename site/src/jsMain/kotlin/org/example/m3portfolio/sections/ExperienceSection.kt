@@ -1,6 +1,7 @@
 package org.example.m3portfolio.sections
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import com.varabyte.kobweb.compose.css.FontWeight
 import com.varabyte.kobweb.compose.foundation.layout.Arrangement
@@ -22,15 +23,15 @@ import com.varabyte.kobweb.compose.ui.modifiers.id
 import com.varabyte.kobweb.compose.ui.modifiers.margin
 import com.varabyte.kobweb.compose.ui.modifiers.maxWidth
 import com.varabyte.kobweb.compose.ui.modifiers.padding
-import com.varabyte.kobweb.compose.ui.modifiers.size
-import com.varabyte.kobweb.compose.ui.modifiers.zIndex
 import com.varabyte.kobweb.silk.components.graphics.Image
 import com.varabyte.kobweb.silk.components.text.SpanText
 import com.varabyte.kobweb.silk.style.breakpoint.Breakpoint
 import com.varabyte.kobweb.silk.theme.colors.ColorMode
+import org.example.m3portfolio.AppStrings
 import org.example.m3portfolio.Constants
+import org.example.m3portfolio.getLangString
 import org.example.m3portfolio.models.Theme
-import org.example.m3portfolio.pages.BigObjectUiState
+import org.example.m3portfolio.util.BigObjectUiState
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.css.vw
@@ -38,7 +39,8 @@ import org.jetbrains.compose.web.css.vw
 @Composable
 fun ExperienceSection(
     breakpoint: Breakpoint,
-    bigObject: BigObjectUiState
+    bigObject: BigObjectUiState,
+    displayLanguage: MutableState<Constants.Languages>
 ) {
     val colorMode by ColorMode.currentState
 
@@ -74,7 +76,7 @@ fun ExperienceSection(
                         if (colorMode.isLight) Theme.PrimaryLight.rgb
                         else Colors.White
                     ),
-                text = "Experience :"
+                text = getLangString(AppStrings.experiences,displayLanguage.value)
             )
         }
 

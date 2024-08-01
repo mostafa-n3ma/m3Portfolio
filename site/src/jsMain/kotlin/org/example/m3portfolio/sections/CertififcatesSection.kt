@@ -1,6 +1,7 @@
 package org.example.m3portfolio.sections
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import com.varabyte.kobweb.compose.css.FontWeight
 import com.varabyte.kobweb.compose.foundation.layout.Arrangement
@@ -34,17 +35,18 @@ import com.varabyte.kobweb.silk.components.text.SpanText
 import com.varabyte.kobweb.silk.style.breakpoint.Breakpoint
 import com.varabyte.kobweb.silk.style.toModifier
 import com.varabyte.kobweb.silk.theme.colors.ColorMode
+import org.example.m3portfolio.AppStrings
 import org.example.m3portfolio.Constants
 import org.example.m3portfolio.Constants.FONT_FAMILY
 import org.example.m3portfolio.Measurements
 import org.example.m3portfolio.Res
+import org.example.m3portfolio.getLangString
 import org.example.m3portfolio.models.Theme
-import org.example.m3portfolio.pages.BigObjectUiState
 import org.example.m3portfolio.styles.ItemStyle
+import org.example.m3portfolio.util.BigObjectUiState
 import org.example.m3portfolio.util.noBorder
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.px
-import org.jetbrains.compose.web.css.vh
 import org.jetbrains.compose.web.css.vw
 
 
@@ -53,6 +55,7 @@ fun CertificatesSection(
     breakpoint: Breakpoint,
     bigObject: BigObjectUiState,
     context: PageContext,
+    displayLanguage: MutableState<Constants.Languages>,
 ) {
     val colorMode by ColorMode.currentState
 
@@ -90,7 +93,7 @@ fun CertificatesSection(
                         if (colorMode.isLight) Theme.PrimaryLight.rgb
                         else Colors.White
                     ),
-                text = "Certificates I hold"
+                text = getLangString(AppStrings.certificates_i_hold,displayLanguage.value)
             )
 
         }

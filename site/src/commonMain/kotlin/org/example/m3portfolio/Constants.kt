@@ -30,6 +30,9 @@ object Constants{
     const val SKILLS_SECTION = "SKILLS_SECTION"
     const val EXPERIENCE_SECTION = "EXPERIENCE_SECTION"
 
+
+    const val LANGUAGES_SPLITTER_CODE = "@AR@"
+
 }
 
 object Measurements{
@@ -41,6 +44,51 @@ object Measurements{
 
 
 
+
+data class Strings(val EN: String, val AR: String)
+
+object AppStrings {
+    //header
+    val MostafaN3ma = Strings("Mostafa N3ma", "مصطفى نعمه")
+    val headerHomeText = Strings("Home", "الرئيسية")
+    val headerProjectsText = Strings("Projects", "المشاريع")
+    val headerCertificatesText = Strings("Certificates", "الشهادات")
+    val headerSkillsText = Strings("Skills", "المهارات")
+    val headerExperienceText = Strings("Expertise", "الخبرات")
+
+
+    //projects section
+    val projects_i_worked_on = Strings("Projects I worked on","مشاريع عملت عليها")
+    val see_more = Strings("See More","اظهار المزيد")
+
+
+    // certificates section
+    val certificates_i_hold = Strings("Certificates I hold","شهادات احملها")
+
+    //skills section
+    val set_of_skills_i_have = Strings("Set Of Skills I Have:","مجموعة مهارات اتقنها")
+    val programming_languages = Strings("Programming Languages :","اللغات البرمجية")
+    val tools = Strings("Tools :","الادوات")
+    val frameworks = Strings("FrameWorks : :","أطر العمل")
+
+
+    // experiences section
+    val experiences =Strings("Experience :","الخبرات")
+
+    //footer
+    val copyRights = Strings("Mostafa N3ma (V 1.0) - Copyright @ 2024 Personal Website","مصطفى نعمة (الإصدار 1.0) - حقوق الطبع والنشر @ 2024 الموقع الشخصي")
+
+
+}
+
+
+fun getLangString(string:Strings,lang:Constants.Languages):String{
+   return when(lang){
+        Constants.Languages.EN -> string.EN
+        Constants.Languages.AR -> string.AR
+       else-> string.EN
+    }
+}
 
 
 

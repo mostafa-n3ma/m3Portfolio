@@ -10,20 +10,21 @@ import com.varabyte.kobweb.compose.ui.graphics.Colors
 import com.varabyte.kobweb.compose.ui.modifiers.backgroundColor
 import com.varabyte.kobweb.compose.ui.modifiers.borderRadius
 import com.varabyte.kobweb.compose.ui.modifiers.color
-import com.varabyte.kobweb.compose.ui.modifiers.fillMaxHeight
 import com.varabyte.kobweb.compose.ui.modifiers.fillMaxWidth
 import com.varabyte.kobweb.compose.ui.modifiers.height
 import com.varabyte.kobweb.compose.ui.modifiers.margin
 import com.varabyte.kobweb.compose.ui.modifiers.maxWidth
 import com.varabyte.kobweb.compose.ui.modifiers.onClick
 import com.varabyte.kobweb.compose.ui.modifiers.size
-import com.varabyte.kobweb.compose.ui.modifiers.width
 import com.varabyte.kobweb.core.PageContext
 import com.varabyte.kobweb.silk.components.graphics.Image
 import com.varabyte.kobweb.silk.components.text.SpanText
 import com.varabyte.kobweb.silk.style.breakpoint.Breakpoint
+import org.example.m3portfolio.AppStrings
+import org.example.m3portfolio.Constants
+import org.example.m3portfolio.getLangString
 import org.example.m3portfolio.models.Theme
-import org.example.m3portfolio.pages.BigObjectUiState
+import org.example.m3portfolio.util.BigObjectUiState
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.px
 
@@ -31,8 +32,9 @@ import org.jetbrains.compose.web.css.px
 @Composable
 fun FooterSection(
     breakpoint: Breakpoint,
-    bigObject: MutableState<BigObjectUiState>,
-    context:PageContext
+    bigObject: BigObjectUiState,
+    context: PageContext,
+    displayLanguage: MutableState<Constants.Languages>
 ) {
    Row(
        modifier = Modifier.fillMaxWidth().height(100.px)
@@ -44,15 +46,15 @@ fun FooterSection(
                .maxWidth(60.percent).margin(left = 20.px, right = 40.px)
                .color(Colors.Black)
            ,
-           text = "Mostafa N3ma (V 1.0) - Copyright @ 2024 Personal Website"
+           text = getLangString(AppStrings.copyRights,displayLanguage.value)
        )
 
        if (breakpoint>=Breakpoint.MD){
            Row(
                horizontalArrangement = Arrangement.spacedBy(10.px)
            ){
-               if (bigObject.value.websitesList.isNotEmpty()){
-                   bigObject.value.websitesList.forEach {websiteItem->
+               if (bigObject.websitesList.isNotEmpty()){
+                   bigObject.websitesList.forEach {websiteItem->
                        Image(
                            src = websiteItem.icon,
                            modifier = Modifier.size(32.px)

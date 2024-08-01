@@ -4,7 +4,11 @@ import androidx.compose.runtime.*
 import com.varabyte.kobweb.core.Page
 import com.varabyte.kobweb.core.rememberPageContext
 import com.varabyte.kobweb.silk.theme.breakpoint.rememberBreakpoint
+import kotlinx.browser.localStorage
+import kotlinx.browser.window
 import kotlinx.coroutines.launch
+import org.example.m3portfolio.Constants
+import org.example.m3portfolio.Constants.LANGUAGE_STORAGE_VALUE
 import org.example.m3portfolio.components.MainHeaderPanel
 import org.example.m3portfolio.components.MessagePopup
 import org.example.m3portfolio.models.ApiCertificateResponse
@@ -12,32 +16,24 @@ import org.example.m3portfolio.models.ApiExperienceResponse
 import org.example.m3portfolio.models.ApiInfoResponse
 import org.example.m3portfolio.models.ApiProjectResponse
 import org.example.m3portfolio.models.ApiWebsiteResponse
-import org.example.m3portfolio.models.Certificate
-import org.example.m3portfolio.models.Experience
-import org.example.m3portfolio.models.Info
-import org.example.m3portfolio.models.Project
-import org.example.m3portfolio.models.Website
 import org.example.m3portfolio.sections.CertificatesSection
 import org.example.m3portfolio.sections.ExperienceSection
 import org.example.m3portfolio.sections.FooterSection
 import org.example.m3portfolio.sections.MainSection
 import org.example.m3portfolio.sections.ProjectsSection
 import org.example.m3portfolio.sections.SkillsSection
+import org.example.m3portfolio.util.BigObjectUiState
 import org.example.m3portfolio.util.requestCertificatesData
 import org.example.m3portfolio.util.requestExperienceData
 import org.example.m3portfolio.util.requestInfoData
 import org.example.m3portfolio.util.requestProjectsData
 import org.example.m3portfolio.util.requestWebsitesData
+import org.example.m3portfolio.util.splitLanguages
+import org.w3c.dom.get
 
 
-data class BigObjectUiState(
-    var infoObject: Info = Info(),
-    var experiencesList: List<Experience> = listOf(),
-    var projectsList: List<Project> = listOf(),
-    var certificatesList: List<Certificate> = listOf(),
-    var websitesList: List<Website> = listOf(),
-    var messagePopup: String = ""
-)
+
+
 
 @Page()
 @Composable
@@ -48,6 +44,13 @@ fun HomePage() {
 //    breakpoint.let {
 //        bigObject.value.messagePopup = it.name
 //    }
+
+    val displayLanguage: MutableState<Constants.Languages> = remember(
+        window.localStorage[LANGUAGE_STORAGE_VALUE]
+    ) { mutableStateOf(Constants.Languages.valueOf(localStorage[LANGUAGE_STORAGE_VALUE] ?: "EN")) }
+
+
+
 
     if (bigObject.value.messagePopup.isNotEmpty()) {
         MessagePopup(
@@ -61,13 +64,46 @@ fun HomePage() {
     fetchApiData(bigObject = bigObject)
     println(bigObject.value.experiencesList)
 
-    MainHeaderPanel {
-        MainSection(breakpoint = breakpoint, bigObject = bigObject.value, context = context)
-        ProjectsSection(breakpoint = breakpoint, bigObject = bigObject.value, context = context)
-        CertificatesSection(breakpoint = breakpoint, bigObject = bigObject.value, context = context)
-        SkillsSection(breakpoint = breakpoint, bigObject = bigObject.value)
-        ExperienceSection(breakpoint = breakpoint, bigObject = bigObject.value)
-        FooterSection(breakpoint = breakpoint, bigObject, context)
+    MainHeaderPanel(
+        displayLanguage = displayLanguage,
+        onLanguageChange = {
+            displayLanguage.value = it
+        }
+    ) {
+        MainSection(
+            breakpoint = breakpoint,
+            bigObject = bigObject.value.splitLanguages(displayLanguage.value),
+            context = context,
+            displayLanguage = displayLanguage
+        )
+        ProjectsSection(
+            breakpoint = breakpoint,
+            bigObject = bigObject.value.splitLanguages(displayLanguage.value),
+            context = context,
+            displayLanguage = displayLanguage
+        )
+        CertificatesSection(
+            breakpoint = breakpoint,
+            bigObject = bigObject.value.splitLanguages(displayLanguage.value),
+            context = context,
+            displayLanguage = displayLanguage
+        )
+        SkillsSection(
+            breakpoint = breakpoint,
+            bigObject = bigObject.value.splitLanguages(displayLanguage.value),
+            displayLanguage = displayLanguage
+        )
+        ExperienceSection(
+            breakpoint = breakpoint,
+            bigObject = bigObject.value.splitLanguages(displayLanguage.value),
+            displayLanguage = displayLanguage
+        )
+        FooterSection(
+            breakpoint = breakpoint,
+            bigObject = bigObject.value.splitLanguages(displayLanguage.value),
+            context,
+            displayLanguage = displayLanguage
+        )
     }
 }
 
@@ -199,9 +235,10 @@ fun fetchApiData(bigObject: MutableState<BigObjectUiState>) {
         requestWebsitesData(
             onSuccess = { response ->
                 when (response) {
-                    is ApiWebsiteResponse.Error ->{
+                    is ApiWebsiteResponse.Error -> {
                         println("requestWebsitesData.Error:${response.message}")
                     }
+
                     ApiWebsiteResponse.Idle -> println("requestWebsitesData.Ideal")
 
                     is ApiWebsiteResponse.Success -> {

@@ -2,6 +2,7 @@ package org.example.m3portfolio.sections
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,7 +28,6 @@ import com.varabyte.kobweb.compose.ui.modifiers.fontWeight
 import com.varabyte.kobweb.compose.ui.modifiers.id
 import com.varabyte.kobweb.compose.ui.modifiers.margin
 import com.varabyte.kobweb.compose.ui.modifiers.maxWidth
-import com.varabyte.kobweb.compose.ui.modifiers.opacity
 import com.varabyte.kobweb.compose.ui.modifiers.padding
 import com.varabyte.kobweb.compose.ui.modifiers.size
 import com.varabyte.kobweb.compose.ui.modifiers.transition
@@ -39,11 +39,13 @@ import com.varabyte.kobweb.silk.components.text.SpanText
 import com.varabyte.kobweb.silk.style.breakpoint.Breakpoint
 import com.varabyte.kobweb.silk.theme.colors.ColorMode
 import kotlinx.coroutines.delay
+import org.example.m3portfolio.AppStrings
 import org.example.m3portfolio.Constants
 import org.example.m3portfolio.Constants.FONT_FAMILY
 import org.example.m3portfolio.Res
+import org.example.m3portfolio.getLangString
 import org.example.m3portfolio.models.Theme
-import org.example.m3portfolio.pages.BigObjectUiState
+import org.example.m3portfolio.util.BigObjectUiState
 import org.jetbrains.compose.web.css.ms
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.css.vh
@@ -66,7 +68,8 @@ data class TranslatePortsState(
 @Composable
 fun SkillsSection(
     breakpoint: Breakpoint,
-    bigObject: BigObjectUiState
+    bigObject: BigObjectUiState,
+    displayLanguage: MutableState<Constants.Languages>
 ) {
     val colorMode by ColorMode.currentState
     var translatePorts by remember { mutableStateOf(TranslatePortsState()) }
@@ -131,7 +134,7 @@ fun SkillsSection(
                             if (colorMode.isLight) Theme.PrimaryLight.rgb
                             else Colors.White
                         ),
-                    text = "Set Of Skills I Have:"
+                    text = getLangString(AppStrings.set_of_skills_i_have,displayLanguage.value)
                 )
             }
 
@@ -164,7 +167,7 @@ fun SkillsSection(
                             if (colorMode.isLight) Theme.PrimaryLight.rgb
                             else Colors.White
                         ),
-                    text = "Programming Languages:"
+                    text = getLangString(AppStrings.programming_languages,displayLanguage.value)
                 )
             }
 
@@ -195,7 +198,7 @@ fun SkillsSection(
                             if (colorMode.isLight) Theme.PrimaryLight.rgb
                             else Colors.White
                         ),
-                    text = "Tools :"
+                    text = getLangString(AppStrings.tools,displayLanguage.value)
                 )
             }
 
@@ -226,7 +229,7 @@ fun SkillsSection(
                             if (colorMode.isLight) Theme.PrimaryLight.rgb
                             else Colors.White
                         ),
-                    text = "FrameWorks :"
+                    text = getLangString(AppStrings.frameworks,displayLanguage.value)
                 )
             }
 

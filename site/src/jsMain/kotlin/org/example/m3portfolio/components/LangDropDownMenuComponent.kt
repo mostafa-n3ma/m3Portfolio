@@ -50,7 +50,9 @@ import org.w3c.dom.set
 
 
 @Composable
-fun LangDropDown() {
+fun LangDropDown(
+    onLanguageChange:(Constants.Languages)->Unit
+) {
     var selectedLanguage: String by remember {
         mutableStateOf(
             localStorage[Constants.LANGUAGE_STORAGE_VALUE] ?: Constants.Languages.EN.name
@@ -107,6 +109,7 @@ fun LangDropDown() {
                             .fontSize(16.px)
                             .onClick {
                                 selectedLanguage = LangItem.name
+                                onLanguageChange(LangItem)
                             }
                             .toAttrs()
                     ) {

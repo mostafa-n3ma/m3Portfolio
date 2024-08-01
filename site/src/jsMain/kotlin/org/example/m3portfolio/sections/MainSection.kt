@@ -2,6 +2,7 @@ package org.example.m3portfolio.sections
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import com.varabyte.kobweb.compose.css.FontWeight
 import com.varabyte.kobweb.compose.css.Overflow
@@ -49,12 +50,11 @@ import org.example.m3portfolio.Ids
 import org.example.m3portfolio.Measurements
 import org.example.m3portfolio.Res
 import org.example.m3portfolio.models.Theme
-import org.example.m3portfolio.pages.BigObjectUiState
 import org.example.m3portfolio.styles.GithubBtnStyle
+import org.example.m3portfolio.util.BigObjectUiState
 import org.example.m3portfolio.util.noBorder
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.px
-import org.jetbrains.compose.web.css.vh
 import org.jetbrains.compose.web.css.vw
 import org.jetbrains.compose.web.dom.Div
 
@@ -63,6 +63,7 @@ fun MainSection(
     breakpoint: Breakpoint,
     bigObject: BigObjectUiState,
     context: PageContext,
+    displayLanguage: MutableState<Constants.Languages>,
 ) {
 
     val colorMode by ColorMode.currentState
@@ -93,7 +94,10 @@ fun MainSection(
             Breakpoint.LG -> {
                 LaunchedEffect(breakpoint){
                     if (breakpoint == Breakpoint.LG){
-                        document.getElementById(Ids.mainSectionBioDiv)?.innerHTML = bigObject.infoObject.bio
+                        when(displayLanguage.value){
+                            Constants.Languages.EN -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML = bigObject.infoObject.bio
+                            Constants.Languages.AR -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML = bigObject.infoObject.bio
+                        }
                     }
                 }
                 Box(
@@ -131,10 +135,17 @@ fun MainSection(
                                 .scrollBehavior(ScrollBehavior.Unset)
                                 .toAttrs{
                                     attr("overflow","scroll")
+                                    if (displayLanguage.value == Constants.Languages.AR){
+                                        attr("lang","ar")
+                                        attr("dir","rtl")
+                                    }
                                 }
                         ).let {
-                            document.getElementById(Ids.mainSectionBioDiv)?.innerHTML = bigObject.infoObject.bio
-//
+
+                            when(displayLanguage.value){
+                                Constants.Languages.EN -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML = bigObject.infoObject.bio
+                                Constants.Languages.AR -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML = bigObject.infoObject.bio
+                            }
                         }
                     }
 
@@ -208,7 +219,10 @@ fun MainSection(
             Breakpoint.XL -> {
                 LaunchedEffect(breakpoint){
                     if (breakpoint == Breakpoint.XL){
-                        document.getElementById(Ids.mainSectionBioDiv)?.innerHTML = bigObject.infoObject.bio
+                        when(displayLanguage.value){
+                            Constants.Languages.EN -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML = bigObject.infoObject.bio
+                            Constants.Languages.AR -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML = bigObject.infoObject.bio
+                        }
                     }
                 }
                 Box(
@@ -246,10 +260,16 @@ fun MainSection(
                                 .scrollBehavior(ScrollBehavior.Smooth)
                                 .toAttrs{
                                     attr("overflow","scroll")
+                                    if (displayLanguage.value == Constants.Languages.AR){
+                                        attr("lang","ar")
+                                        attr("dir","rtl")
+                                    }
                                 }
                         ).let {
-                            document.getElementById(Ids.mainSectionBioDiv)?.innerHTML = bigObject.infoObject.bio
-//
+                            when(displayLanguage.value){
+                                Constants.Languages.EN -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML = bigObject.infoObject.bio
+                                Constants.Languages.AR -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML = bigObject.infoObject.bio
+                            }
                         }
                     }
 
@@ -322,8 +342,10 @@ fun MainSection(
             else -> {
                 LaunchedEffect(breakpoint){
                     if (breakpoint <= Breakpoint.MD){
-                        document.getElementById(Ids.mainSectionBioDiv)?.innerHTML = bigObject.infoObject.bio
-                    }
+                        when(displayLanguage.value){
+                            Constants.Languages.EN -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML = bigObject.infoObject.bio
+                            Constants.Languages.AR -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML = bigObject.infoObject.bio
+                        }                    }
                 }
                 Column (
                     modifier = Modifier
@@ -353,9 +375,17 @@ fun MainSection(
                                 .fontWeight(FontWeight.Normal)
                                 .resize(Resize.None)
                                 .color(Colors.White)
-                                .toAttrs()
+                                .toAttrs{
+                                    if (displayLanguage.value == Constants.Languages.AR){
+                                        attr("lang","ar")
+                                        attr("dir","rtl")
+                                    }
+                                }
                         ).let {
-                            document.getElementById(Ids.mainSectionBioDiv)?.innerHTML = bigObject.infoObject.bio
+                            when(displayLanguage.value){
+                                Constants.Languages.EN -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML = bigObject.infoObject.bio
+                                Constants.Languages.AR -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML = bigObject.infoObject.bio
+                            }
                         }
                     }
 

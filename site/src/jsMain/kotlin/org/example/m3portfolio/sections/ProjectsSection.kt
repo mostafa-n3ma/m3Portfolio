@@ -1,24 +1,20 @@
 package org.example.m3portfolio.sections
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.varabyte.kobweb.compose.css.Cursor
 import com.varabyte.kobweb.compose.css.FontWeight
-import com.varabyte.kobweb.compose.css.functions.LinearGradient
-import com.varabyte.kobweb.compose.css.functions.linearGradient
 import com.varabyte.kobweb.compose.foundation.layout.Arrangement
-import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.foundation.layout.Row
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.graphics.Colors
 import com.varabyte.kobweb.compose.ui.modifiers.backgroundColor
-import com.varabyte.kobweb.compose.ui.modifiers.backgroundImage
 import com.varabyte.kobweb.compose.ui.modifiers.borderRadius
 import com.varabyte.kobweb.compose.ui.modifiers.color
 import com.varabyte.kobweb.compose.ui.modifiers.cursor
@@ -43,16 +39,17 @@ import com.varabyte.kobweb.silk.components.text.SpanText
 import com.varabyte.kobweb.silk.style.breakpoint.Breakpoint
 import com.varabyte.kobweb.silk.style.toModifier
 import com.varabyte.kobweb.silk.theme.colors.ColorMode
+import org.example.m3portfolio.AppStrings
 import org.example.m3portfolio.Constants
 import org.example.m3portfolio.Constants.FONT_FAMILY
 import org.example.m3portfolio.Measurements
+import org.example.m3portfolio.getLangString
 import org.example.m3portfolio.models.Project
 import org.example.m3portfolio.models.Theme
-import org.example.m3portfolio.pages.BigObjectUiState
 import org.example.m3portfolio.styles.ItemStyle
+import org.example.m3portfolio.util.BigObjectUiState
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.px
-import org.jetbrains.compose.web.css.vh
 import org.jetbrains.compose.web.css.vw
 
 
@@ -61,6 +58,7 @@ fun ProjectsSection(
     breakpoint: Breakpoint,
     bigObject: BigObjectUiState,
     context: PageContext,
+    displayLanguage: MutableState<Constants.Languages>,
 ) {
     val colorMode by ColorMode.currentState
     var currentList by remember {
@@ -111,7 +109,7 @@ fun ProjectsSection(
                         if (colorMode.isLight) Theme.PrimaryLight.rgb
                         else Colors.White
                     ),
-                text = "Projects I worked on"
+                text = getLangString(AppStrings.projects_i_worked_on,displayLanguage.value)
             )
 
             SpanText(
@@ -134,7 +132,7 @@ fun ProjectsSection(
                     .onClick {
                         currentList = bigObject.projectsList
                     },
-                text = "See More"
+                text = getLangString(AppStrings.see_more,displayLanguage.value)
             )
         }
         SimpleGrid(
