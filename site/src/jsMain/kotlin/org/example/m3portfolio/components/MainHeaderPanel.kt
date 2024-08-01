@@ -281,6 +281,7 @@ fun HeaderPanelInternal(
                 }
             )
 
+
             ColorMoodButton(
                 colorMode = colorMode,
                 onClick = {
@@ -289,6 +290,7 @@ fun HeaderPanelInternal(
                 },
 
                 )
+
 
         }
 

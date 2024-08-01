@@ -40,6 +40,7 @@ import org.example.m3portfolio.Constants
 import org.example.m3portfolio.Constants.FONT_FAMILY
 import org.example.m3portfolio.Measurements
 import org.example.m3portfolio.Res
+import org.example.m3portfolio.components.LoadingIndicator
 import org.example.m3portfolio.getLangString
 import org.example.m3portfolio.models.Theme
 import org.example.m3portfolio.styles.ItemStyle
@@ -60,135 +61,140 @@ fun CertificatesSection(
     val colorMode by ColorMode.currentState
 
 
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .maxWidth(100.vw)
-            .id(Constants.CERTIFICATES_SECTION)
-            .padding(top = if (breakpoint <= Breakpoint.MD) 0.px else Measurements.HEADER_HEIGHT.px)
-            .backgroundColor(
-                if (colorMode.isLight) Colors.White
-                else Theme.Them_bk_dark_2.rgb
-            )
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(leftRight = 40.px).margin(bottom = 20.px),
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically
+    if (bigObject.certificatesList.isEmpty()){
+        LoadingIndicator()
+    }else{
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .maxWidth(100.vw)
+                .id(Constants.CERTIFICATES_SECTION)
+                .padding(top = if (breakpoint <= Breakpoint.MD) 0.px else Measurements.HEADER_HEIGHT.px)
+                .backgroundColor(
+                    if (colorMode.isLight) Colors.White
+                    else Theme.Them_bk_dark_2.rgb
+                )
         ) {
-            SpanText(
-                modifier = Modifier
-                    .fontSize(
-                        when (breakpoint) {
-                            Breakpoint.XL -> 28.px
-                            Breakpoint.LG -> 22.px
-                            Breakpoint.MD -> 18.px
-                            else -> 16.px
-                        }
-                    )
-                    .fontFamily(Constants.FONT_FAMILY)
-                    .fontWeight(FontWeight.Bold)
-                    .color(
-                        if (colorMode.isLight) Theme.PrimaryLight.rgb
-                        else Colors.White
-                    ),
-                text = getLangString(AppStrings.certificates_i_hold,displayLanguage.value)
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(leftRight = 40.px).margin(bottom = 20.px),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                SpanText(
+                    modifier = Modifier
+                        .fontSize(
+                            when (breakpoint) {
+                                Breakpoint.XL -> 28.px
+                                Breakpoint.LG -> 22.px
+                                Breakpoint.MD -> 18.px
+                                else -> 16.px
+                            }
+                        )
+                        .fontFamily(Constants.FONT_FAMILY)
+                        .fontWeight(FontWeight.Bold)
+                        .color(
+                            if (colorMode.isLight) Theme.PrimaryLight.rgb
+                            else Colors.White
+                        ),
+                    text = getLangString(AppStrings.certificates_i_hold,displayLanguage.value)
+                )
 
-        }
+            }
 
-        SimpleGrid(
-            modifier = Modifier.fillMaxWidth().margin(left = 20.px),
-            numColumns = numColumns(base = 1, xl = 2
-            )){
-            bigObject.certificatesList.forEach {certificateItem->
-                Box(
-                    modifier = ItemStyle.toModifier()
-                        .width(90.percent)
-                        .height(500.px)
-                        .padding(all = 20.px)
-                        .margin(20.px)
-                        .noBorder()
-                        .align(Alignment.CenterHorizontally)
-                        .borderRadius(topRight = 100.px, bottomLeft = 100.px)
-                        .backgroundColor(Theme.Them_bk_light.rgb)
-                        .onClick {
-                            context.router.navigateTo(certificateItem.link)
-                        }
-                ){
-                    Column (
-                        modifier = Modifier.align(Alignment.TopStart),
-                        verticalArrangement = Arrangement.spacedBy(10.px)
+            SimpleGrid(
+                modifier = Modifier.fillMaxWidth().margin(left = 20.px),
+                numColumns = numColumns(base = 1, xl = 2
+                )){
+                bigObject.certificatesList.forEach {certificateItem->
+                    Box(
+                        modifier = ItemStyle.toModifier()
+                            .width(90.percent)
+                            .height(500.px)
+                            .padding(all = 20.px)
+                            .margin(20.px)
+                            .noBorder()
+                            .align(Alignment.CenterHorizontally)
+                            .borderRadius(topRight = 100.px, bottomLeft = 100.px)
+                            .backgroundColor(Theme.Them_bk_light.rgb)
+                            .onClick {
+                                context.router.navigateTo(certificateItem.link)
+                            }
                     ){
+                        Column (
+                            modifier = Modifier.align(Alignment.TopStart),
+                            verticalArrangement = Arrangement.spacedBy(10.px)
+                        ){
+                            SpanText(
+                                modifier = Modifier
+                                    .fontFamily(FONT_FAMILY)
+                                    .fontSize(24.px)
+                                    .maxWidth(550.px)
+                                    .maxHeight(100.px)
+                                    .fontWeight(FontWeight.Bold)
+                                    .color(Theme.PrimaryLight.rgb)
+                                ,
+                                text = certificateItem.title
+                            )
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(10.px)
+                            ) {
+                                SpanText(
+                                    modifier = Modifier
+                                        .fontFamily(FONT_FAMILY)
+                                        .fontSize(16.px)
+                                        .fontWeight(FontWeight.Normal)
+                                        .color(Colors.Black)
+
+                                    ,
+                                    text = certificateItem.from
+                                )
+                                SpanText(
+                                    modifier = Modifier
+                                        .fontFamily(FONT_FAMILY)
+                                        .fontSize(16.px)
+                                        .fontWeight(FontWeight.Normal)
+                                        .color(Theme.HalfBlack.rgb)
+                                    ,
+                                    text = certificateItem.date
+                                )
+                            }
+
+                        }
+
+                        Image(
+                            modifier = Modifier.size(50.percent).align(Alignment.CenterStart).margin(left = 30.px),
+                            src = certificateItem.thumbnailLink
+                        )
+
                         SpanText(
                             modifier = Modifier
                                 .fontFamily(FONT_FAMILY)
-                                .fontSize(24.px)
-                                .maxWidth(550.px)
-                                .maxHeight(100.px)
-                                .fontWeight(FontWeight.Bold)
-                                .color(Theme.PrimaryLight.rgb)
+                                .fontSize(14.px)
+                                .fontWeight(FontWeight.Normal)
+                                .color(Theme.HalfBlack.rgb)
+                                .align(Alignment.BottomStart)
+                                .margin(left = 30.px, bottom = 50.px)
                             ,
-                            text = certificateItem.title
+                            text = "Go To Original Link >>>>"
                         )
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(10.px)
-                        ) {
-                            SpanText(
-                                modifier = Modifier
-                                    .fontFamily(FONT_FAMILY)
-                                    .fontSize(16.px)
-                                    .fontWeight(FontWeight.Normal)
-                                    .color(Colors.Black)
 
-                                ,
-                                text = certificateItem.from
-                            )
-                            SpanText(
-                                modifier = Modifier
-                                    .fontFamily(FONT_FAMILY)
-                                    .fontSize(16.px)
-                                    .fontWeight(FontWeight.Normal)
-                                    .color(Theme.HalfBlack.rgb)
-                                ,
-                                text = certificateItem.date
-                            )
-                        }
+                        Image(
+                            modifier = Modifier.size(300.px).align(Alignment.BottomEnd),
+                            src = Res.Image.certificateIcon
+                        )
+
+
 
                     }
-
-                    Image(
-                        modifier = Modifier.size(50.percent).align(Alignment.CenterStart).margin(left = 30.px),
-                        src = certificateItem.thumbnailLink
-                    )
-
-                    SpanText(
-                        modifier = Modifier
-                            .fontFamily(FONT_FAMILY)
-                            .fontSize(14.px)
-                            .fontWeight(FontWeight.Normal)
-                            .color(Theme.HalfBlack.rgb)
-                            .align(Alignment.BottomStart)
-                            .margin(left = 30.px, bottom = 50.px)
-                        ,
-                        text = "Go To Original Link >>>>"
-                    )
-
-                    Image(
-                        modifier = Modifier.size(300.px).align(Alignment.BottomEnd),
-                        src = Res.Image.certificateIcon
-                    )
-
-
-
                 }
             }
+
+
+
         }
-
-
-
     }
+
+
 
 
 

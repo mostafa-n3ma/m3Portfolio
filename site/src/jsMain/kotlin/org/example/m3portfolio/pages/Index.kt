@@ -9,6 +9,7 @@ import kotlinx.browser.window
 import kotlinx.coroutines.launch
 import org.example.m3portfolio.Constants
 import org.example.m3portfolio.Constants.LANGUAGE_STORAGE_VALUE
+import org.example.m3portfolio.components.LoadingIndicator
 import org.example.m3portfolio.components.MainHeaderPanel
 import org.example.m3portfolio.components.MessagePopup
 import org.example.m3portfolio.models.ApiCertificateResponse

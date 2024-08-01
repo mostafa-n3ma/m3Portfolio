@@ -29,6 +29,7 @@ import com.varabyte.kobweb.compose.ui.modifiers.id
 import com.varabyte.kobweb.compose.ui.modifiers.margin
 import com.varabyte.kobweb.compose.ui.modifiers.maxWidth
 import com.varabyte.kobweb.compose.ui.modifiers.padding
+import com.varabyte.kobweb.compose.ui.modifiers.scale
 import com.varabyte.kobweb.compose.ui.modifiers.size
 import com.varabyte.kobweb.compose.ui.modifiers.transition
 import com.varabyte.kobweb.compose.ui.modifiers.translate
@@ -43,10 +44,12 @@ import org.example.m3portfolio.AppStrings
 import org.example.m3portfolio.Constants
 import org.example.m3portfolio.Constants.FONT_FAMILY
 import org.example.m3portfolio.Res
+import org.example.m3portfolio.components.LoadingIndicator
 import org.example.m3portfolio.getLangString
 import org.example.m3portfolio.models.Theme
 import org.example.m3portfolio.util.BigObjectUiState
 import org.jetbrains.compose.web.css.ms
+import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.css.vh
 import org.jetbrains.compose.web.css.vw
@@ -64,6 +67,7 @@ data class TranslatePortsState(
     //end alignment
     var port5:Int=0,
     var port6:Int=0,
+    var scalePort:Int = 100
 )
 @Composable
 fun SkillsSection(
@@ -81,7 +85,9 @@ fun SkillsSection(
         port4 = {translatePorts = translatePorts.copy(port4 = it)},
         port5 = {translatePorts = translatePorts.copy(port5 = it)},
         port6 = {translatePorts = translatePorts.copy(port6 = it)},
+        scalePort = {translatePorts = translatePorts.copy(scalePort = it)}
     )
+
 
 
 
@@ -105,142 +111,147 @@ fun SkillsSection(
                 .zIndex(2)
         )
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 20.px)
-                .maxWidth(100.vw)
-                .zIndex(8),
-        ) {
-
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(leftRight = 40.px),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
+        if (bigObject.infoObject.skills.isEmpty()){
+            LoadingIndicator()
+        }else{
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 20.px)
+                    .maxWidth(100.vw)
+                    .zIndex(8),
             ) {
-                SpanText(
-                    modifier = Modifier
-                        .fontSize(
-                            when (breakpoint) {
-                                Breakpoint.XL -> 28.px
-                                Breakpoint.LG -> 22.px
-                                Breakpoint.MD -> 18.px
-                                else -> 16.px
-                            }
-                        )
-                        .fontFamily(Constants.FONT_FAMILY)
-                        .fontWeight(FontWeight.Bold)
-                        .color(
-                            if (colorMode.isLight) Theme.PrimaryLight.rgb
-                            else Colors.White
-                        ),
-                    text = getLangString(AppStrings.set_of_skills_i_have,displayLanguage.value)
+
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(leftRight = 40.px),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    SpanText(
+                        modifier = Modifier
+                            .fontSize(
+                                when (breakpoint) {
+                                    Breakpoint.XL -> 28.px
+                                    Breakpoint.LG -> 22.px
+                                    Breakpoint.MD -> 18.px
+                                    else -> 16.px
+                                }
+                            )
+                            .fontFamily(Constants.FONT_FAMILY)
+                            .fontWeight(FontWeight.Bold)
+                            .color(
+                                if (colorMode.isLight) Theme.PrimaryLight.rgb
+                                else Colors.White
+                            ),
+                        text = getLangString(AppStrings.set_of_skills_i_have,displayLanguage.value)
+                    )
+                }
+
+                ListComposable(
+                    list = bigObject.infoObject.skills.split(","),
+                    breakpoint = breakpoint,
+                    colorMode = colorMode
                 )
-            }
-
-            ListComposable(
-                list = bigObject.infoObject.skills.split(","),
-                breakpoint = breakpoint,
-                colorMode = colorMode
-            )
 
 
 
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(leftRight = 40.px),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                SpanText(
-                    modifier = Modifier
-                        .fontSize(
-                            when (breakpoint) {
-                                Breakpoint.XL -> 28.px
-                                Breakpoint.LG -> 22.px
-                                Breakpoint.MD -> 18.px
-                                else -> 16.px
-                            }
-                        )
-                        .fontFamily(Constants.FONT_FAMILY)
-                        .fontWeight(FontWeight.Bold)
-                        .color(
-                            if (colorMode.isLight) Theme.PrimaryLight.rgb
-                            else Colors.White
-                        ),
-                    text = getLangString(AppStrings.programming_languages,displayLanguage.value)
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(leftRight = 40.px),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    SpanText(
+                        modifier = Modifier
+                            .fontSize(
+                                when (breakpoint) {
+                                    Breakpoint.XL -> 28.px
+                                    Breakpoint.LG -> 22.px
+                                    Breakpoint.MD -> 18.px
+                                    else -> 16.px
+                                }
+                            )
+                            .fontFamily(Constants.FONT_FAMILY)
+                            .fontWeight(FontWeight.Bold)
+                            .color(
+                                if (colorMode.isLight) Theme.PrimaryLight.rgb
+                                else Colors.White
+                            ),
+                        text = getLangString(AppStrings.programming_languages,displayLanguage.value)
+                    )
+                }
+
+                ListComposable(
+                    list = bigObject.infoObject.programLanguages.split(","),
+                    breakpoint = breakpoint,
+                    colorMode = colorMode
                 )
-            }
 
-            ListComposable(
-                list = bigObject.infoObject.programLanguages.split(","),
-                breakpoint = breakpoint,
-                colorMode = colorMode
-            )
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(leftRight = 40.px),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    SpanText(
+                        modifier = Modifier
+                            .fontSize(
+                                when (breakpoint) {
+                                    Breakpoint.XL -> 28.px
+                                    Breakpoint.LG -> 22.px
+                                    Breakpoint.MD -> 18.px
+                                    else -> 16.px
+                                }
+                            )
+                            .fontFamily(Constants.FONT_FAMILY)
+                            .fontWeight(FontWeight.Bold)
+                            .color(
+                                if (colorMode.isLight) Theme.PrimaryLight.rgb
+                                else Colors.White
+                            ),
+                        text = getLangString(AppStrings.tools,displayLanguage.value)
+                    )
+                }
 
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(leftRight = 40.px),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                SpanText(
-                    modifier = Modifier
-                        .fontSize(
-                            when (breakpoint) {
-                                Breakpoint.XL -> 28.px
-                                Breakpoint.LG -> 22.px
-                                Breakpoint.MD -> 18.px
-                                else -> 16.px
-                            }
-                        )
-                        .fontFamily(Constants.FONT_FAMILY)
-                        .fontWeight(FontWeight.Bold)
-                        .color(
-                            if (colorMode.isLight) Theme.PrimaryLight.rgb
-                            else Colors.White
-                        ),
-                    text = getLangString(AppStrings.tools,displayLanguage.value)
+                ListComposable(
+                    list = bigObject.infoObject.tools.split(","),
+                    breakpoint = breakpoint,
+                    colorMode = colorMode
                 )
-            }
 
-            ListComposable(
-                list = bigObject.infoObject.tools.split(","),
-                breakpoint = breakpoint,
-                colorMode = colorMode
-            )
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(leftRight = 40.px),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    SpanText(
+                        modifier = Modifier
+                            .fontSize(
+                                when (breakpoint) {
+                                    Breakpoint.XL -> 28.px
+                                    Breakpoint.LG -> 22.px
+                                    Breakpoint.MD -> 18.px
+                                    else -> 16.px
+                                }
+                            )
+                            .fontFamily(Constants.FONT_FAMILY)
+                            .fontWeight(FontWeight.Bold)
+                            .color(
+                                if (colorMode.isLight) Theme.PrimaryLight.rgb
+                                else Colors.White
+                            ),
+                        text = getLangString(AppStrings.frameworks,displayLanguage.value)
+                    )
+                }
 
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(leftRight = 40.px),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                SpanText(
-                    modifier = Modifier
-                        .fontSize(
-                            when (breakpoint) {
-                                Breakpoint.XL -> 28.px
-                                Breakpoint.LG -> 22.px
-                                Breakpoint.MD -> 18.px
-                                else -> 16.px
-                            }
-                        )
-                        .fontFamily(Constants.FONT_FAMILY)
-                        .fontWeight(FontWeight.Bold)
-                        .color(
-                            if (colorMode.isLight) Theme.PrimaryLight.rgb
-                            else Colors.White
-                        ),
-                    text = getLangString(AppStrings.frameworks,displayLanguage.value)
+                ListComposable(
+                    list = bigObject.infoObject.frameWorks.split(","),
+                    breakpoint = breakpoint,
+                    colorMode = colorMode
                 )
+
+
             }
-
-            ListComposable(
-                list = bigObject.infoObject.frameWorks.split(","),
-                breakpoint = breakpoint,
-                colorMode = colorMode
-            )
-
-
         }
+
     }
 
 
@@ -314,24 +325,35 @@ fun randomTranslation(
     port3:(Int)->Unit,
     port4:(Int)->Unit,
     port5:(Int)->Unit,
-    port6:(Int)->Unit
+    port6:(Int)->Unit,
+    scalePort:(Int)->Unit
 ) {
 
 
     // Launch effect to update the translations
     LaunchedEffect(Unit) {
         while (true){
-            delay(2000)
+            scalePort((100..150).random())
+            delay(1000)
+            scalePort((100..200).random())
+            delay(1000)
+
             //center alignment
             port1((-20..20).random())
             port2((-20..20).random())
+            scalePort((100..300).random())
 
-            delay(1000)
+            delay(500)
+            scalePort((100..200).random())
+            delay(500)
             //start alignment
             port3((5..30).random())
             port4((5..30).random())
+            scalePort((100..150).random())
 
-            delay(1000)
+            delay(500)
+            scalePort((100..120).random())
+            delay(500)
             //end alignment
             port5((-30..5).random())
             port6((-30..5).random())
@@ -352,12 +374,12 @@ fun translatedIcons(translatePorts: TranslatePortsState,modifier: Modifier) {
             Image(
                 modifier = Modifier
                     .size(64.px)
-//                .zIndex(2)
                     .align(Alignment.Center)
+                    .scale((translatePorts.scalePort-30).percent)
                     .transition(
                         Transition.of(
                             property = TransitionProperty.All.toString(),
-                            duration = 5100.ms
+                            duration = 3000.ms
                         )
                     )
                     .translate(tx = (translatePorts.port1).vw, ty = (translatePorts.port2).vh)
@@ -368,7 +390,7 @@ fun translatedIcons(translatePorts: TranslatePortsState,modifier: Modifier) {
             Image(
                 modifier = Modifier
                     .size(64.px)
-//                .zIndex(2)
+                    .scale((translatePorts.scalePort+20).percent)
                     .align(Alignment.Center)
                     .transition(
                         Transition.of(
@@ -385,7 +407,7 @@ fun translatedIcons(translatePorts: TranslatePortsState,modifier: Modifier) {
             Image(
                 modifier = Modifier
                     .size(64.px)
-//                .zIndex(2)
+                    .scale((translatePorts.scalePort-19).percent)
                     .align(Alignment.Center)
                     .transition(
                         Transition.of(
@@ -402,7 +424,7 @@ fun translatedIcons(translatePorts: TranslatePortsState,modifier: Modifier) {
             Image(
                 modifier = Modifier
                     .size(64.px)
-//                .zIndex(2)
+                    .scale((translatePorts.scalePort-10).percent)
                     .align(Alignment.Center)
                     .transition(
                         Transition.of(
@@ -419,7 +441,7 @@ fun translatedIcons(translatePorts: TranslatePortsState,modifier: Modifier) {
             Image(
                 modifier = Modifier
                     .size(64.px)
-//                .zIndex(2)
+                    .scale((translatePorts.scalePort+26).percent)
                     .align(Alignment.Center)
                     .transition(
                         Transition.of(
@@ -439,7 +461,7 @@ fun translatedIcons(translatePorts: TranslatePortsState,modifier: Modifier) {
             Image(
                 modifier = Modifier
                     .size(64.px)
-//                .zIndex(2)
+                    .scale((translatePorts.scalePort-20).percent)
                     .align(Alignment.TopStart)
                     .transition(
                         Transition.of(
@@ -454,7 +476,7 @@ fun translatedIcons(translatePorts: TranslatePortsState,modifier: Modifier) {
             Image(
                 modifier = Modifier
                     .size(64.px)
-//                .zIndex(2)
+                    .scale((translatePorts.scalePort+20).percent)
                     .align(Alignment.TopStart)
                     .transition(
                         Transition.of(
@@ -472,7 +494,7 @@ fun translatedIcons(translatePorts: TranslatePortsState,modifier: Modifier) {
             Image(
                 modifier = Modifier
                     .size(64.px)
-//                .zIndex(2)
+                    .scale((translatePorts.scalePort).percent)
                     .align(Alignment.TopStart)
                     .transition(
                         Transition.of(
@@ -489,7 +511,7 @@ fun translatedIcons(translatePorts: TranslatePortsState,modifier: Modifier) {
             Image(
                 modifier = Modifier
                     .size(64.px)
-//                .zIndex(2)
+                    .scale((translatePorts.scalePort-15).percent)
                     .align(Alignment.TopStart)
                     .transition(
                         Transition.of(
@@ -511,7 +533,7 @@ fun translatedIcons(translatePorts: TranslatePortsState,modifier: Modifier) {
             Image(
                 modifier = Modifier
                     .size(64.px)
-//                .zIndex(2)
+                    .scale((translatePorts.scalePort).percent)
                     .align(Alignment.BottomEnd)
                     .transition(
                         Transition.of(
@@ -519,7 +541,7 @@ fun translatedIcons(translatePorts: TranslatePortsState,modifier: Modifier) {
                             duration = 4100.ms
                         )
                     )
-                    .translate(tx = (translatePorts.port5).vw, ty = (translatePorts.port6).vh)
+                    .translate(tx = (translatePorts.port5-(0..30).random()).vw, ty = (translatePorts.port6-(0..30).random()).vh)
                 ,
                 src = Res.Image.Github
             )
@@ -527,7 +549,7 @@ fun translatedIcons(translatePorts: TranslatePortsState,modifier: Modifier) {
             Image(
                 modifier = Modifier
                     .size(64.px)
-//                .zIndex(2)
+                    .scale((translatePorts.scalePort-10).percent)
                     .align(Alignment.BottomEnd)
                     .transition(
                         Transition.of(
@@ -543,7 +565,7 @@ fun translatedIcons(translatePorts: TranslatePortsState,modifier: Modifier) {
             Image(
                 modifier = Modifier
                     .size(64.px)
-//                .zIndex(2)
+                    .scale((translatePorts.scalePort+17).percent)
                     .align(Alignment.BottomEnd)
                     .transition(
                         Transition.of(
@@ -562,7 +584,7 @@ fun translatedIcons(translatePorts: TranslatePortsState,modifier: Modifier) {
             Image(
                 modifier = Modifier
                     .size(64.px)
-//                .zIndex(2)
+                    .scale((translatePorts.scalePort-10).percent)
                     .align(Alignment.BottomEnd)
                     .transition(
                         Transition.of(
@@ -579,7 +601,7 @@ fun translatedIcons(translatePorts: TranslatePortsState,modifier: Modifier) {
             Image(
                 modifier = Modifier
                     .size(64.px)
-//                .zIndex(2)
+                    .scale((translatePorts.scalePort+20).percent)
                     .align(Alignment.BottomEnd)
                     .transition(
                         Transition.of(
@@ -587,7 +609,7 @@ fun translatedIcons(translatePorts: TranslatePortsState,modifier: Modifier) {
                             duration = 4100.ms
                         )
                     )
-                    .translate(tx = (translatePorts.port5).vw, ty = (translatePorts.port5-(0..43).random()).vh)
+                    .translate(tx = (translatePorts.port5-10).vw, ty = (translatePorts.port5-(0..20).random()).vh)
                 ,
                 src = Res.Image.sql
             )
