@@ -31,12 +31,16 @@ import com.varabyte.kobweb.compose.ui.modifiers.margin
 import com.varabyte.kobweb.compose.ui.modifiers.maxHeight
 import com.varabyte.kobweb.compose.ui.modifiers.maxWidth
 import com.varabyte.kobweb.compose.ui.modifiers.onClick
+import com.varabyte.kobweb.compose.ui.modifiers.onMouseEnter
+import com.varabyte.kobweb.compose.ui.modifiers.onMouseOver
 import com.varabyte.kobweb.compose.ui.modifiers.overflow
 import com.varabyte.kobweb.compose.ui.modifiers.padding
 import com.varabyte.kobweb.compose.ui.modifiers.resize
+import com.varabyte.kobweb.compose.ui.modifiers.scale
 import com.varabyte.kobweb.compose.ui.modifiers.scrollBehavior
 import com.varabyte.kobweb.compose.ui.modifiers.size
 import com.varabyte.kobweb.compose.ui.modifiers.width
+import com.varabyte.kobweb.compose.ui.thenIf
 import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.core.PageContext
 import com.varabyte.kobweb.silk.components.graphics.Image
@@ -57,6 +61,7 @@ import org.example.m3portfolio.util.BigObjectUiState
 import org.example.m3portfolio.util.noBorder
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.px
+import org.jetbrains.compose.web.css.vh
 import org.jetbrains.compose.web.css.vw
 import org.jetbrains.compose.web.dom.Div
 
@@ -69,38 +74,38 @@ fun MainSection(
 ) {
 
     val colorMode by ColorMode.currentState
+    println("MainSection breakpoint :${breakpoint}")
 
-    if (bigObject.infoObject == Info()){
+    if (bigObject.infoObject == Info()) {
         LoadingIndicator()
-    }else{
+    } else {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .maxWidth(100.vw)
                 .id(Constants.MAIN_SECTION)
-//            .height(100.vh)
                 .padding(top = if (breakpoint <= Breakpoint.MD) 0.px else Measurements.HEADER_HEIGHT.px)
-//            .backgroundColor(Theme.PrimaryLight.rgb),
                 .backgroundImage(
                     linearGradient(
-                        dir =  LinearGradient.Direction.ToRight,
+                        dir = LinearGradient.Direction.ToRight,
                         from = if (colorMode.isLight) Theme.PrimaryLight.rgb
-                        else Theme.PrimaryLight.rgb
-                        ,
+                        else Theme.PrimaryLight.rgb,
                         to = if (colorMode.isLight) Theme.gradient_light_to.rgb
-                        else Colors.Black
-                        ,
+                        else Colors.Black,
                     )
                 )
         ) {
 
-            when(breakpoint){
+            when (breakpoint) {
                 Breakpoint.LG -> {
-                    LaunchedEffect(breakpoint){
-                        if (breakpoint == Breakpoint.LG){
-                            when(displayLanguage.value){
-                                Constants.Languages.EN -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML = bigObject.infoObject.bio
-                                Constants.Languages.AR -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML = bigObject.infoObject.bio
+                    LaunchedEffect(breakpoint) {
+                        if (breakpoint == Breakpoint.LG) {
+                            when (displayLanguage.value) {
+                                Constants.Languages.EN -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML =
+                                    bigObject.infoObject.bio
+
+                                Constants.Languages.AR -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML =
+                                    bigObject.infoObject.bio
                             }
                         }
                     }
@@ -108,58 +113,67 @@ fun MainSection(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(54.px)
+                            .height(100.vh)
                     ) {
                         Image(
                             src = Res.Image.my_image_jpg,
                             modifier = Modifier
-                                .width(400.px)
-                                .height(530.px)
-                                .align(Alignment.CenterStart )
+                                .width(250.px)
+                                .height(330.px)
+                                .align(Alignment.TopStart)
                                 .borderRadius(r = 4.px)
                         )
 
                         Box(
                             modifier = Modifier
-                                .width(50.percent)
-                                .height(400.px)
+                                .width(70.percent)
+                                .height(300.px)
                                 .align(Alignment.TopEnd),
                             contentAlignment = Alignment.TopEnd
 
-                        ){
+                        ) {
                             Div(
                                 attrs = Modifier
                                     .id(Ids.mainSectionBioDiv)
-                                    .fontSize(24.px)
+                                    .fontSize(20.px)
                                     .fontFamily(Constants.FONT_FAMILY)
                                     .fontWeight(FontWeight.Normal)
-                                    .maxHeight(400.px)
+                                    .maxHeight(300.px)
                                     .resize(Resize.None)
                                     .color(Colors.White)
                                     .overflow(Overflow.Auto)
                                     .scrollBehavior(ScrollBehavior.Unset)
-                                    .toAttrs{
-                                        attr("overflow","scroll")
-                                        if (displayLanguage.value == Constants.Languages.AR){
-                                            attr("lang","ar")
-                                            attr("dir","rtl")
+                                    .toAttrs {
+                                        attr("overflow", "scroll")
+                                        if (displayLanguage.value == Constants.Languages.AR) {
+                                            attr("lang", "ar")
+                                            attr("dir", "rtl")
                                         }
                                     }
                             ).let {
+                                when (displayLanguage.value) {
+                                    Constants.Languages.EN -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML =
+                                        bigObject.infoObject.bio
 
-                                when(displayLanguage.value){
-                                    Constants.Languages.EN -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML = bigObject.infoObject.bio
-                                    Constants.Languages.AR -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML = bigObject.infoObject.bio
+                                    Constants.Languages.AR -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML =
+                                        bigObject.infoObject.bio
                                 }
                             }
                         }
 
-                        Row (
-                            modifier = Modifier.align(Alignment.BottomEnd),
-                            horizontalArrangement = Arrangement.spacedBy(20.px, Alignment.CenterHorizontally)
-                        ){
+                        Row(
+                            modifier = Modifier.align(Alignment.BottomEnd).margin(bottom = 50.px),
+                            horizontalArrangement = Arrangement.spacedBy(
+                                20.px,
+                                Alignment.CenterHorizontally
+                            )
+                        ) {
                             Row(
-                                horizontalArrangement = Arrangement.spacedBy(5.px, Alignment.CenterHorizontally)
-                            ){
+                                horizontalArrangement = Arrangement.spacedBy(
+                                    5.px,
+                                    Alignment.CenterHorizontally
+                                )
+                            ) {
                                 Image(
                                     modifier = Modifier.size(50.px),
                                     src = Res.Image.android_ic
@@ -177,13 +191,14 @@ fun MainSection(
                                     src = Res.Image.java_ic
                                 )
                                 Image(
-                                    modifier = Modifier.size(50.px),
+                                    modifier = Modifier.size(50.px)
+                                    ,
                                     src = Res.Image.kotlin_ic
                                 )
                             }
                             Row(
                                 modifier = GithubBtnStyle.toModifier()
-                                    .width(250.px)
+                                    .width(200.px)
                                     .height(54.px)
                                     .backgroundColor(
                                         if (colorMode.isLight) Theme.Them_bk_light.rgb
@@ -195,7 +210,7 @@ fun MainSection(
                                     }
                                     .noBorder(),
                                 horizontalArrangement = Arrangement.spacedBy(5.px)
-                            ){
+                            ) {
                                 Image(
                                     modifier = Modifier
                                         .size(45.px)
@@ -207,25 +222,26 @@ fun MainSection(
                                     modifier = Modifier
                                         .fontFamily(Constants.FONT_FAMILY)
                                         .fontWeight(FontWeight.Bold)
-                                        .fontSize(24.px)
-                                        .align(Alignment.CenterVertically)
-                                    ,
+                                        .fontSize(20.px)
+                                        .align(Alignment.CenterVertically),
                                     text = "Github Account"
                                 )
                             }
                         }
 
 
-
-
                     }
                 }
+
                 Breakpoint.XL -> {
-                    LaunchedEffect(breakpoint){
-                        if (breakpoint == Breakpoint.XL){
-                            when(displayLanguage.value){
-                                Constants.Languages.EN -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML = bigObject.infoObject.bio
-                                Constants.Languages.AR -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML = bigObject.infoObject.bio
+                    LaunchedEffect(breakpoint) {
+                        if (breakpoint == Breakpoint.XL) {
+                            when (displayLanguage.value) {
+                                Constants.Languages.EN -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML =
+                                    bigObject.infoObject.bio
+
+                                Constants.Languages.AR -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML =
+                                    bigObject.infoObject.bio
                             }
                         }
                     }
@@ -239,7 +255,7 @@ fun MainSection(
                             modifier = Modifier
                                 .width(400.px)
                                 .height(530.px)
-                                .align(Alignment.TopStart )
+                                .align(Alignment.TopStart)
                                 .borderRadius(r = 4.px)
                         )
 
@@ -250,7 +266,7 @@ fun MainSection(
                                 .align(Alignment.TopEnd),
                             contentAlignment = Alignment.TopEnd
 
-                        ){
+                        ) {
                             Div(
                                 attrs = Modifier
                                     .id(Ids.mainSectionBioDiv)
@@ -262,28 +278,37 @@ fun MainSection(
                                     .color(Colors.White)
                                     .overflow(Overflow.Auto)
                                     .scrollBehavior(ScrollBehavior.Smooth)
-                                    .toAttrs{
-                                        attr("overflow","scroll")
-                                        if (displayLanguage.value == Constants.Languages.AR){
-                                            attr("lang","ar")
-                                            attr("dir","rtl")
+                                    .toAttrs {
+                                        attr("overflow", "scroll")
+                                        if (displayLanguage.value == Constants.Languages.AR) {
+                                            attr("lang", "ar")
+                                            attr("dir", "rtl")
                                         }
                                     }
                             ).let {
-                                when(displayLanguage.value){
-                                    Constants.Languages.EN -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML = bigObject.infoObject.bio
-                                    Constants.Languages.AR -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML = bigObject.infoObject.bio
+                                when (displayLanguage.value) {
+                                    Constants.Languages.EN -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML =
+                                        bigObject.infoObject.bio
+
+                                    Constants.Languages.AR -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML =
+                                        bigObject.infoObject.bio
                                 }
                             }
                         }
 
-                        Row (
+                        Row(
                             modifier = Modifier.align(Alignment.BottomEnd),
-                            horizontalArrangement = Arrangement.spacedBy(20.px, Alignment.CenterHorizontally)
-                        ){
+                            horizontalArrangement = Arrangement.spacedBy(
+                                20.px,
+                                Alignment.CenterHorizontally
+                            )
+                        ) {
                             Row(
-                                horizontalArrangement = Arrangement.spacedBy(5.px, Alignment.CenterHorizontally)
-                            ){
+                                horizontalArrangement = Arrangement.spacedBy(
+                                    5.px,
+                                    Alignment.CenterHorizontally
+                                )
+                            ) {
                                 Image(
                                     modifier = Modifier.size(50.px),
                                     src = Res.Image.android_ic
@@ -319,7 +344,7 @@ fun MainSection(
                                     }
                                     .noBorder(),
                                 horizontalArrangement = Arrangement.spacedBy(5.px)
-                            ){
+                            ) {
                                 Image(
                                     modifier = Modifier
                                         .size(45.px)
@@ -332,8 +357,7 @@ fun MainSection(
                                         .fontFamily(Constants.FONT_FAMILY)
                                         .fontWeight(FontWeight.Bold)
                                         .fontSize(24.px)
-                                        .align(Alignment.CenterVertically)
-                                    ,
+                                        .align(Alignment.CenterVertically),
                                     text = "Github Account"
                                 )
                             }
@@ -343,15 +367,20 @@ fun MainSection(
                     }
 
                 }
+
                 else -> {
-                    LaunchedEffect(breakpoint){
-                        if (breakpoint <= Breakpoint.MD){
-                            when(displayLanguage.value){
-                                Constants.Languages.EN -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML = bigObject.infoObject.bio
-                                Constants.Languages.AR -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML = bigObject.infoObject.bio
-                            }                    }
+                    LaunchedEffect(breakpoint) {
+                        if (breakpoint <= Breakpoint.MD) {
+                            when (displayLanguage.value) {
+                                Constants.Languages.EN -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML =
+                                    bigObject.infoObject.bio
+
+                                Constants.Languages.AR -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML =
+                                    bigObject.infoObject.bio
+                            }
+                        }
                     }
-                    Column (
+                    Column(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 54.px),
@@ -362,7 +391,7 @@ fun MainSection(
                             modifier = Modifier
                                 .width(200.px)
                                 .height(250.px)
-                                .align(Alignment.CenterHorizontally )
+                                .align(Alignment.CenterHorizontally)
                                 .borderRadius(r = 4.px)
                         )
 
@@ -370,7 +399,7 @@ fun MainSection(
                             modifier = Modifier
                                 .width(90.percent)
                                 .align(Alignment.CenterHorizontally),
-                        ){
+                        ) {
                             Div(
                                 attrs = Modifier
                                     .id(Ids.mainSectionBioDiv)
@@ -379,16 +408,19 @@ fun MainSection(
                                     .fontWeight(FontWeight.Normal)
                                     .resize(Resize.None)
                                     .color(Colors.White)
-                                    .toAttrs{
-                                        if (displayLanguage.value == Constants.Languages.AR){
-                                            attr("lang","ar")
-                                            attr("dir","rtl")
+                                    .toAttrs {
+                                        if (displayLanguage.value == Constants.Languages.AR) {
+                                            attr("lang", "ar")
+                                            attr("dir", "rtl")
                                         }
                                     }
                             ).let {
-                                when(displayLanguage.value){
-                                    Constants.Languages.EN -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML = bigObject.infoObject.bio
-                                    Constants.Languages.AR -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML = bigObject.infoObject.bio
+                                when (displayLanguage.value) {
+                                    Constants.Languages.EN -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML =
+                                        bigObject.infoObject.bio
+
+                                    Constants.Languages.AR -> document.getElementById(Ids.mainSectionBioDiv)?.innerHTML =
+                                        bigObject.infoObject.bio
                                 }
                             }
                         }
@@ -410,7 +442,7 @@ fun MainSection(
                                 .align(Alignment.CenterHorizontally)
                                 .noBorder(),
                             horizontalArrangement = Arrangement.spacedBy(5.px),
-                        ){
+                        ) {
                             Image(
                                 modifier = Modifier
                                     .size(45.px)
@@ -423,8 +455,7 @@ fun MainSection(
                                     .fontFamily(Constants.FONT_FAMILY)
                                     .fontWeight(FontWeight.Bold)
                                     .fontSize(18.px)
-                                    .align(Alignment.CenterVertically)
-                                ,
+                                    .align(Alignment.CenterVertically),
                                 text = "Github Account"
                             )
                         }
