@@ -53,15 +53,14 @@ import com.varabyte.kobweb.silk.theme.breakpoint.rememberBreakpoint
 import com.varabyte.kobweb.silk.theme.colors.ColorMode
 import kotlinx.browser.document
 import kotlinx.browser.localStorage
-import kotlinx.browser.window
 import kotlinx.coroutines.launch
 import org.example.m3portfolio.AppStrings
 import org.example.m3portfolio.Constants
 import org.example.m3portfolio.Constants.FONT_FAMILY
-import org.example.m3portfolio.Constants.LANGUAGE_STORAGE_VALUE
 import org.example.m3portfolio.Measurements
 import org.example.m3portfolio.getLangString
 import org.example.m3portfolio.models.Theme
+import org.example.m3portfolio.navigation.Screen
 import org.example.m3portfolio.styles.HeaderNavigationItemStyle
 import org.jetbrains.compose.web.css.Position
 import org.jetbrains.compose.web.css.ms
@@ -76,6 +75,7 @@ import org.w3c.dom.set
 fun MainHeaderPanel(
     onLanguageChange: (Constants.Languages) -> Unit,
     displayLanguage: MutableState<Constants.Languages>,
+    headerNavigationItemsTypes: Constants.HeaderNavigationItemsTypes = Constants.HeaderNavigationItemsTypes.IndexHeaders,
     content: @Composable () -> Unit,
 ) {
     var overFlowMenuOpened by remember { mutableStateOf(false) }
@@ -84,30 +84,29 @@ fun MainHeaderPanel(
 
     Box(
         modifier = Modifier
-            .fillMaxSize()
-        ,
+            .fillMaxSize(),
         contentAlignment = Alignment.Center
-    ){
+    ) {
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
-//                .zIndex(2)
                 .scrollBehavior(ScrollBehavior.Smooth)
         ) {
             HeaderPanel(
                 breakpoint = breakpoint,
                 onMenuClicked = {
-                overFlowMenuOpened = !overFlowMenuOpened
-            },
+                    overFlowMenuOpened = !overFlowMenuOpened
+                },
                 overFlowMenuOpened = overFlowMenuOpened,
                 onLanguageChange = {
                     onLanguageChange(it)
                 },
-                displayLanguage = displayLanguage
+                displayLanguage = displayLanguage,
+                headerNavigationItemsTypes = headerNavigationItemsTypes
             )
 
-            if (overFlowMenuOpened){
+            if (overFlowMenuOpened) {
                 overFlowHeaderPanel(
                     onMenuClose = {
                         overFlowMenuOpened = !overFlowMenuOpened
@@ -118,9 +117,10 @@ fun MainHeaderPanel(
                         HeaderNavigationItems(
                             breakpoint,
                             onItemClicked = {
-                                overFlowMenuOpened =false
-                        },
-                            displayLanguage = displayLanguage
+                                overFlowMenuOpened = false
+                            },
+                            displayLanguage = displayLanguage,
+                            headerNavigationItemsTypes = headerNavigationItemsTypes
                         )
                         LangDropDown(
                             onLanguageChange = {
@@ -135,7 +135,6 @@ fun MainHeaderPanel(
             content()
 
 
-
         }
 
     }
@@ -146,38 +145,46 @@ fun HeaderPanel(
     onMenuClicked: () -> Unit, breakpoint: Breakpoint,
     overFlowMenuOpened: Boolean,
     onLanguageChange: (Constants.Languages) -> Unit,
-    displayLanguage: MutableState<Constants.Languages>
+    displayLanguage: MutableState<Constants.Languages>,
+    headerNavigationItemsTypes: Constants.HeaderNavigationItemsTypes = Constants.HeaderNavigationItemsTypes.IndexHeaders
 ) {
-    if (breakpoint > Breakpoint.MD){
+    if (breakpoint > Breakpoint.MD) {
         //header Panel Internal
-        HeaderPanelInternal(breakpoint = breakpoint,
+        HeaderPanelInternal(
+            breakpoint = breakpoint,
             onLanguageChange = {
                 onLanguageChange(it)
             },
-            displayLanguage = displayLanguage
-            )
-    }else{
+            displayLanguage = displayLanguage,
+            headerNavigationItemsTypes = headerNavigationItemsTypes
+        )
+    } else {
         // Collapsed Header Side Panel
-        CollapseHeaderPanel(onMenuClicked = onMenuClicked,overFlowMenuOpened = overFlowMenuOpened)
+        CollapseHeaderPanel(onMenuClicked = onMenuClicked, overFlowMenuOpened = overFlowMenuOpened,displayLanguage = displayLanguage,)
     }
 }
 
 @Composable
-fun CollapseHeaderPanel(onMenuClicked: () -> Unit, overFlowMenuOpened: Boolean) {
+fun CollapseHeaderPanel(
+    onMenuClicked: () -> Unit,
+    overFlowMenuOpened: Boolean,
+    displayLanguage: MutableState<Constants.Languages>
+) {
     var colorMode by ColorMode.currentState
-    LaunchedEffect(Unit){
-        val savedTheme  = localStorage[Constants.COLOR_MODE]?: ColorMode.LIGHT.name
+    LaunchedEffect(Unit) {
+        val savedTheme = localStorage[Constants.COLOR_MODE] ?: ColorMode.LIGHT.name
         colorMode = ColorMode.valueOf(savedTheme)
     }
+    val context = rememberPageContext()
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(Measurements.HEADER_HEIGHT.px)
             .padding(leftRight = 24.px)
             .backgroundColor(Theme.Them_bk_light.rgb),
-    ){
+    ) {
 
-        when(overFlowMenuOpened){
+        when (overFlowMenuOpened) {
             true -> {
                 FaX(
                     modifier = Modifier
@@ -191,6 +198,7 @@ fun CollapseHeaderPanel(onMenuClicked: () -> Unit, overFlowMenuOpened: Boolean) 
                     size = IconSize.X1
                 )
             }
+
             false -> {
                 FaBars(
                     modifier = Modifier
@@ -207,13 +215,16 @@ fun CollapseHeaderPanel(onMenuClicked: () -> Unit, overFlowMenuOpened: Boolean) 
         }
 
         SpanText(
-            text = "Mostafa N3ma",
+            text = getLangString(AppStrings.MostafaN3ma,displayLanguage.value),
             modifier = Modifier
                 .fontSize(24.px)
                 .fontFamily(FONT_FAMILY)
                 .align(Alignment.Center)
                 .fontWeight(FontWeight.Bold)
                 .color(Theme.PrimaryDark.rgb)
+                .onClick {
+                    context.router.navigateTo(Screen.Home.route)
+                }
         )
 
         ColorMoodButton(
@@ -223,7 +234,7 @@ fun CollapseHeaderPanel(onMenuClicked: () -> Unit, overFlowMenuOpened: Boolean) 
                 localStorage[Constants.COLOR_MODE] = colorMode.name
             },
             modifier = Modifier.align(Alignment.CenterEnd)
-            )
+        )
     }
 }
 
@@ -231,13 +242,15 @@ fun CollapseHeaderPanel(onMenuClicked: () -> Unit, overFlowMenuOpened: Boolean) 
 fun HeaderPanelInternal(
     breakpoint: Breakpoint,
     onLanguageChange: (Constants.Languages) -> Unit,
-    displayLanguage: MutableState<Constants.Languages>
+    displayLanguage: MutableState<Constants.Languages>,
+    headerNavigationItemsTypes: Constants.HeaderNavigationItemsTypes = Constants.HeaderNavigationItemsTypes.IndexHeaders
 ) {
     var colorMode by ColorMode.currentState
-    LaunchedEffect(Unit){
-        val savedTheme  = localStorage[Constants.COLOR_MODE]?: ColorMode.LIGHT.name
+    LaunchedEffect(Unit) {
+        val savedTheme = localStorage[Constants.COLOR_MODE] ?: ColorMode.LIGHT.name
         colorMode = ColorMode.valueOf(savedTheme)
     }
+    val context = rememberPageContext()
     Row(
         modifier = Modifier
             .padding(leftRight = 20.px)
@@ -248,28 +261,32 @@ fun HeaderPanelInternal(
             .backgroundColor(Theme.Them_bk_light.rgb),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
-    ){
+    ) {
         SpanText(
-            text = getLangString(AppStrings.MostafaN3ma,displayLanguage.value),
+            text = getLangString(AppStrings.MostafaN3ma, displayLanguage.value),
             modifier = Modifier
                 .fontSize(36.px)
                 .fontFamily(FONT_FAMILY)
                 .fontWeight(FontWeight.Bold)
                 .color(Theme.PrimaryDark.rgb)
+                .onClick {
+                    context.router.navigateTo(Screen.Home.route)
+                }
         )
         Row(
             horizontalArrangement = Arrangement.spacedBy(20.px),
             verticalAlignment = Alignment.CenterVertically
-        ){
+        ) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(10.px)
-            ){
+            ) {
                 HeaderNavigationItems(
                     breakpoint = breakpoint,
                     displayLanguage = displayLanguage,
                     onItemClicked = {
 
-                    }
+                    },
+                    headerNavigationItemsTypes = headerNavigationItemsTypes
                 )
 
             }
@@ -295,7 +312,6 @@ fun HeaderPanelInternal(
         }
 
 
-
     }
 }
 
@@ -303,76 +319,105 @@ fun HeaderPanelInternal(
 fun HeaderNavigationItems(
     breakpoint: Breakpoint,
     onItemClicked: () -> Unit,
-    displayLanguage: MutableState<Constants.Languages>
+    displayLanguage: MutableState<Constants.Languages>,
+    headerNavigationItemsTypes: Constants.HeaderNavigationItemsTypes = Constants.HeaderNavigationItemsTypes.IndexHeaders
 ) {
     val context = rememberPageContext()
 
-
-
-        HeaderNavigationItem(
-            modifier = Modifier.margin(right = 10.px),
-            selected = context.route.path == "",
-            title = getLangString(AppStrings.headerHomeText,displayLanguage.value),
-            onClick = {
-                document.getElementById(Constants.MAIN_SECTION)?.scrollIntoView()
-                onItemClicked()
-            },
-            breakpoint = breakpoint
-        )
-        HeaderNavigationItem(
-            modifier = Modifier.margin(right = 10.px),
-            selected = context.route.path == "",
-            title = getLangString(AppStrings.headerProjectsText,displayLanguage.value),
-            onClick = {
+    when (headerNavigationItemsTypes) {
+        Constants.HeaderNavigationItemsTypes.IndexHeaders -> {
+            HeaderNavigationItem(
+                modifier = Modifier.margin(right = 10.px),
+                selected = context.route.path == "",
+                title = getLangString(AppStrings.headerHomeText, displayLanguage.value),
+                onClick = {
+                    document.getElementById(Constants.MAIN_SECTION)?.scrollIntoView()
+                    onItemClicked()
+                },
+                breakpoint = breakpoint
+            )
+            HeaderNavigationItem(
+                modifier = Modifier.margin(right = 10.px),
+                selected = context.route.path == "",
+                title = getLangString(AppStrings.headerProjectsText, displayLanguage.value),
+                onClick = {
 //                context.router.navigateTo("")
-                document.getElementById(Constants.PROJECTS_SECTION)?.scrollIntoView()
-                onItemClicked()
-            },
-            breakpoint = breakpoint
-        )
-        HeaderNavigationItem(
-            modifier = Modifier.margin(right = 10.px),
-            selected = context.route.path == "",
-            title = getLangString(AppStrings.headerCertificatesText,displayLanguage.value),
-            onClick = {
-                document.getElementById(Constants.CERTIFICATES_SECTION)?.scrollIntoView()
-                onItemClicked()
-            },
-            breakpoint = breakpoint
-        )
+                    document.getElementById(Constants.PROJECTS_SECTION)?.scrollIntoView()
+                    onItemClicked()
+                },
+                breakpoint = breakpoint
+            )
+            HeaderNavigationItem(
+                modifier = Modifier.margin(right = 10.px),
+                selected = context.route.path == "",
+                title = getLangString(AppStrings.headerCertificatesText, displayLanguage.value),
+                onClick = {
+                    document.getElementById(Constants.CERTIFICATES_SECTION)?.scrollIntoView()
+                    onItemClicked()
+                },
+                breakpoint = breakpoint
+            )
 
 
-    HeaderNavigationItem(
-        modifier = Modifier.margin(right = 10.px),
-        selected = context.route.path == "",
-        title = getLangString(AppStrings.headerSkillsText,displayLanguage.value),
-        onClick = {
-            document.getElementById(Constants.SKILLS_SECTION)?.scrollIntoView()
-            onItemClicked()
+            HeaderNavigationItem(
+                modifier = Modifier.margin(right = 10.px),
+                selected = context.route.path == "",
+                title = getLangString(AppStrings.headerSkillsText, displayLanguage.value),
+                onClick = {
+                    document.getElementById(Constants.SKILLS_SECTION)?.scrollIntoView()
+                    onItemClicked()
 
-        },
-        breakpoint = breakpoint
-    )
+                },
+                breakpoint = breakpoint
+            )
 
-        HeaderNavigationItem(
-            modifier = Modifier.margin(right = 10.px),
-            selected = context.route.path == "",
-            title = getLangString(AppStrings.headerExperienceText,displayLanguage.value),
-            onClick = {
-                document.getElementById(Constants.EXPERIENCE_SECTION)?.scrollIntoView()
-                onItemClicked()
-            },
-            breakpoint = breakpoint
-        )
+            HeaderNavigationItem(
+                modifier = Modifier.margin(right = 10.px),
+                selected = context.route.path == "",
+                title = getLangString(AppStrings.headerExperienceText, displayLanguage.value),
+                onClick = {
+                    document.getElementById(Constants.EXPERIENCE_SECTION)?.scrollIntoView()
+                    onItemClicked()
+                },
+                breakpoint = breakpoint
+            )
+        }
+
+        Constants.HeaderNavigationItemsTypes.ProjectPreviewHeaders -> {
+            HeaderNavigationItem(
+                modifier = Modifier.margin(right = 10.px),
+                selected = context.route.path == "",
+                title = getLangString(AppStrings.projectMainHeader, displayLanguage.value),
+                onClick = {
+                    document.getElementById(Constants.PROJECT_MAIN_SECTION)?.scrollIntoView()
+                    onItemClicked()
+                },
+                breakpoint = breakpoint
+            )
+            HeaderNavigationItem(
+                modifier = Modifier.margin(right = 10.px),
+                selected = context.route.path == "",
+                title = getLangString(AppStrings.projectDescriptionHeader, displayLanguage.value),
+                onClick = {
+                    document.getElementById(Constants.PROJECT_DESCRIPTION_SECTION)?.scrollIntoView()
+                    onItemClicked()
+                },
+                breakpoint = breakpoint
+            )
+
+
+        }
+    }
+
 
 }
 
 @Composable
 fun HeaderNavigationItem(
     modifier: Modifier = Modifier,
-    selected : Boolean = false,
-    title:String,
-    onClick : ()->Unit,
+    selected: Boolean = false,
+    title: String,
+    onClick: () -> Unit,
     breakpoint: Breakpoint
 ) {
     SpanText(
@@ -406,19 +451,19 @@ fun HeaderNavigationItem(
 
 @Composable
 fun overFlowHeaderPanel(
-    onMenuClose : ()->Unit,
-    content : @Composable ()->Unit,
+    onMenuClose: () -> Unit,
+    content: @Composable () -> Unit,
     breakpoint: Breakpoint
 ) {
     val scope = rememberCoroutineScope()
 
     var translateY by remember { mutableStateOf((-100).percent) }
-    var opacity by remember{ mutableStateOf(0.percent) }
+    var opacity by remember { mutableStateOf(0.percent) }
 
-    LaunchedEffect(key1 = breakpoint){
+    LaunchedEffect(key1 = breakpoint) {
         translateY = 0.percent
         opacity = 100.percent
-        if (breakpoint > Breakpoint.MD){
+        if (breakpoint > Breakpoint.MD) {
             scope.launch {
                 translateY = (-100).percent
                 opacity = 0.percent
@@ -429,8 +474,8 @@ fun overFlowHeaderPanel(
 
     Column(
         modifier = Modifier
-            .margin(top = 54.px )
-            .padding( leftRight = 20.px, bottom = 20.px)
+            .margin(top = 54.px)
+            .padding(leftRight = 20.px, bottom = 20.px)
             .backgroundColor(Theme.Them_bk_light.rgb)
             .borderRadius(r = 4.px)
             .zIndex(9)
@@ -441,7 +486,7 @@ fun overFlowHeaderPanel(
             .onClick {
 
             }
-    ){
-       content()
+    ) {
+        content()
     }
 }

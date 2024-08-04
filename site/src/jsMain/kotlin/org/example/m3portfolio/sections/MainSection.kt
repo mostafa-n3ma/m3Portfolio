@@ -8,6 +8,8 @@ import com.varabyte.kobweb.compose.css.FontWeight
 import com.varabyte.kobweb.compose.css.Overflow
 import com.varabyte.kobweb.compose.css.Resize
 import com.varabyte.kobweb.compose.css.ScrollBehavior
+import com.varabyte.kobweb.compose.css.Transition
+import com.varabyte.kobweb.compose.css.TransitionProperty
 import com.varabyte.kobweb.compose.css.functions.LinearGradient
 import com.varabyte.kobweb.compose.css.functions.linearGradient
 import com.varabyte.kobweb.compose.foundation.layout.Arrangement
@@ -39,6 +41,7 @@ import com.varabyte.kobweb.compose.ui.modifiers.resize
 import com.varabyte.kobweb.compose.ui.modifiers.scale
 import com.varabyte.kobweb.compose.ui.modifiers.scrollBehavior
 import com.varabyte.kobweb.compose.ui.modifiers.size
+import com.varabyte.kobweb.compose.ui.modifiers.transition
 import com.varabyte.kobweb.compose.ui.modifiers.width
 import com.varabyte.kobweb.compose.ui.thenIf
 import com.varabyte.kobweb.compose.ui.toAttrs
@@ -59,6 +62,7 @@ import org.example.m3portfolio.models.Theme
 import org.example.m3portfolio.styles.GithubBtnStyle
 import org.example.m3portfolio.util.BigObjectUiState
 import org.example.m3portfolio.util.noBorder
+import org.jetbrains.compose.web.css.ms
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.css.vh
@@ -74,7 +78,6 @@ fun MainSection(
 ) {
 
     val colorMode by ColorMode.currentState
-    println("MainSection breakpoint :${breakpoint}")
 
     if (bigObject.infoObject == Info()) {
         LoadingIndicator()
@@ -92,6 +95,12 @@ fun MainSection(
                         else Theme.PrimaryLight.rgb,
                         to = if (colorMode.isLight) Theme.gradient_light_to.rgb
                         else Colors.Black,
+                    )
+                )
+                .transition(
+                    Transition.of(
+                        property = TransitionProperty.All.toString(),
+                        duration = 500.ms
                     )
                 )
         ) {

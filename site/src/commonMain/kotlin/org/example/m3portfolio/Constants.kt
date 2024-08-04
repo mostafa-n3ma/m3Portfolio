@@ -31,6 +31,18 @@ object Constants{
     const val EXPERIENCE_SECTION = "EXPERIENCE_SECTION"
 
 
+
+    const val PROJECT_MAIN_SECTION = "PROJECT_MAIN_SECTION"
+    const val PROJECT_DESCRIPTION_SECTION = "PROJECT_DESCRIPTION_SECTION"
+
+    enum class HeaderNavigationItemsTypes{
+        IndexHeaders,
+        ProjectPreviewHeaders
+    }
+
+
+
+
     const val LANGUAGES_SPLITTER_CODE = "@AR@"
 
 }
@@ -55,6 +67,11 @@ object AppStrings {
     val headerCertificatesText = Strings("Certificates", "الشهادات")
     val headerSkillsText = Strings("Skills", "المهارات")
     val headerExperienceText = Strings("Expertise", "الخبرات")
+
+
+    val projectMainHeader = Strings("Main","الرئيسية")
+    val projectDescriptionHeader = Strings("Description","الوصف")
+    val projectTechStack = Strings("TechStack","التقنيات المستخدمة")
 
 
     //projects section
@@ -272,6 +289,7 @@ object Ids{
 
     //Main Home Index Screen
     const val mainSectionBioDiv = "mainSectionBioDiv"
+    const val projectPreviewDescriptionDiv = "projectPreviewDescriptionDiv"
 
 
 }

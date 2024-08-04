@@ -8,6 +8,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.varabyte.kobweb.compose.css.Cursor
 import com.varabyte.kobweb.compose.css.FontWeight
+import com.varabyte.kobweb.compose.css.Transition
+import com.varabyte.kobweb.compose.css.TransitionProperty
 import com.varabyte.kobweb.compose.foundation.layout.Arrangement
 import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.foundation.layout.Row
@@ -30,6 +32,7 @@ import com.varabyte.kobweb.compose.ui.modifiers.maxWidth
 import com.varabyte.kobweb.compose.ui.modifiers.onClick
 import com.varabyte.kobweb.compose.ui.modifiers.padding
 import com.varabyte.kobweb.compose.ui.modifiers.size
+import com.varabyte.kobweb.compose.ui.modifiers.transition
 import com.varabyte.kobweb.compose.ui.modifiers.width
 import com.varabyte.kobweb.core.PageContext
 import com.varabyte.kobweb.silk.components.graphics.Image
@@ -47,8 +50,10 @@ import org.example.m3portfolio.components.LoadingIndicator
 import org.example.m3portfolio.getLangString
 import org.example.m3portfolio.models.Project
 import org.example.m3portfolio.models.Theme
+import org.example.m3portfolio.navigation.Screen
 import org.example.m3portfolio.styles.ItemStyle
 import org.example.m3portfolio.util.BigObjectUiState
+import org.jetbrains.compose.web.css.ms
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.css.vw
@@ -89,6 +94,12 @@ fun ProjectsSection(
                 .backgroundColor(
                     if (colorMode.isLight) Theme.Them_bk_light.rgb
                     else Theme.Them_bk_dark.rgb
+                )
+                .transition(
+                    Transition.of(
+                        property = TransitionProperty.All.toString(),
+                        duration = 500.ms
+                    )
                 )
         ) {
             Row(
@@ -158,7 +169,13 @@ fun ProjectsSection(
                             .backgroundColor(
                                 if (colorMode.isLight) Theme.Item_bk_light.rgb
                                 else Theme.Item_bk_dark.rgb
-                            ),
+                            )
+                            .onClick {
+                                     context.router.navigateTo(Screen.ProjectPreview.passProjectId(projectItem._id))
+                            }
+
+
+                        ,
                         verticalArrangement = Arrangement.spacedBy(10.px),
                     ) {
                         Image(

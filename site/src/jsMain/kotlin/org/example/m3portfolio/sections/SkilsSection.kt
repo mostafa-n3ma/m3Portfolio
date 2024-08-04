@@ -100,6 +100,12 @@ fun SkillsSection(
             if (colorMode.isLight) Theme.Them_bk_light.rgb
             else Theme.Them_bk_dark.rgb
         )
+            .transition(
+                Transition.of(
+                    property = TransitionProperty.All.toString(),
+                    duration = 500.ms
+                )
+            )
     ) {
 
         translatedIcons(

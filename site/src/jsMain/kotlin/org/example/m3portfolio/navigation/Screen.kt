@@ -8,6 +8,9 @@ import org.example.m3portfolio.Constants.WEBSITE_ID_PARAM
 import org.example.m3portfolio.Ids
 
 sealed class Screen(val route:String) {
+    object Home:Screen(route = "/")
+
+
     object AdminHome:Screen(route = "/admin/")
     object AdminLogin:Screen(route = "/admin/login")
 
@@ -36,5 +39,12 @@ sealed class Screen(val route:String) {
     object AdminWebsiteEdit:Screen(route = "/admin/websites/edit"){
         fun passWebsiteId(id: String) = "/admin/websites/edit?$WEBSITE_ID_PARAM=$id"
     }
+
+
+    object ProjectPreview :Screen(route = "/project_preview"){
+        fun passProjectId(id:String) = "/project_preview?$PROJECT_ID_PARAM=$id"
+    }
+
+
 
 }

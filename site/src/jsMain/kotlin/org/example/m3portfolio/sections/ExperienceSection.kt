@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import com.varabyte.kobweb.compose.css.FontWeight
+import com.varabyte.kobweb.compose.css.Transition
+import com.varabyte.kobweb.compose.css.TransitionProperty
 import com.varabyte.kobweb.compose.foundation.layout.Arrangement
 import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.foundation.layout.Column
@@ -23,6 +25,7 @@ import com.varabyte.kobweb.compose.ui.modifiers.id
 import com.varabyte.kobweb.compose.ui.modifiers.margin
 import com.varabyte.kobweb.compose.ui.modifiers.maxWidth
 import com.varabyte.kobweb.compose.ui.modifiers.padding
+import com.varabyte.kobweb.compose.ui.modifiers.transition
 import com.varabyte.kobweb.silk.components.graphics.Image
 import com.varabyte.kobweb.silk.components.text.SpanText
 import com.varabyte.kobweb.silk.style.breakpoint.Breakpoint
@@ -33,6 +36,7 @@ import org.example.m3portfolio.components.LoadingIndicator
 import org.example.m3portfolio.getLangString
 import org.example.m3portfolio.models.Theme
 import org.example.m3portfolio.util.BigObjectUiState
+import org.jetbrains.compose.web.css.ms
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.css.vw
@@ -57,6 +61,12 @@ fun ExperienceSection(
                 .backgroundColor(
                     if (colorMode.isLight) Colors.White
                     else Theme.Them_bk_dark_2.rgb
+                )
+                .transition(
+                    Transition.of(
+                        property = TransitionProperty.All.toString(),
+                        duration = 500.ms
+                    )
                 )
         ) {
             Row(

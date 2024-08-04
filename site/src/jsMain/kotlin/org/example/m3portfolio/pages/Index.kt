@@ -101,8 +101,7 @@ fun HomePage() {
         )
         FooterSection(
             breakpoint = breakpoint,
-            bigObject = bigObject.value.splitLanguages(displayLanguage.value),
-            context,
+            context =context,
             displayLanguage = displayLanguage
         )
     }
