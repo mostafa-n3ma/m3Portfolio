@@ -43,6 +43,8 @@ import kotlinx.browser.localStorage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import org.example.m3portfolio.Constants.FONT_FAMILY
 import org.example.m3portfolio.Ids
 import org.example.m3portfolio.components.FinalButton
@@ -236,3 +238,6 @@ fun ThumbnailUpLoader(
 }
 
 
+//fun getCurrentDateTime(): Instant {
+//    return Clock.System.now()
+//}

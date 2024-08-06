@@ -16,6 +16,7 @@ import org.example.m3portfolio.models.Experience
 import org.example.m3portfolio.models.Info
 import org.example.m3portfolio.models.Project
 import org.example.m3portfolio.models.User
+import org.example.m3portfolio.models.Visitor
 import org.example.m3portfolio.models.Website
 
 @InitApi
@@ -40,6 +41,7 @@ class MongoDB(private val context: InitApiContext) : MongoRepository {
     private val projectsCollection = database.getCollection<Project>("projects")
     private val websitesCollection = database.getCollection<Website>("websites")
     private val userCollection = database.getCollection<User>("user")
+    private val visitorsCollection = database.getCollection<Visitor>("visitors")
     override suspend fun checkUserExistence(user: User): User? {
         return try {
             userCollection
@@ -62,6 +64,45 @@ class MongoDB(private val context: InitApiContext) : MongoRepository {
             context.logger.error(e.message.toString())
             false
         }
+    }
+
+    override suspend fun countVisitors(): Int {
+        return visitorsCollection
+            .find()
+            .toList()
+            .count()
+    }
+
+    override suspend fun readVisitors(): List<Visitor> {
+        return visitorsCollection
+            .find()
+            .toList()
+    }
+
+    override suspend fun readVisitorById(id: String): List<Visitor> {
+        context.logger.info("readVisitorById//MongoDb// id:$id")
+        val result: List<Visitor> = visitorsCollection
+            .find(
+                Filters.eq(Visitor::_id.name,id)
+            ).toList()
+        context.logger.info("readVisitorById//MongoDb// resultList:$result")
+        return result
+    }
+
+    override suspend fun recordVisitor(visitor: Visitor): Boolean {
+       return visitorsCollection
+           .insertOne(visitor)
+           .wasAcknowledged()
+    }
+
+    override suspend fun updateVisitorRecords(visitor: Visitor): Boolean {
+       return visitorsCollection
+           .updateOne(
+               Filters.eq(Visitor::_id.name,visitor._id),
+               mutableListOf(
+                   Updates.set(Visitor::date.name,visitor.date)
+               )
+           ).wasAcknowledged()
     }
 
 
@@ -225,11 +266,14 @@ class MongoDB(private val context: InitApiContext) : MongoRepository {
     }
 
     override suspend fun readWebsitesById(id: String): List<Website> {
-        return websitesCollection
+        context.logger.info("readWebsitesById//MongoDb// id:$id")
+        val result =  websitesCollection
             .find(
                 Filters.eq(Website::_id.name,id)
             )
             .toList()
+        context.logger.info("readWebsitesById//MongoDb// resultList:$result")
+        return result
     }
 
     override suspend fun insertWebsite(website: Website): Boolean {

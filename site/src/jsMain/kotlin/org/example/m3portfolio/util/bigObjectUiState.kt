@@ -6,6 +6,7 @@ import org.example.m3portfolio.models.Certificate
 import org.example.m3portfolio.models.Experience
 import org.example.m3portfolio.models.Info
 import org.example.m3portfolio.models.Project
+import org.example.m3portfolio.models.Visitor
 import org.example.m3portfolio.models.Website
 
 data class BigObjectUiState(
@@ -14,7 +15,9 @@ data class BigObjectUiState(
     var projectsList: List<Project> = listOf(),
     var certificatesList: List<Certificate> = listOf(),
     var websitesList: List<Website> = listOf(),
-    var messagePopup: String = ""
+    var messagePopup: String = "",
+    var visitCount :Int = 0,
+    var visitor: Visitor = Visitor()
 )
 
 

@@ -49,6 +49,7 @@ kotlin {
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(libs.kotlinx.serialization)
+            implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
         }
 
         jsMain.dependencies {

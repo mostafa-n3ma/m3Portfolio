@@ -2,11 +2,14 @@ package org.example.m3portfolio.api
 
 import com.varabyte.kobweb.api.Api
 import com.varabyte.kobweb.api.ApiContext
+import com.varabyte.kobweb.api.data.Data
 import com.varabyte.kobweb.api.data.getValue
+import io.realm.kotlin.internal.platform.currentTime
 import org.bson.codecs.ObjectIdGenerator
 import org.example.m3portfolio.ApiPaths
 import org.example.m3portfolio.Constants
 import org.example.m3portfolio.Constants.EXPERIENCE_ID_PARAM
+import org.example.m3portfolio.Constants.VISITOR_ID_PARAM
 import org.example.m3portfolio.data.MongoDB
 import org.example.m3portfolio.models.ApiCertificateResponse
 import org.example.m3portfolio.models.ApiExperienceResponse
@@ -17,9 +20,11 @@ import org.example.m3portfolio.models.Certificate
 import org.example.m3portfolio.models.Experience
 import org.example.m3portfolio.models.Info
 import org.example.m3portfolio.models.Project
+import org.example.m3portfolio.models.Visitor
 import org.example.m3portfolio.models.Website
 import org.example.m3portfolio.util.getBody
 import org.example.m3portfolio.util.setBody
+import kotlin.random.Random
 
 
 @Api(routeOverride = ApiPaths.READ_INFO_PATH)
@@ -44,6 +49,99 @@ suspend fun updateInfoData(context: ApiContext) {
         context.res.setBody(e.message)
     }
 }
+
+
+
+@Api(routeOverride = ApiPaths.COUNT_VISITORS)
+suspend fun getVisitorsCount(context: ApiContext){
+    return try {
+        val visitorsCount: Int = context.data.getValue<MongoDB>().countVisitors()
+        context.res.setBody(visitorsCount)
+    }catch (e:Exception){
+        context.res.setBody(e.message)
+    }
+}
+
+@Api(routeOverride = ApiPaths.READ_VISITORS)
+suspend fun getAllVisitorsData(context: ApiContext){
+    return try {
+        val allVisitors: List<Visitor> = context.data.getValue<MongoDB>().readVisitors()
+        context.res.setBody(allVisitors)
+    }catch (e:Exception){
+        context.res.setBody(e.message)
+    }
+}
+
+@Api(routeOverride = ApiPaths.READ_VISITOR_BY_ID)
+suspend fun getVisitorDataById(context: ApiContext){
+    println("getVisitorDataById")
+    context.logger.info("getVisitorDataById")
+        val visitorId = context.req.params[VISITOR_ID_PARAM]
+    context.logger.info("getVisitorDataById:visitorId = $visitorId")
+    if (!visitorId.isNullOrEmpty()){
+        context.logger.info("getVisitorDataById:visitorId is not null  ")
+            try {
+                val selectedVisitor: List<Visitor> = context.data.getValue<MongoDB>().readVisitorById(id=visitorId)
+                context.logger.info("getVisitorDataById:selectedVisitor = $selectedVisitor")
+                context.res.setBody(selectedVisitor)
+
+            }catch (e:Exception){
+                println("from getVisitorDataById: catching: ${e.message}")
+                context.logger.info("getVisitorDataById: catching: ${e.message}")
+                context.res.setBody(e.message)
+            }
+        }else{
+        context.logger.info("getVisitorDataById: else: Visitor param empty")
+        context.res.setBody(" Visitor param empty")
+        }
+
+}
+
+@Api(routeOverride = ApiPaths.RECORD_VISITOR)
+suspend fun recordVisitorData(context: ApiContext){
+    return try {
+        val newVisitor = context.req.getBody<Visitor>()
+        val newId = ObjectIdGenerator().generate().toString()
+        var result = false
+        if (newVisitor!=null){
+            result = context.data.getValue<MongoDB>().recordVisitor(newVisitor.copy(_id = newId))
+        }
+
+        if (result){
+            context.res.setBody(
+                newId
+            )
+        }else{
+            context.res.setBody(
+                ""
+            )
+        }
+    }catch (e:Exception){
+        context.res.setBody(e.message)
+    }
+}
+
+
+@Api(routeOverride = ApiPaths.UPDATE_VISITOR)
+suspend fun updateVisitorData(context: ApiContext){
+    return try {
+        val updatedVisitor = context.req.getBody<Visitor>()
+        context.res.setBody(
+            updatedVisitor?.let {
+                context.data.getValue<MongoDB>().updateVisitorRecords(it)
+            }
+        )
+    }catch (e:Exception){
+        context.res.setBody(e.message)
+    }
+}
+
+
+
+
+
+
+
 
 
 

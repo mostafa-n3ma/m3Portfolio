@@ -7,6 +7,7 @@ import kotlinx.serialization.json.Json
 import org.example.m3portfolio.ApiPaths
 import org.example.m3portfolio.Constants
 import org.example.m3portfolio.Constants.EXPERIENCE_ID_PARAM
+import org.example.m3portfolio.Constants.VISITOR_ID_PARAM
 import org.example.m3portfolio.Constants.WEBSITE_ID_PARAM
 import org.example.m3portfolio.models.ApiCertificateResponse
 import org.example.m3portfolio.models.ApiExperienceResponse
@@ -19,6 +20,7 @@ import org.example.m3portfolio.models.Info
 import org.example.m3portfolio.models.Project
 import org.example.m3portfolio.models.User
 import org.example.m3portfolio.models.UserWithoutPassword
+import org.example.m3portfolio.models.Visitor
 import org.example.m3portfolio.models.Website
 
 
@@ -48,6 +50,88 @@ suspend fun requestInfoDataUpdate(info: Info): Boolean {
         false
     }
 }
+
+
+
+suspend fun requestVisitorsCount(
+    onSuccess:(Int)->Unit,
+    onError:(Exception)->Unit
+){
+    try {
+        val count: String? = window.api.tryGet(
+            apiPath = ApiPaths.COUNT_VISITORS
+        )?.decodeToString()
+        onSuccess(
+            Json.decodeFromString(count.toString())
+        )
+    }catch (e:Exception){
+        onError(e)
+    }
+}
+
+
+suspend fun requestVisitorsData(
+    onSuccess: (List<Visitor>) -> Unit,
+    onError: (Exception) -> Unit
+){
+    try {
+        val visitorsData = window.api.tryGet(
+            apiPath = ApiPaths.READ_VISITORS
+        )?.decodeToString()
+        onSuccess(
+            Json.decodeFromString(visitorsData.toString())
+        )
+
+    }catch (e:Exception){
+        onError(e)
+    }
+}
+
+
+suspend fun requestVisitorAdd(visitor: Visitor):String{
+return try {
+    window.api.tryPost(
+        apiPath = ApiPaths.RECORD_VISITOR,
+        body = Json.encodeToString(visitor).encodeToByteArray()
+    )?.decodeToString()?:""
+}catch (e:Exception){
+    println(e.message)
+    ""
+}
+}
+
+suspend fun requestVisitorUpdate(visitor: Visitor):Boolean{
+    return try {
+        window.api.tryPost(
+            apiPath = ApiPaths.UPDATE_VISITOR,
+            body = Json.encodeToString(visitor).encodeToByteArray()
+        )?.decodeToString().toBoolean()
+    }catch (e:Exception){
+        println(e.message)
+        false
+    }
+}
+
+suspend fun requestVisitorById(id: String):List<Visitor>{
+    return try {
+        val selectedVisitor = window.api.tryGet(
+            apiPath = "${ApiPaths.READ_VISITOR_BY_ID}?$VISITOR_ID_PARAM=$id"
+        )?.decodeToString()
+        Json.decodeFromString<List<Visitor>>(selectedVisitor.toString())
+    }catch (e:Exception){
+        println("from requestVisitorById:catch>>${e.message}")
+        emptyList<Visitor>()
+    }
+}
+
+
+
+
+
+
+
+
+
 
 
 suspend fun requestExperienceData(

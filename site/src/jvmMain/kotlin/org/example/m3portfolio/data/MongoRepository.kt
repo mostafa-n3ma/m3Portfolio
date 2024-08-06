@@ -5,12 +5,26 @@ import org.example.m3portfolio.models.Experience
 import org.example.m3portfolio.models.Info
 import org.example.m3portfolio.models.Project
 import org.example.m3portfolio.models.User
+import org.example.m3portfolio.models.Visitor
 import org.example.m3portfolio.models.Website
 
 interface MongoRepository {
 
     suspend fun checkUserExistence(user: User):User?
     suspend fun checkUserId(id:String):Boolean
+
+
+
+    suspend fun countVisitors():Int
+    suspend fun readVisitors():List<Visitor>
+    suspend fun readVisitorById(id: String):List<Visitor>
+    suspend fun recordVisitor(visitor: Visitor):Boolean
+
+    suspend fun updateVisitorRecords(visitor: Visitor):Boolean
+
+
+
+
 
     suspend fun readInfo():List<Info>
     suspend fun updateInfo(info: Info):Boolean

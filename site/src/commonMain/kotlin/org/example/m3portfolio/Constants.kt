@@ -1,5 +1,9 @@
 package org.example.m3portfolio
 
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+import org.example.m3portfolio.models.Visitor
+
 object Constants{
     const val DATABASE_NAME = "portfolio_database"
 
@@ -15,6 +19,7 @@ object Constants{
     const val PROJECT_ID_PARAM = "projectid"
     const val CERTIFICATE_ID_PARAM = "certificateid"
     const val WEBSITE_ID_PARAM = "websiteid"
+    const val VISITOR_ID_PARAM = "visitorId"
 
     enum class Languages( name:String){
         EN("English"),
@@ -22,6 +27,7 @@ object Constants{
     }
     const val LANGUAGE_STORAGE_VALUE = "display_language"
     const val COLOR_MODE = "colorMode"
+    const val VISITOR_ID = "visitorId"
 
 
     const val MAIN_SECTION = "MAIN_section"
@@ -115,6 +121,13 @@ object ApiPaths{
     //info
     const val READ_INFO_PATH = "readinfo"
     const val UPDATE_INFO_PATH = "updateinfo"
+
+
+    const val COUNT_VISITORS = "count_visitors"
+    const val READ_VISITORS = "read_visitors"
+    const val READ_VISITOR_BY_ID = "read_visitor_by_id"
+    const val UPDATE_VISITOR = "update_visitor"
+    const val RECORD_VISITOR = "record_visitor"
 
     //experience
     const val READ_EXPERIENCE_PATH = "readexperince"
@@ -292,4 +305,9 @@ object Ids{
     const val projectPreviewDescriptionDiv = "projectPreviewDescriptionDiv"
 
 
+}
+
+
+fun getCurrentDateTime(): Instant {
+    return Clock.System.now()
 }
