@@ -150,16 +150,6 @@ fun fetchApiData(bigObject: MutableState<BigObjectUiState>) {
         )
 
 
-
-
-
-
-
-
-
-
-
-
         println("entering the scope //projects")
         requestInfoData(
             onSuccess = { respons: ApiInfoResponse ->

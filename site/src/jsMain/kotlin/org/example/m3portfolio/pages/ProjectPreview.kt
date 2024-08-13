@@ -40,7 +40,9 @@ import org.example.m3portfolio.models.Theme
 import org.example.m3portfolio.sections.FooterSection
 import org.example.m3portfolio.sections.project_sections.MainProjectSection
 import org.example.m3portfolio.sections.project_sections.ProjectDescriptionSection
+import org.example.m3portfolio.util.BigObjectUiState
 import org.example.m3portfolio.util.requestProjectDataById
+import org.example.m3portfolio.util.splitLanguages
 import org.jetbrains.compose.web.css.ms
 import org.jetbrains.compose.web.css.px
 import org.w3c.dom.get
@@ -89,9 +91,7 @@ fun ProjectPreviewPage() {
                         selectedProject = response.data.first()
                     }
                 }
-
             }
-
         }
     }
 
@@ -151,6 +151,10 @@ fun ProjectPreviewContent(
     breakpoint: Breakpoint,
     displayLanguage: MutableState<Constants.Languages>,
 ) {
+    val bigObject = remember { mutableStateOf(BigObjectUiState()) }
+    bigObject.value = bigObject.value.copy(
+        projectsList = listOf(selectedProject)
+    )
 
     Column(
         modifier = Modifier
@@ -180,16 +184,17 @@ fun ProjectPreviewContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
+
         MainProjectSection(
             breakpoint = breakpoint,
-            project = selectedProject,
+            bigObject = bigObject.value.splitLanguages(displayLanguage.value),
             context = context,
             displayLanguage = displayLanguage
         )
 
         ProjectDescriptionSection(
             breakpoint = breakpoint,
-            project = selectedProject,
+            bigObject = bigObject.value.splitLanguages(displayLanguage.value),
             context = context,
             displayLanguage = displayLanguage
         )

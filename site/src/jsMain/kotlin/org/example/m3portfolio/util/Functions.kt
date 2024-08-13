@@ -2,6 +2,7 @@ package org.example.m3portfolio.util
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -12,7 +13,9 @@ import com.varabyte.kobweb.compose.foundation.layout.Arrangement
 import com.varabyte.kobweb.compose.foundation.layout.Row
 import com.varabyte.kobweb.compose.style.KobwebComposeStyleSheet.attr
 import com.varabyte.kobweb.compose.ui.Alignment
+import com.varabyte.kobweb.compose.ui.AttrsModifier
 import com.varabyte.kobweb.compose.ui.Modifier
+import com.varabyte.kobweb.compose.ui.StyleModifier
 import com.varabyte.kobweb.compose.ui.graphics.Colors
 import com.varabyte.kobweb.compose.ui.modifiers.backgroundColor
 import com.varabyte.kobweb.compose.ui.modifiers.border
@@ -45,17 +48,22 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import org.example.m3portfolio.Constants
 import org.example.m3portfolio.Constants.FONT_FAMILY
 import org.example.m3portfolio.Ids
 import org.example.m3portfolio.components.FinalButton
 import org.example.m3portfolio.models.Theme
 import org.example.m3portfolio.navigation.Screen
 import org.example.m3portfolio.styles.ItemStyle
+import org.jetbrains.compose.web.attributes.AttrsScope
 import org.jetbrains.compose.web.css.Color
 import org.jetbrains.compose.web.css.LineStyle
 import org.jetbrains.compose.web.css.px
+import org.jetbrains.compose.web.dom.AttrBuilderContext
 import org.jetbrains.compose.web.dom.Button
 import org.jetbrains.compose.web.dom.Input
+import org.w3c.dom.Element
+import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLTextAreaElement
 import org.w3c.dom.get
@@ -85,7 +93,7 @@ fun isUserLoggedIn(content: @Composable () -> Unit) {
 }
 
 
-fun Modifier.noBorder():Modifier{
+fun Modifier.noBorder(): Modifier {
     return this
         .border(
             width = 0.px,
@@ -99,15 +107,17 @@ fun Modifier.noBorder():Modifier{
         )
 }
 
-enum class InputType{
+enum class InputType {
     TextArea,
     InputField
 }
-fun getElementValue(id:String,type:InputType):String{
-    return when(type){
+
+fun getElementValue(id: String, type: InputType): String {
+    return when (type) {
         InputType.TextArea -> {
             (document.getElementById(id) as HTMLTextAreaElement).value
         }
+
         InputType.InputField -> {
             (document.getElementById(id) as HTMLInputElement).value
         }
@@ -117,11 +127,11 @@ fun getElementValue(id:String,type:InputType):String{
 
 @Composable
 fun ControllersHeader(
-    selectableMode:Boolean,
-    selectBtnLabel :String = "Select",
-    onSelectBtnClicked:()->Unit,
-    addBtnLabel:String = "Add",
-    onAddDeleteBtnClicked:()->Unit,
+    selectableMode: Boolean,
+    selectBtnLabel: String = "Select",
+    onSelectBtnClicked: () -> Unit,
+    addBtnLabel: String = "Add",
+    onAddDeleteBtnClicked: () -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -166,20 +176,19 @@ fun ControllersHeader(
 }
 
 
-
 @Composable
 fun ThumbnailUpLoader(
-    field_id :String,
-    thumbnail:String,
-    thumbnailInputDisabled:Boolean,
-    onThumbnailSelect: (String, String) ->Unit
+    field_id: String,
+    thumbnail: String,
+    thumbnailInputDisabled: Boolean,
+    onThumbnailSelect: (String, String) -> Unit
 ) {
 
-    Row (
+    Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(54.px)
-    ){
+    ) {
         Input(
             type = org.jetbrains.compose.web.attributes.InputType.Text,
             attrs = Modifier
@@ -199,9 +208,9 @@ fun ThumbnailUpLoader(
                     condition = thumbnailInputDisabled,
                     other = Modifier.disabled()
                 )
-                .toAttrs{
-                    attr("placeholder","Thumbnail")
-                    attr("value",thumbnail)
+                .toAttrs {
+                    attr("placeholder", "Thumbnail")
+                    attr("value", thumbnail)
                 }
         )
 
@@ -231,13 +240,10 @@ fun ThumbnailUpLoader(
                     other = Modifier.disabled()
                 )
                 .toAttrs()
-        ){
+        ) {
             SpanText(text = "Upload")
         }
     }
 }
 
 
-//fun getCurrentDateTime(): Instant {
-//    return Clock.System.now()
-//}

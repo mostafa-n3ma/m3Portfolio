@@ -3,6 +3,7 @@ package org.example.m3portfolio.sections.project_sections
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import com.varabyte.kobweb.compose.css.AspectRatio
 import com.varabyte.kobweb.compose.css.FontWeight
 import com.varabyte.kobweb.compose.css.Transition
 import com.varabyte.kobweb.compose.css.TransitionProperty
@@ -12,7 +13,9 @@ import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.foundation.layout.Row
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
+import com.varabyte.kobweb.compose.ui.attrsModifier
 import com.varabyte.kobweb.compose.ui.graphics.Colors
+import com.varabyte.kobweb.compose.ui.modifiers.aspectRatio
 import com.varabyte.kobweb.compose.ui.modifiers.backgroundColor
 import com.varabyte.kobweb.compose.ui.modifiers.borderRadius
 import com.varabyte.kobweb.compose.ui.modifiers.color
@@ -28,7 +31,8 @@ import com.varabyte.kobweb.compose.ui.modifiers.onClick
 import com.varabyte.kobweb.compose.ui.modifiers.padding
 import com.varabyte.kobweb.compose.ui.modifiers.size
 import com.varabyte.kobweb.compose.ui.modifiers.transition
-import com.varabyte.kobweb.compose.ui.modifiers.width
+import com.varabyte.kobweb.compose.ui.styleModifier
+import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.core.PageContext
 import com.varabyte.kobweb.silk.components.graphics.Image
 import com.varabyte.kobweb.silk.components.text.SpanText
@@ -45,6 +49,7 @@ import org.example.m3portfolio.getLangString
 import org.example.m3portfolio.models.Project
 import org.example.m3portfolio.models.Theme
 import org.example.m3portfolio.styles.GithubBtnStyle
+import org.example.m3portfolio.util.BigObjectUiState
 import org.example.m3portfolio.util.noBorder
 import org.jetbrains.compose.web.css.ms
 import org.jetbrains.compose.web.css.percent
@@ -54,7 +59,7 @@ import org.jetbrains.compose.web.css.vh
 @Composable
 fun MainProjectSection(
     breakpoint: Breakpoint,
-    project: Project,
+    bigObject: BigObjectUiState,
     context: PageContext,
     displayLanguage: MutableState<Constants.Languages>,
 ) {
@@ -64,7 +69,7 @@ fun MainProjectSection(
         Constants.Languages.AR -> 1
     }
 
-    if (project == Project()) {
+    if (bigObject.projectsList.first() == Project()) {
         //loading
         LoadingIndicator()
     } else {
@@ -91,15 +96,18 @@ fun MainProjectSection(
                             modifier = Modifier
                                 .size(300.px)
                                 .margin(leftRight = 20.px)
-                                .borderRadius(r = 15.px),
-                            src = project.mainImageLink
+                                .borderRadius(r = 15.px)
+                                .styleModifier {
+                                    property("object-fit", "contain")
+                                },
+                            src = bigObject.projectsList.first().mainImageLink
                         )
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             SpanText(
                                 modifier = Modifier
-                                    .fontFamily(Constants.FONT_FAMILY)
+                                    .fontFamily(FONT_FAMILY)
                                     .fontSize(
                                         when (breakpoint) {
                                             Breakpoint.XL -> 32.px
@@ -112,12 +120,7 @@ fun MainProjectSection(
                                         if (colorMode.isLight) Theme.PrimaryLight.rgb
                                         else Colors.White
                                     ),
-                                text = project.title.split(Constants.LANGUAGES_SPLITTER_CODE)
-                                    .getOrElse(langCode) {
-                                        project.title.split(
-                                            Constants.LANGUAGES_SPLITTER_CODE
-                                        )[0]
-                                    },
+                                text = bigObject.projectsList.first().title,
 
                                 )
 
@@ -130,7 +133,7 @@ fun MainProjectSection(
                                         if (colorMode.isLight) Theme.HalfBlack.rgb
                                         else Theme.HalfWhite.rgb
                                     ),
-                                text = project.date,
+                                text = bigObject.projectsList.first().date,
                             )
 
                             Row(
@@ -144,10 +147,13 @@ fun MainProjectSection(
                                     )
                                     .borderRadius(r = 5.px)
                                     .onClick {
-                                        context.router.navigateTo(project.repoLink)
+                                        context.router.navigateTo(bigObject.projectsList.first().repoLink)
                                     }
                                     .noBorder(),
-                                horizontalArrangement = Arrangement.spacedBy(5.px,Alignment.CenterHorizontally)
+                                horizontalArrangement = Arrangement.spacedBy(
+                                    5.px,
+                                    Alignment.CenterHorizontally
+                                )
                             ) {
                                 Image(
                                     modifier = Modifier
@@ -169,12 +175,6 @@ fun MainProjectSection(
                                     text = "Check the Code"
                                 )
                             }
-
-
-
-
-
-
 
 
                         }
@@ -203,41 +203,53 @@ fun MainProjectSection(
                                 if (colorMode.isLight) Theme.HalfBlack.rgb
                                 else Theme.HalfWhite.rgb
                             )
-                            .align(Alignment.CenterEnd),
-                        text = project.subTitle
-                            .split(Constants.LANGUAGES_SPLITTER_CODE)
-                            .getOrElse(langCode) {
-                                project.subTitle.split(Constants.LANGUAGES_SPLITTER_CODE)[0]
+                            .align(Alignment.CenterEnd)
+                            .attrsModifier {
+                                attr("overflow", "scroll")
+                                if (displayLanguage.value == org.example.m3portfolio.Constants.Languages.AR) {
+                                    attr("lang", "ar")
+                                    attr("dir", "rtl")
+                                }
                             },
+                        text = bigObject.projectsList.first().subTitle,
                     )
 
-                    Column (
-                        modifier = Modifier.fillMaxWidth().margin(top = 20.px).align(Alignment.BottomCenter)
-                    ){
+                    Column(
+                        modifier = Modifier.fillMaxWidth().margin(top = 20.px)
+                            .align(Alignment.BottomCenter)
+                    ) {
                         SpanText(
                             modifier = Modifier
+                                .fillMaxWidth()
                                 .fontFamily(FONT_FAMILY)
                                 .fontSize(20.px)
                                 .fontWeight(FontWeight.Bold)
-                            ,
-                            text = getLangString(AppStrings.projectTechStack,displayLanguage.value),
+                                .attrsModifier {
+                                    attr("overflow", "scroll")
+                                    if (displayLanguage.value == org.example.m3portfolio.Constants.Languages.AR) {
+                                        attr("lang", "ar")
+                                        attr("dir", "rtl")
+                                    }
+                                },
+                            text = getLangString(
+                                AppStrings.projectTechStack,
+                                displayLanguage.value
+                            ),
                         )
 
                         SpanText(
                             modifier = Modifier
                                 .fontFamily(Constants.FONT_FAMILY)
                                 .fontSize(18.px)
-                                .fontWeight(FontWeight.Normal)
-                            ,
-                            text = project.techStack,
+                                .fontWeight(FontWeight.Normal),
+                            text = bigObject.projectsList.first().techStack,
                         )
                     }
 
 
                 }
 
-            }
-            else {
+            } else {
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -246,8 +258,11 @@ fun MainProjectSection(
                     Image(
                         modifier = Modifier
                             .size(200.px)
-                            .borderRadius(r = 15.px),
-                        src = project.mainImageLink
+                            .borderRadius(r = 15.px)
+                            .styleModifier {
+                                property("object-fit", "contain")
+                            },
+                        src = bigObject.projectsList.first().mainImageLink
                     )
                     SpanText(
                         modifier = Modifier
@@ -258,12 +273,7 @@ fun MainProjectSection(
                                 if (colorMode.isLight) Theme.PrimaryLight.rgb
                                 else Colors.White
                             ),
-                        text = project.title.split(Constants.LANGUAGES_SPLITTER_CODE)
-                            .getOrElse(langCode) {
-                                project.title.split(
-                                    Constants.LANGUAGES_SPLITTER_CODE
-                                )[0]
-                            },
+                        text = bigObject.projectsList.first().title,
 
                         )
 
@@ -276,7 +286,7 @@ fun MainProjectSection(
                                 if (colorMode.isLight) Theme.HalfBlack.rgb
                                 else Theme.HalfWhite.rgb
                             ),
-                        text = project.date,
+                        text = bigObject.projectsList.first().date,
                     )
 
                     SpanText(
@@ -287,12 +297,15 @@ fun MainProjectSection(
                             .color(
                                 if (colorMode.isLight) Theme.HalfBlack.rgb
                                 else Theme.HalfWhite.rgb
-                            ),
-                        text = project.subTitle
-                            .split(Constants.LANGUAGES_SPLITTER_CODE)
-                            .getOrElse(langCode) {
-                                project.subTitle.split(Constants.LANGUAGES_SPLITTER_CODE)[0]
+                            )
+                            .attrsModifier {
+                                attr("overflow", "scroll")
+                                if (displayLanguage.value == org.example.m3portfolio.Constants.Languages.AR) {
+                                    attr("lang", "ar")
+                                    attr("dir", "rtl")
+                                }
                             },
+                        text = bigObject.projectsList.first().subTitle,
                     )
 
                     Row(
@@ -307,10 +320,13 @@ fun MainProjectSection(
                             )
                             .borderRadius(r = 5.px)
                             .onClick {
-                                context.router.navigateTo(project.repoLink)
+                                context.router.navigateTo(bigObject.projectsList.first().repoLink)
                             }
                             .noBorder(),
-                        horizontalArrangement = Arrangement.spacedBy(5.px,Alignment.CenterHorizontally)
+                        horizontalArrangement = Arrangement.spacedBy(
+                            5.px,
+                            Alignment.CenterHorizontally
+                        )
                     ) {
                         Image(
                             modifier = Modifier
@@ -333,25 +349,34 @@ fun MainProjectSection(
                         )
                     }
 
-                    Column (
+                    Column(
                         modifier = Modifier.fillMaxWidth().margin(top = 20.px)
-                    ){
+                    ) {
                         SpanText(
                             modifier = Modifier
+                                .fillMaxWidth()
                                 .fontFamily(Constants.FONT_FAMILY)
                                 .fontSize(16.px)
                                 .fontWeight(FontWeight.Bold)
-                            ,
-                            text = getLangString(AppStrings.projectTechStack,displayLanguage.value),
+                                .attrsModifier {
+                                    attr("overflow", "scroll")
+                                    if (displayLanguage.value == org.example.m3portfolio.Constants.Languages.AR) {
+                                        attr("lang", "ar")
+                                        attr("dir", "rtl")
+                                    }
+                                },
+                            text = getLangString(
+                                AppStrings.projectTechStack,
+                                displayLanguage.value
+                            ),
                         )
 
                         SpanText(
                             modifier = Modifier
                                 .fontFamily(Constants.FONT_FAMILY)
                                 .fontSize(12.px)
-                                .fontWeight(FontWeight.Normal)
-                            ,
-                            text = project.techStack,
+                                .fontWeight(FontWeight.Normal),
+                            text = bigObject.projectsList.first().techStack,
                         )
                     }
 
@@ -359,7 +384,6 @@ fun MainProjectSection(
                 }
             }
         }
-
 
 
     }

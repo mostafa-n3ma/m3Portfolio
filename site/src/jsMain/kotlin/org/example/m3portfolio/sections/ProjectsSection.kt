@@ -31,9 +31,11 @@ import com.varabyte.kobweb.compose.ui.modifiers.maxHeight
 import com.varabyte.kobweb.compose.ui.modifiers.maxWidth
 import com.varabyte.kobweb.compose.ui.modifiers.onClick
 import com.varabyte.kobweb.compose.ui.modifiers.padding
+import com.varabyte.kobweb.compose.ui.modifiers.scale
 import com.varabyte.kobweb.compose.ui.modifiers.size
 import com.varabyte.kobweb.compose.ui.modifiers.transition
 import com.varabyte.kobweb.compose.ui.modifiers.width
+import com.varabyte.kobweb.compose.ui.styleModifier
 import com.varabyte.kobweb.core.PageContext
 import com.varabyte.kobweb.silk.components.graphics.Image
 import com.varabyte.kobweb.silk.components.layout.SimpleGrid
@@ -70,15 +72,19 @@ fun ProjectsSection(
     var currentList by remember {
         mutableStateOf(listOf<Project>())
     }
-    println(bigObject.projectsList)
+//    println(bigObject.projectsList)
     if (bigObject.projectsList.isNotEmpty()){
-        currentList = when(breakpoint){
-
-            Breakpoint.MD -> bigObject.projectsList.subList(0,3)
-            Breakpoint.LG -> bigObject.projectsList.subList(0,5)
-            Breakpoint.XL -> bigObject.projectsList.subList(0,7)
-            else-> bigObject.projectsList.subList(0,3)
+        if (bigObject.projectsList.size > 8){
+            currentList = when(breakpoint){
+                Breakpoint.MD -> bigObject.projectsList.subList(0,3)
+                Breakpoint.LG -> bigObject.projectsList.subList(0,5)
+                Breakpoint.XL -> bigObject.projectsList.subList(0,7)
+                else-> bigObject.projectsList
+            }
+        }else{
+            currentList = bigObject.projectsList
         }
+
     }
 
     if (bigObject.projectsList.isEmpty()){
@@ -181,8 +187,11 @@ fun ProjectsSection(
                         Image(
                             modifier = Modifier
                                 .size(300.px)
-                                .align(Alignment.CenterHorizontally),
-                            src = projectItem.mainImageLink
+                                .align(Alignment.CenterHorizontally)
+                                .styleModifier {
+                                    property("object-fit", "contain")
+                                },
+                            src = projectItem.mainImageLink,
                         )
                         SpanText(
                             modifier = Modifier

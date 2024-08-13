@@ -7,6 +7,7 @@ import com.varabyte.kobweb.compose.foundation.layout.Arrangement
 import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.ui.Modifier
+import com.varabyte.kobweb.compose.ui.attrsModifier
 import com.varabyte.kobweb.compose.ui.modifiers.fillMaxHeight
 import com.varabyte.kobweb.compose.ui.modifiers.fillMaxWidth
 import com.varabyte.kobweb.compose.ui.modifiers.fontFamily
@@ -25,18 +26,21 @@ import org.example.m3portfolio.Constants.FONT_FAMILY
 import org.example.m3portfolio.Constants.LANGUAGES_SPLITTER_CODE
 import org.example.m3portfolio.Ids.projectPreviewDescriptionDiv
 import org.example.m3portfolio.getLangString
-import org.example.m3portfolio.models.Project
+import org.example.m3portfolio.util.BigObjectUiState
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.dom.Div
 
 @Composable
 fun ProjectDescriptionSection(
     breakpoint: Breakpoint,
-    project: Project,
+    bigObject: BigObjectUiState,
     context: PageContext,
     displayLanguage: MutableState<Constants.Languages>,
 ) {
-
+    val langCode = when (displayLanguage.value) {
+        Constants.Languages.EN -> 0
+        Constants.Languages.AR -> 1
+    }
 
     Box(
         modifier = Modifier
@@ -50,9 +54,17 @@ fun ProjectDescriptionSection(
         ){
             SpanText(
                 modifier = Modifier
+                    .fillMaxWidth()
                     .fontSize(32.px)
                     .fontFamily(FONT_FAMILY)
                     .fontWeight(FontWeight.Bold)
+                    .attrsModifier {
+                        attr("overflow", "scroll")
+                        if (displayLanguage.value == org.example.m3portfolio.Constants.Languages.AR) {
+                            attr("lang", "ar")
+                            attr("dir", "rtl")
+                        }
+                    }
                 ,
                 text = getLangString(AppStrings.projectDescriptionHeader,displayLanguage.value)
             )
@@ -79,15 +91,12 @@ fun ProjectDescriptionSection(
                             }
                         }
                 ).let {
-                    when (displayLanguage.value) {
-                        Constants.Languages.EN -> document.getElementById(projectPreviewDescriptionDiv)?.innerHTML =
-                            project.description.split(LANGUAGES_SPLITTER_CODE)[0]
-
-                        Constants.Languages.AR -> document.getElementById(projectPreviewDescriptionDiv)?.innerHTML =
-                            project.description.split(LANGUAGES_SPLITTER_CODE)[1]
-                    }
+                         document.getElementById(projectPreviewDescriptionDiv)?.innerHTML =
+                            bigObject.projectsList.first().description.split(LANGUAGES_SPLITTER_CODE)
+                                .getOrElse(langCode) {
+                                    bigObject.projectsList.first().description
+                                }
                 }
-
         }
     }
 
