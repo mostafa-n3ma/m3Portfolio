@@ -91,7 +91,6 @@ fun WebsitesScreen() {
 
     LaunchedEffect(updateWebsitesList.value) {
         scope.launch {
-
             requestWebsitesData(
                 onSuccess = { response ->
                     when (response) {

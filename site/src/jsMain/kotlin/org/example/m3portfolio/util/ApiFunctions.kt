@@ -178,6 +178,19 @@ suspend fun requestExperienceDataUpdate(experience: Experience): Boolean {
 }
 
 
+suspend fun requestDeletingExperiences(ids:List<String>):Boolean{
+    return  try {
+        window.api.tryPost(
+            apiPath = ApiPaths.DELETE_EXPERIENCES_PATH,
+            body = Json.encodeToString(ids).encodeToByteArray()
+        )?.decodeToString().toBoolean()
+    }catch (e:Exception){
+        println(e.message)
+        false
+    }
+}
+
+
 suspend fun requestExperienceAdd(experience: Experience): Boolean {
     return try {
         window.api.tryPost(

@@ -33,6 +33,7 @@ interface MongoRepository {
     suspend fun readExperienceById(id:String):List<Experience>
     suspend fun insertExperience(experience: Experience):Boolean
     suspend fun updateExperience(experience: Experience):Boolean
+    suspend fun deleteSelectedExperiences(ids:List<String>):Boolean
 
 
     suspend fun readProjects():List<Project>

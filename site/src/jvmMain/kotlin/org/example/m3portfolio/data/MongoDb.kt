@@ -172,6 +172,10 @@ class MongoDB(private val context: InitApiContext) : MongoRepository {
             ).wasAcknowledged()
     }
 
+    override suspend fun deleteSelectedExperiences(ids: List<String>): Boolean {
+        return experienceCollection
+            .deleteMany(Filters.`in`(Experience::_id.name,ids)).wasAcknowledged()
+    }
 
 
     override suspend fun readProjects(): List<Project> {

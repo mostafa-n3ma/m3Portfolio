@@ -207,6 +207,32 @@ suspend fun addExperienceData(context: ApiContext){
     }
 }
 
+@Api(routeOverride = ApiPaths.DELETE_EXPERIENCES_PATH)
+suspend fun deleteExperiences(context: ApiContext){
+    return try {
+        val deletedExperiences = context.req.getBody<List<String>>()
+        context.res.setBody(
+            deletedExperiences?.let {
+                context.data.getValue<MongoDB>().deleteSelectedExperiences(it)
+            }
+        )
+    }catch (e:Exception){
+        context.res.setBody(
+            e.message
+        )
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
 @Api(routeOverride = ApiPaths.READ_PROJECTS_PATH)
 suspend fun getProjectsData(context: ApiContext) {
     try {

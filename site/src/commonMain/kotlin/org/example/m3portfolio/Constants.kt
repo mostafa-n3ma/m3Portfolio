@@ -134,6 +134,7 @@ object ApiPaths{
     const val READ_EXPERIENCE_BY_ID_PATH = "readexperincebyid"
     const val UPDATE_EXPERIENCE_PATH = "updateexperince"
     const val ADD_EXPERIENCE_PATH = "addexperince"
+    const val DELETE_EXPERIENCES_PATH = "deleteexperiences"
 
 
 
