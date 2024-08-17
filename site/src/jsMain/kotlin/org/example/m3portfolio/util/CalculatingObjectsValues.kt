@@ -3,6 +3,7 @@ package org.example.m3portfolio.util
 import org.example.m3portfolio.Ids
 import org.example.m3portfolio.models.Certificate
 import org.example.m3portfolio.models.Experience
+import org.example.m3portfolio.models.Gallery
 import org.example.m3portfolio.models.Info
 import org.example.m3portfolio.models.Project
 import org.example.m3portfolio.models.Website
@@ -71,4 +72,5 @@ fun calculatingWebsitePageValues():Website{
         link = getElementValue(Ids.website_link_field,InputType.InputField),
     )
 }
+
 

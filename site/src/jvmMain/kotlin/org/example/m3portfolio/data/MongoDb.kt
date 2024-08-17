@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.toList
 import org.example.m3portfolio.Constants.DATABASE_NAME
 import org.example.m3portfolio.models.Certificate
 import org.example.m3portfolio.models.Experience
+import org.example.m3portfolio.models.Gallery
 import org.example.m3portfolio.models.Info
 import org.example.m3portfolio.models.Project
 import org.example.m3portfolio.models.User
@@ -42,6 +43,7 @@ class MongoDB(private val context: InitApiContext) : MongoRepository {
     private val websitesCollection = database.getCollection<Website>("websites")
     private val userCollection = database.getCollection<User>("user")
     private val visitorsCollection = database.getCollection<Visitor>("visitors")
+    private val galleryCollection = database.getCollection<Gallery>("gallery")
     override suspend fun checkUserExistence(user: User): User? {
         return try {
             userCollection
@@ -83,26 +85,26 @@ class MongoDB(private val context: InitApiContext) : MongoRepository {
         context.logger.info("readVisitorById//MongoDb// id:$id")
         val result: List<Visitor> = visitorsCollection
             .find(
-                Filters.eq(Visitor::_id.name,id)
+                Filters.eq(Visitor::_id.name, id)
             ).toList()
         context.logger.info("readVisitorById//MongoDb// resultList:$result")
         return result
     }
 
     override suspend fun recordVisitor(visitor: Visitor): Boolean {
-       return visitorsCollection
-           .insertOne(visitor)
-           .wasAcknowledged()
+        return visitorsCollection
+            .insertOne(visitor)
+            .wasAcknowledged()
     }
 
     override suspend fun updateVisitorRecords(visitor: Visitor): Boolean {
-       return visitorsCollection
-           .updateOne(
-               Filters.eq(Visitor::_id.name,visitor._id),
-               mutableListOf(
-                   Updates.set(Visitor::date.name,visitor.date)
-               )
-           ).wasAcknowledged()
+        return visitorsCollection
+            .updateOne(
+                Filters.eq(Visitor::_id.name, visitor._id),
+                mutableListOf(
+                    Updates.set(Visitor::date.name, visitor.date)
+                )
+            ).wasAcknowledged()
     }
 
 
@@ -174,7 +176,7 @@ class MongoDB(private val context: InitApiContext) : MongoRepository {
 
     override suspend fun deleteSelectedExperiences(ids: List<String>): Boolean {
         return experienceCollection
-            .deleteMany(Filters.`in`(Experience::_id.name,ids)).wasAcknowledged()
+            .deleteMany(Filters.`in`(Experience::_id.name, ids)).wasAcknowledged()
     }
 
 
@@ -187,38 +189,38 @@ class MongoDB(private val context: InitApiContext) : MongoRepository {
     override suspend fun readProjectById(id: String): List<Project> {
         return projectsCollection
             .find(
-                Filters.eq(Project::_id.name,id)
+                Filters.eq(Project::_id.name, id)
             )
             .toList()
     }
 
     override suspend fun insertProject(project: Project): Boolean {
-       return projectsCollection
-           .insertOne(project)
-           .wasAcknowledged()
+        return projectsCollection
+            .insertOne(project)
+            .wasAcknowledged()
     }
 
     override suspend fun updateProject(project: Project): Boolean {
         return projectsCollection
             .updateOne(
-                Filters.eq(Project::_id.name,project._id),
+                Filters.eq(Project::_id.name, project._id),
                 mutableListOf(
-                    Updates.set(Project:: title.name,project.title),
-                    Updates.set(Project:: subTitle.name,project.subTitle),
-                    Updates.set(Project:: description.name,project.description),
-                    Updates.set(Project:: techStack.name,project.techStack),
-                    Updates.set(Project:: repoLink.name,project.repoLink),
-                    Updates.set(Project:: videoLink.name,project.videoLink),
-                    Updates.set(Project:: mainImageLink.name,project.mainImageLink),
-                    Updates.set(Project:: imagesList.name,project.imagesList),
-                    Updates.set(Project:: date.name,project.date),
+                    Updates.set(Project::title.name, project.title),
+                    Updates.set(Project::subTitle.name, project.subTitle),
+                    Updates.set(Project::description.name, project.description),
+                    Updates.set(Project::techStack.name, project.techStack),
+                    Updates.set(Project::repoLink.name, project.repoLink),
+                    Updates.set(Project::videoLink.name, project.videoLink),
+                    Updates.set(Project::mainImageLink.name, project.mainImageLink),
+                    Updates.set(Project::imagesList.name, project.imagesList),
+                    Updates.set(Project::date.name, project.date),
                 )
             ).wasAcknowledged()
     }
 
     override suspend fun deleteSelectedProjects(ids: List<String>): Boolean {
         return projectsCollection
-            .deleteMany(Filters.`in`(Project::_id.name,ids))
+            .deleteMany(Filters.`in`(Project::_id.name, ids))
             .wasAcknowledged()
     }
 
@@ -232,7 +234,7 @@ class MongoDB(private val context: InitApiContext) : MongoRepository {
     override suspend fun readCertificatesById(id: String): List<Certificate> {
         return certificatesCollection
             .find(
-                Filters.eq(Certificate::_id.name,id)
+                Filters.eq(Certificate::_id.name, id)
             )
             .toList()
     }
@@ -246,20 +248,20 @@ class MongoDB(private val context: InitApiContext) : MongoRepository {
     override suspend fun updateCertificate(certificate: Certificate): Boolean {
         return certificatesCollection
             .updateOne(
-                Filters.eq(Certificate::_id.name,certificate._id),
+                Filters.eq(Certificate::_id.name, certificate._id),
                 mutableListOf(
-                    Updates.set(Certificate::title.name,certificate.title),
-                    Updates.set(Certificate::from.name,certificate.from),
-                    Updates.set(Certificate::link.name,certificate.link),
-                    Updates.set(Certificate::date.name,certificate.date),
-                    Updates.set(Certificate::thumbnailLink.name,certificate.thumbnailLink),
+                    Updates.set(Certificate::title.name, certificate.title),
+                    Updates.set(Certificate::from.name, certificate.from),
+                    Updates.set(Certificate::link.name, certificate.link),
+                    Updates.set(Certificate::date.name, certificate.date),
+                    Updates.set(Certificate::thumbnailLink.name, certificate.thumbnailLink),
                 )
             ).wasAcknowledged()
     }
 
     override suspend fun deleteSelectedCertificates(ids: List<String>): Boolean {
         return certificatesCollection
-            .deleteMany(Filters.`in`(Certificate::_id.name,ids)).wasAcknowledged()
+            .deleteMany(Filters.`in`(Certificate::_id.name, ids)).wasAcknowledged()
     }
 
 
@@ -271,9 +273,9 @@ class MongoDB(private val context: InitApiContext) : MongoRepository {
 
     override suspend fun readWebsitesById(id: String): List<Website> {
         context.logger.info("readWebsitesById//MongoDb// id:$id")
-        val result =  websitesCollection
+        val result = websitesCollection
             .find(
-                Filters.eq(Website::_id.name,id)
+                Filters.eq(Website::_id.name, id)
             )
             .toList()
         context.logger.info("readWebsitesById//MongoDb// resultList:$result")
@@ -289,18 +291,43 @@ class MongoDB(private val context: InitApiContext) : MongoRepository {
     override suspend fun updateWebsite(website: Website): Boolean {
         return websitesCollection
             .updateOne(
-                Filters.eq(Website::_id.name,website._id),
+                Filters.eq(Website::_id.name, website._id),
                 mutableListOf(
-                    Updates.set(Website::title.name,website.title),
-                    Updates.set(Website::link.name,website.link),
-                    Updates.set(Website::icon.name,website.icon),
+                    Updates.set(Website::title.name, website.title),
+                    Updates.set(Website::link.name, website.link),
+                    Updates.set(Website::icon.name, website.icon),
                 )
             ).wasAcknowledged()
     }
 
     override suspend fun deleteSelectedWebsites(ids: List<String>): Boolean {
         return websitesCollection
-            .deleteMany(Filters.`in`(Website::_id.name,ids)).wasAcknowledged()
+            .deleteMany(Filters.`in`(Website::_id.name, ids)).wasAcknowledged()
+    }
+
+    override suspend fun readGallery(): List<Gallery> {
+        return galleryCollection
+            .find()
+            .toList()
+    }
+
+    override suspend fun readGalleryImgById(id: String): List<Gallery> {
+        return galleryCollection
+            .find(
+                Filters.eq(Gallery::_id.name, id)
+            )
+            .toList()
+    }
+
+    override suspend fun insertGallery(gallery: Gallery): Boolean {
+        return galleryCollection
+            .insertOne(gallery)
+            .wasAcknowledged()
+    }
+
+    override suspend fun deleteGalleries(ids: List<String>): Boolean {
+        return galleryCollection
+            .deleteMany(Filters.`in`(Gallery::_id.name, ids)).wasAcknowledged()
     }
 }
 

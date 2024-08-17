@@ -184,6 +184,15 @@ fun NavigationItems(breakpoint: Breakpoint) {
         },
         breakpoint = breakpoint
     )
+    NavigationItem(
+        modifier = Modifier.margin(bottom = 24.px),
+        selected = context.route.path == Screen.AdminGallery.route,
+        title = "Gallery",
+        onClick = {
+            context.router.navigateTo(Screen.AdminGallery.route)
+        },
+        breakpoint = breakpoint
+    )
 
 
 }

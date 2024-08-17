@@ -7,8 +7,10 @@ import kotlinx.serialization.json.Json
 import org.example.m3portfolio.ApiPaths
 import org.example.m3portfolio.Constants
 import org.example.m3portfolio.Constants.EXPERIENCE_ID_PARAM
+import org.example.m3portfolio.Constants.GALLERY_ID_PARAM
 import org.example.m3portfolio.Constants.VISITOR_ID_PARAM
 import org.example.m3portfolio.Constants.WEBSITE_ID_PARAM
+import org.example.m3portfolio.Ids
 import org.example.m3portfolio.models.ApiCertificateResponse
 import org.example.m3portfolio.models.ApiExperienceResponse
 import org.example.m3portfolio.models.ApiInfoResponse
@@ -16,6 +18,7 @@ import org.example.m3portfolio.models.ApiProjectResponse
 import org.example.m3portfolio.models.ApiWebsiteResponse
 import org.example.m3portfolio.models.Certificate
 import org.example.m3portfolio.models.Experience
+import org.example.m3portfolio.models.Gallery
 import org.example.m3portfolio.models.Info
 import org.example.m3portfolio.models.Project
 import org.example.m3portfolio.models.User
@@ -412,15 +415,6 @@ suspend fun requestDeletingWebsites(ids:List<String>):Boolean{
 
 
 
-
-
-
-
-
-
-
-
-
 suspend fun requestUserCheck(user: User): UserWithoutPassword? {
     return try {
         val result: ByteArray? = window.api.tryPost(
@@ -451,4 +445,84 @@ suspend fun requestIdCheck(id: String): Boolean {
         false
     }
 }
+
+
+
+
+suspend fun requestGalleryData(
+    onSuccess:(List<Gallery>)->Unit,
+    onError: (Exception) -> Unit
+){
+    try {
+        val galleryData = window.api.tryGet(
+            apiPath = ApiPaths.READ_GALLERY_PATH
+        )?.decodeToString()
+        onSuccess(
+            Json.decodeFromString(galleryData.toString())
+        )
+    }catch (e:Exception){
+        onError(e)
+    }
+}
+
+
+
+suspend fun requestGalleryById(id:String):List<Gallery>{
+    return try {
+        val selectedGalleryImg = window.api.tryGet(
+            apiPath = "${ApiPaths.READ_GALLERY_BY_ID_PATH}??${GALLERY_ID_PARAM}=$id"
+        )?.decodeToString()
+        Json.decodeFromString<List<Gallery>>(selectedGalleryImg.toString())
+    }catch (e:Exception){
+        println("from requestGalleryById:catch ${e.message}")
+        emptyList<Gallery>()
+    }
+}
+
+
+suspend fun requestGalleryAdd(gallery: Gallery):Boolean{
+    return try {
+        window.api.tryPost(
+            apiPath = ApiPaths.ADD_GALLERY_PATH,
+            body = Json.encodeToString(gallery).encodeToByteArray()
+        )?.decodeToString().toBoolean()
+    }catch (e:Exception){
+        println("from requestGalleryAdd :catch:${e.message}")
+        false
+    }
+}
+
+
+
+suspend fun requestDeletingGalleries(ids:List<String>):Boolean{
+    return try {
+        window.api.tryPost(
+            apiPath = ApiPaths.DELETE_GALLERIES_PATH,
+            body = Json.encodeToString(ids).encodeToByteArray()
+        )?.decodeToString().toBoolean()
+    }catch (e:Exception){
+        println("from requestDeletingGalleries:catch::${e.message}")
+        false
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

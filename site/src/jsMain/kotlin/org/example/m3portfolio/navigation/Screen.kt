@@ -3,6 +3,7 @@ package org.example.m3portfolio.navigation
 import org.example.m3portfolio.Constants
 import org.example.m3portfolio.Constants.CERTIFICATE_ID_PARAM
 import org.example.m3portfolio.Constants.EXPERIENCE_ID_PARAM
+import org.example.m3portfolio.Constants.GALLERY_ID_PARAM
 import org.example.m3portfolio.Constants.PROJECT_ID_PARAM
 import org.example.m3portfolio.Constants.WEBSITE_ID_PARAM
 import org.example.m3portfolio.Ids
@@ -39,6 +40,15 @@ sealed class Screen(val route:String) {
     object AdminWebsiteEdit:Screen(route = "/admin/websites/edit"){
         fun passWebsiteId(id: String) = "/admin/websites/edit?$WEBSITE_ID_PARAM=$id"
     }
+
+
+    object AdminGallery:Screen(route = "/admin/gallery/")
+    object AdminGalleryAdd:Screen(route = "/admin/gallery/add"){
+        fun passGalleryImgId(id:String) = "/admin/gallery/add?${GALLERY_ID_PARAM}=${id}"
+    }
+
+
+
 
 
     object ProjectPreview :Screen(route = "/project_preview"){

@@ -20,6 +20,7 @@ object Constants{
     const val CERTIFICATE_ID_PARAM = "certificateid"
     const val WEBSITE_ID_PARAM = "websiteid"
     const val VISITOR_ID_PARAM = "visitorId"
+    const val GALLERY_ID_PARAM = "galleryid"
 
     enum class Languages( name:String){
         EN("English"),
@@ -163,6 +164,17 @@ object ApiPaths{
     const val DELETE_WEBSITES_PATH = "deleteebsites"
 
 
+    //gallery
+    const val  READ_GALLERY_PATH = "readgalleryimgs"
+    const val  READ_GALLERY_BY_ID_PATH = "readgallerybyid"
+    const val  ADD_GALLERY_PATH = "addgallery"
+    const val  DELETE_GALLERIES_PATH = "deletegalleries"
+
+
+
+
+
+
 
     // user check
     const val USER_CHECK_PATH = "usercheck"
@@ -296,6 +308,10 @@ object Ids{
     const val website_link_field = "website_link_field"
     const val website_icon_field = "website_icon_field"
 
+
+    // Admin Gallery
+    const val gallery_category_field = "gallery_category_field"
+    const val gallery_base64_field = "gallery_base64_field"
 
 
 

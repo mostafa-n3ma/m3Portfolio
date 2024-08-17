@@ -2,6 +2,7 @@ package org.example.m3portfolio.data
 
 import org.example.m3portfolio.models.Certificate
 import org.example.m3portfolio.models.Experience
+import org.example.m3portfolio.models.Gallery
 import org.example.m3portfolio.models.Info
 import org.example.m3portfolio.models.Project
 import org.example.m3portfolio.models.User
@@ -59,7 +60,10 @@ interface MongoRepository {
 
 
 
-
+    suspend fun readGallery():List<Gallery>
+    suspend fun readGalleryImgById(id:String):List<Gallery>
+    suspend fun insertGallery(gallery: Gallery):Boolean
+    suspend fun deleteGalleries(ids:List<String>):Boolean
 
 
 }

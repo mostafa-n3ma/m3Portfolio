@@ -2,13 +2,12 @@ package org.example.m3portfolio.api
 
 import com.varabyte.kobweb.api.Api
 import com.varabyte.kobweb.api.ApiContext
-import com.varabyte.kobweb.api.data.Data
 import com.varabyte.kobweb.api.data.getValue
-import io.realm.kotlin.internal.platform.currentTime
 import org.bson.codecs.ObjectIdGenerator
 import org.example.m3portfolio.ApiPaths
 import org.example.m3portfolio.Constants
 import org.example.m3portfolio.Constants.EXPERIENCE_ID_PARAM
+import org.example.m3portfolio.Constants.GALLERY_ID_PARAM
 import org.example.m3portfolio.Constants.VISITOR_ID_PARAM
 import org.example.m3portfolio.data.MongoDB
 import org.example.m3portfolio.models.ApiCertificateResponse
@@ -18,13 +17,13 @@ import org.example.m3portfolio.models.ApiProjectResponse
 import org.example.m3portfolio.models.ApiWebsiteResponse
 import org.example.m3portfolio.models.Certificate
 import org.example.m3portfolio.models.Experience
+import org.example.m3portfolio.models.Gallery
 import org.example.m3portfolio.models.Info
 import org.example.m3portfolio.models.Project
 import org.example.m3portfolio.models.Visitor
 import org.example.m3portfolio.models.Website
 import org.example.m3portfolio.util.getBody
 import org.example.m3portfolio.util.setBody
-import kotlin.random.Random
 
 
 @Api(routeOverride = ApiPaths.READ_INFO_PATH)
@@ -35,7 +34,6 @@ suspend fun getInfoData(context: ApiContext) {
 
     } catch (e: Exception) {
         context.res.setBody(ApiInfoResponse.Error(e.message.toString()))
-
     }
 }
 
@@ -222,13 +220,6 @@ suspend fun deleteExperiences(context: ApiContext){
         )
     }
 }
-
-
-
-
-
-
-
 
 
 
@@ -461,5 +452,65 @@ suspend fun deleteWebsiteData(context: ApiContext){
 
 
 
+@Api(routeOverride = ApiPaths.READ_GALLERY_PATH)
+suspend fun getGalleryData(context: ApiContext){
+    try {
+        val galleryResult: List<Gallery> = context.data.getValue<MongoDB>().readGallery()
+        context.res.setBody(
+            galleryResult
+        )
 
 
+    }catch (e:Exception){
+        context.res.setBody(e.message)
+    }
+}
+
+
+
+@Api(routeOverride = ApiPaths.READ_GALLERY_BY_ID_PATH)
+suspend fun getGalleryById(context: ApiContext){
+    val id = context.req.params[GALLERY_ID_PARAM]
+    if (!id.isNullOrEmpty()){
+        val selectedGalleryImg = context.data.getValue<MongoDB>().readGalleryImgById(id)
+        context.res.setBody(
+            selectedGalleryImg
+        )
+    }else{
+        context.res.setBody("Error gallery img oes not exist")
+    }
+
+}
+
+@Api(routeOverride = ApiPaths.ADD_GALLERY_PATH)
+suspend fun addGalleryData(context: ApiContext){
+    return try {
+        val newGalleryImage = context.req.getBody<Gallery>()
+        context.res.setBody(
+            newGalleryImage?.let {
+                context.data.getValue<MongoDB>().insertGallery(it.copy(_id = ObjectIdGenerator().generate().toString()))
+            }
+        )
+
+    }catch (e:Exception){
+        context.res.setBody("form addGalleryData:endpoints:${e.message}")
+    }
+}
+
+
+
+@Api(routeOverride = ApiPaths.DELETE_GALLERIES_PATH)
+suspend fun deleteGalleriesData(context: ApiContext){
+    return try {
+        val deletedGalleriesIdsList = context.req.getBody<List<String>>()
+        context.res.setBody(
+            deletedGalleriesIdsList?.let {
+                context.data.getValue<MongoDB>().deleteGalleries(it)
+            }
+        )
+
+
+    }catch (e:Exception){
+        context.res.setBody(e.message)
+    }
+}

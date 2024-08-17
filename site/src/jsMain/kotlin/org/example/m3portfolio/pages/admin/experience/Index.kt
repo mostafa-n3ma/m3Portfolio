@@ -91,7 +91,6 @@ fun ExperienceScreen() {
 
     val context = rememberPageContext()
 
-
     LaunchedEffect(updateExperiencesList.value) {
         scope.launch {
             requestExperienceData(
