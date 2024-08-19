@@ -381,6 +381,24 @@ fun HeaderNavigationItems(
                 },
                 breakpoint = breakpoint
             )
+
+
+            HeaderNavigationItem(
+                modifier = Modifier.margin(right = 10.px),
+                selected = context.route.path == "",
+                title = getLangString(AppStrings.headerAboutMeText, displayLanguage.value),
+                onClick = {
+                          context.router.navigateTo(Screen.AboutMe.route)
+                },
+                breakpoint = breakpoint
+            )
+
+
+
+
+
+
+
         }
 
         Constants.HeaderNavigationItemsTypes.ProjectPreviewHeaders -> {

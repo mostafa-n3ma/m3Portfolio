@@ -27,6 +27,7 @@ fun calculateInfoPageValues(): Info {
         frameWorks =getElementValue(Ids.info_framworksField,InputType.InputField),
         resumeLink =getElementValue(Ids.info_ResumeLinkField,InputType.InputField),
         extra =getElementValue(Ids.info_ExtraField,InputType.InputField),
+        about =getElementValue(Ids.info_about_editor,InputType.TextArea),
     )
 }
 

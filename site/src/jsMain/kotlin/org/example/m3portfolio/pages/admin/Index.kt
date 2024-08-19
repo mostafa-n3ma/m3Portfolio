@@ -49,6 +49,8 @@ import org.example.m3portfolio.Ids.info_PhoneField
 import org.example.m3portfolio.Ids.info_ResumeLinkField
 import org.example.m3portfolio.Ids.info_RoleField
 import org.example.m3portfolio.Ids.info_SkillsField
+import org.example.m3portfolio.Ids.info_about_editor
+import org.example.m3portfolio.Ids.info_about_preview
 import org.example.m3portfolio.components.AdminPanelLayout
 import org.example.m3portfolio.components.ControlPopup
 import org.example.m3portfolio.components.EditorControllersPanel
@@ -107,6 +109,7 @@ data class InfoScreenUiState(
     val frameWorks: String="",
     var resumeLink: String = "",
     var extra: String = "",
+    var about:String = "",
     var editorVisibility: Boolean = true,
     var messagePopup: String = "",
     var linkPopup: Boolean = false,
@@ -150,10 +153,13 @@ fun InfoScreenContent() {
                             tools = apiResponse.data.tools,
                             frameWorks = apiResponse.data.frameWorks,
                             resumeLink = apiResponse.data.resumeLink,
-                            extra = apiResponse.data.extra
+                            extra = apiResponse.data.extra,
+                            about = apiResponse.data.about
                         )
                         getEditor(id = info_Bio_editor).value = uiState.bio
                         applyToPreview(preview_id = info_Bio_preview, editor_id = info_Bio_editor)
+                        getEditor(id = info_about_editor).value = uiState.about
+                        applyToPreview(preview_id = info_about_preview, editor_id = info_about_editor)
                         println(uiState)
                     }
                 }
@@ -675,6 +681,45 @@ fun InfoScreenContent() {
 
             }
 
+
+            //about
+            Column(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                SpanText(
+                    text = "about me: ",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fontFamily(FONT_FAMILY)
+                        .fontSize(32.px)
+                        .fontWeight(FontWeight.Bold)
+                )
+
+                EditorControllersPanel(
+                    breakpoint = breakpoint,
+                    editorVisibility = uiState.editorVisibility,
+                    onEditorVisibilityChanged = {
+                        uiState = uiState.copy(editorVisibility = !uiState.editorVisibility)
+                    },
+                    onLinkViewClicked = {
+                        uiState = uiState.copy(linkPopup = true)
+                    },
+                    onImageViewClicked = {
+                        uiState = uiState.copy(imagePopup = true)
+                    },
+                    editor_id = info_about_editor,
+                    preview_id = info_about_preview
+                )
+
+                EditorComponent(
+                    editor_id = info_about_editor,
+                    preview_id = info_about_preview,
+                    breakpoint = breakpoint,
+                    editorVisibility = uiState.editorVisibility
+                )
+
+
+            }
 
             FinalButton(
                 onClick = {

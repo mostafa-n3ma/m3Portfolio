@@ -43,6 +43,8 @@ fun BigObjectUiState.splitLanguages(displayLanguage: Constants.Languages): BigOb
                     github = this.infoObject.github, // Assuming GitHub URL doesn't change based on language
                     bio = this.infoObject.bio.split(LANGUAGES_SPLITTER_CODE)
                         .getOrElse(langCode) { this.infoObject.bio.split(LANGUAGES_SPLITTER_CODE)[0] },
+                    about = this.infoObject.about.split(LANGUAGES_SPLITTER_CODE)
+                        .getOrElse(langCode) { this.infoObject.about.split(LANGUAGES_SPLITTER_CODE)[0] },
                     education = this.infoObject.education.split(LANGUAGES_SPLITTER_CODE)
                         .getOrElse(langCode) {
                             this.infoObject.education.split(LANGUAGES_SPLITTER_CODE)[0]

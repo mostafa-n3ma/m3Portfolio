@@ -74,6 +74,7 @@ object AppStrings {
     val headerCertificatesText = Strings("Certificates", "الشهادات")
     val headerSkillsText = Strings("Skills", "المهارات")
     val headerExperienceText = Strings("Expertise", "الخبرات")
+    val headerAboutMeText = Strings("About Me","نبذة عني ")
 
 
     val projectMainHeader = Strings("Main","الرئيسية")
@@ -102,7 +103,21 @@ object AppStrings {
     //footer
     val copyRights = Strings("Mostafa N3ma (V 1.0) - Copyright @ 2024 Personal Website","مصطفى نعمة (الإصدار 1.0) - حقوق الطبع والنشر @ 2024 الموقع الشخصي")
 
+    val always_excited = Strings(
+        "I’m always excited to explore new opportunities, whether it’s internships, training, or volunteering, where I can contribute my expertise in Android development and learn even more.",
+        "انا دائمًا متحمس لاستكشاف فرص جديدة، سواء كانت تدريبية أو تطوعية، حيث يمكنني المساهمة بخبرتي في تطوير تطبيقات الأندرويد وتعلم المزيد"
+        )
 
+
+    val contactMe = Strings(
+        "If you’d like to connect or check out my work, feel free to reach out!",
+        "إذا كنت ترغب في التواصل أو الاطلاع على أعمالي، لا تتردد في الاتصال بي!"
+    )
+
+    val for_more_details = Strings(
+        "for more details checkout my resume here ",
+        "للمزيد من التفاصيل، يمكنك الاطلاع على سيرتي الذاتية هنا"
+    )
 }
 
 
@@ -214,6 +229,8 @@ object Res{
 
         const val sql = "/sql.png"
         const val vs_code = "/vs_code.png"
+        const val back = "/back.png"
+        const val ellipse = "/ellipse.png"
 
 
 
@@ -232,6 +249,10 @@ object Res{
         const val checkmark = "/checkmark.svg"
         const val sun = "/sun.png"
         const val moon = "/moon.png"
+        const val gmail = "/gmail.png"
+        const val Smartphone = "/Smartphone.png"
+        const val location = "/location.png"
+        const val linkedin = "/linkedin.png"
     }
 }
 
@@ -269,7 +290,8 @@ object Ids{
     const val info_framworksField = "info_framworksField"
     const val info_ResumeLinkField = "info_ResumeLinkField"
     const val info_ExtraField = "info_ExtraField"
-
+    const val info_about_editor = "info_about_editor"
+    const val info_about_preview = "info_about_preview"
 
 
     //Admin Experience Screen
@@ -320,6 +342,9 @@ object Ids{
     //Main Home Index Screen
     const val mainSectionBioDiv = "mainSectionBioDiv"
     const val projectPreviewDescriptionDiv = "projectPreviewDescriptionDiv"
+    const val aboutMeDiv = "aboutMeDiv"
+
+
 
 
 }

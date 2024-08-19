@@ -43,9 +43,7 @@ sealed class Screen(val route:String) {
 
 
     object AdminGallery:Screen(route = "/admin/gallery/")
-    object AdminGalleryAdd:Screen(route = "/admin/gallery/add"){
-        fun passGalleryImgId(id:String) = "/admin/gallery/add?${GALLERY_ID_PARAM}=${id}"
-    }
+
 
 
 
@@ -55,6 +53,8 @@ sealed class Screen(val route:String) {
         fun passProjectId(id:String) = "/project_preview?$PROJECT_ID_PARAM=$id"
     }
 
+
+    object AboutMe:Screen(route = "/about_me")
 
 
 }

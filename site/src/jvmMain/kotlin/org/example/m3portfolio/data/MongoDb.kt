@@ -134,7 +134,8 @@ class MongoDB(private val context: InitApiContext) : MongoRepository {
                     Updates.set(Info::tools.name, info.tools),
                     Updates.set(Info::frameWorks.name, info.frameWorks),
                     Updates.set(Info::resumeLink.name, info.resumeLink),
-                    Updates.set(Info::extra.name, info.extra)
+                    Updates.set(Info::extra.name, info.extra),
+                    Updates.set(Info::about.name, info.about)
                 )
             ).wasAcknowledged()
     }

@@ -22,7 +22,8 @@ data class Info(
     val tools: String="",
     val frameWorks: String="",
     val resumeLink: String="",
-    val extra: String=""
+    val extra: String="",
+    val about:String = ""
 )
 
 
