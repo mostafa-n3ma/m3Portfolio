@@ -188,6 +188,7 @@ fun AboutMePage() {
                             .fontWeight(FontWeight.Normal)
                             .maxHeight(500.px)
                             .resize(Resize.None)
+                            .color(Colors.Black)
                             .overflow(Overflow.Auto)
                             .scrollBehavior(ScrollBehavior.Unset)
                             .toAttrs {
@@ -205,7 +206,8 @@ fun AboutMePage() {
 
 
             }
-        } else {
+        }
+        else {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -228,7 +230,7 @@ fun AboutMePage() {
                             .fontSize(20.px)
                             .fontFamily(FONT_FAMILY)
                             .fontWeight(FontWeight.Normal)
-//                            .maxHeight(500.px)
+                            .color(Colors.Black)
                             .resize(Resize.None)
                             .overflow(Overflow.Auto)
                             .scrollBehavior(ScrollBehavior.Unset)
@@ -259,6 +261,7 @@ fun AboutMePage() {
                 .padding(leftRight = 30.px)
                 .fontFamily(FONT_FAMILY)
                 .fontSize(20.px)
+                .color(Colors.Black)
                 .fontWeight(FontWeight.Normal)
                 .attrsModifier {
                     if (displayLanguage.value == Constants.Languages.AR) {
@@ -276,6 +279,7 @@ fun AboutMePage() {
                 .padding(leftRight = 30.px)
                 .fontSize(20.px)
                 .fontWeight(FontWeight.Normal)
+                .color(Colors.Black)
                 .attrsModifier {
                     if (displayLanguage.value == Constants.Languages.AR) {
                         attr("lang", "ar")
@@ -629,7 +633,9 @@ fun AboutMeHeader(
             modifier = Modifier
                 .fontSize(if (breakpoint > Breakpoint.MD) 32.px else 24.px)
                 .fontFamily(FONT_FAMILY)
-                .fontWeight(FontWeight.Bold),
+                .fontWeight(FontWeight.Bold)
+                .color(Colors.Black)
+            ,
             text = getLangString(AppStrings.MostafaN3ma, displayLanguage.value)
         )
     }

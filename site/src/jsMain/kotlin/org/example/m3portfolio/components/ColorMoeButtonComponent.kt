@@ -28,7 +28,7 @@ fun ColorMoodButton(
             }
             .cursor(Cursor.Pointer)
         ,
-        src = if (colorMode.isDark) Res.Icon.moon
-        else Res.Icon.sun
+        src = if (colorMode.isDark) Res.Icon.sun
+        else Res.Icon.moon
     )
 }
