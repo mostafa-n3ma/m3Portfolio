@@ -38,9 +38,11 @@ import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.silk.components.graphics.Image
 import com.varabyte.kobweb.silk.components.layout.SimpleGrid
 import com.varabyte.kobweb.silk.components.layout.numColumns
-import com.varabyte.kobweb.silk.components.text.SpanText
 import com.varabyte.kobweb.silk.style.breakpoint.Breakpoint
+import com.varabyte.kobweb.silk.components.text.SpanText
 import com.varabyte.kobweb.silk.style.toModifier
+//import com.varabyte.kobweb.silk.style.breakpoint.Breakpoint
+//import com.varabyte.kobweb.silk.style.toModifier
 import kotlinx.browser.document
 import org.example.m3portfolio.Constants.FONT_FAMILY
 import org.example.m3portfolio.Ids.info_Bio_editor
