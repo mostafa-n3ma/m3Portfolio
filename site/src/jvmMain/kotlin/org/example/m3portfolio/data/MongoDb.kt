@@ -20,19 +20,29 @@ import org.example.m3portfolio.models.User
 import org.example.m3portfolio.models.Visitor
 import org.example.m3portfolio.models.Website
 
+//@InitApi
+//fun initMongoDb(context: InitApiContext) {
+//    System.setProperty(
+//        "org.litote.mongo.test.mapping.service",
+//        "org.litote.kmongo.serialization.SerializationClassMappingTypeService"
+//    )
+//    context.data.add(MongoDB(context))
+//}
+
+
+
 @InitApi
-fun initMongoDb(context: InitApiContext) {
-    System.setProperty(
-        "org.litote.mongo.test.mapping.service",
-        "org.litote.kmongo.serialization.SerializationClassMappingTypeService"
-    )
-    context.data.add(MongoDB(context))
+fun initMongoDB(ctx: InitApiContext) {
+    System.getenv().forEach { (key, value) ->
+        if (key != null &&  key == "MONGODB_CONNECTION_STRING") {
+            ctx.data.add(MongoDB(context = ctx, connectionString = value))
+        }
+    }
 }
 
-
-class MongoDB(private val context: InitApiContext) : MongoRepository {
+class MongoDB(private val context: InitApiContext,connectionString:String) : MongoRepository {
     private val client = MongoClient.create(
-     System.getenv("MONGODB_CONNECTION_STRING")
+     connectionString
     )
 
     val database = client.getDatabase(DATABASE_NAME)
