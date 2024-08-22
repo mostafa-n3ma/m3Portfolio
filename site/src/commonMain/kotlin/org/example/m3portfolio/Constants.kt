@@ -231,6 +231,7 @@ object Res{
         const val vs_code = "/vs_code.png"
         const val back = "/back.png"
         const val ellipse = "/ellipse.png"
+        const val move_up = "/move_up.png"
 
 
 

@@ -13,6 +13,8 @@ import com.varabyte.kobweb.compose.css.FontWeight
 import com.varabyte.kobweb.compose.css.Overflow
 import com.varabyte.kobweb.compose.css.ScrollBehavior
 import com.varabyte.kobweb.compose.css.Transition
+import com.varabyte.kobweb.compose.css.TransitionProperty
+import com.varabyte.kobweb.compose.css.Visibility
 import com.varabyte.kobweb.compose.foundation.layout.Arrangement
 import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.foundation.layout.Column
@@ -24,6 +26,7 @@ import com.varabyte.kobweb.compose.ui.modifiers.backgroundColor
 import com.varabyte.kobweb.compose.ui.modifiers.borderRadius
 import com.varabyte.kobweb.compose.ui.modifiers.color
 import com.varabyte.kobweb.compose.ui.modifiers.cursor
+import com.varabyte.kobweb.compose.ui.modifiers.fillMaxHeight
 import com.varabyte.kobweb.compose.ui.modifiers.fillMaxSize
 import com.varabyte.kobweb.compose.ui.modifiers.fillMaxWidth
 import com.varabyte.kobweb.compose.ui.modifiers.fontFamily
@@ -36,13 +39,18 @@ import com.varabyte.kobweb.compose.ui.modifiers.overflow
 import com.varabyte.kobweb.compose.ui.modifiers.padding
 import com.varabyte.kobweb.compose.ui.modifiers.position
 import com.varabyte.kobweb.compose.ui.modifiers.scrollBehavior
+import com.varabyte.kobweb.compose.ui.modifiers.size
 import com.varabyte.kobweb.compose.ui.modifiers.textShadow
 import com.varabyte.kobweb.compose.ui.modifiers.transition
 import com.varabyte.kobweb.compose.ui.modifiers.translateY
+import com.varabyte.kobweb.compose.ui.modifiers.visibility
 import com.varabyte.kobweb.compose.ui.modifiers.width
 import com.varabyte.kobweb.compose.ui.modifiers.zIndex
 import com.varabyte.kobweb.compose.ui.thenIf
 import com.varabyte.kobweb.core.rememberPageContext
+import com.varabyte.kobweb.silk.components.graphics.Image
+import com.varabyte.kobweb.silk.components.icons.fa.FaAngleUp
+import com.varabyte.kobweb.silk.components.icons.fa.FaArrowUp
 import com.varabyte.kobweb.silk.components.icons.fa.FaBars
 import com.varabyte.kobweb.silk.components.icons.fa.FaX
 import com.varabyte.kobweb.silk.components.icons.fa.IconSize
@@ -53,20 +61,30 @@ import com.varabyte.kobweb.silk.theme.breakpoint.rememberBreakpoint
 import com.varabyte.kobweb.silk.theme.colors.ColorMode
 import kotlinx.browser.document
 import kotlinx.browser.localStorage
+import kotlinx.browser.window
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.example.m3portfolio.AppStrings
 import org.example.m3portfolio.Constants
 import org.example.m3portfolio.Constants.FONT_FAMILY
+import org.example.m3portfolio.Ids
 import org.example.m3portfolio.Measurements
+import org.example.m3portfolio.Res
 import org.example.m3portfolio.getLangString
 import org.example.m3portfolio.models.Theme
 import org.example.m3portfolio.navigation.Screen
+import org.example.m3portfolio.styles.ButtonsStyle
+import org.example.m3portfolio.styles.GithubBtnStyle
 import org.example.m3portfolio.styles.HeaderNavigationItemStyle
+import org.example.m3portfolio.util.getElementValue
 import org.jetbrains.compose.web.css.Position
 import org.jetbrains.compose.web.css.ms
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.px
+import org.jetbrains.compose.web.css.vh
 import org.jetbrains.compose.web.css.vw
+import org.w3c.dom.Element
+import org.w3c.dom.events.Event
 import org.w3c.dom.get
 import org.w3c.dom.set
 
@@ -84,9 +102,60 @@ fun MainHeaderPanel(
 
     Box(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxWidth()
+            .height(100.vh),
         contentAlignment = Alignment.Center
     ) {
+        var scrollx by remember { mutableStateOf(0.0) }
+        var showScrollUpBtn by remember { mutableStateOf(false) }
+        println("scrolling: showScrollBtn : $showScrollUpBtn")
+
+        LaunchedEffect(Unit) {
+            while (true) {
+                delay(3000)
+                println("scrolling :document.scrollingElement?.scrollTop ${document.scrollingElement?.scrollTop}")
+                println("scrolling : scrollX : $scrollx")
+                scrollx = document.scrollingElement?.scrollTop ?: 0.0
+                if (scrollx > 1000.0) {
+                    showScrollUpBtn = true
+                } else {
+                    showScrollUpBtn = false
+                }
+            }
+
+        }
+
+
+
+
+
+        Box(
+            modifier = Modifier
+                .size(150.px)
+                .align(Alignment.BottomEnd)
+                .visibility(
+                    if (showScrollUpBtn) Visibility.Visible else Visibility.Hidden
+                )
+                .zIndex(9)
+                .position(Position.Fixed)
+                .onClick {
+                    document.getElementById(Constants.MAIN_SECTION)?.scrollIntoView()
+                    showScrollUpBtn = false
+                },
+        ) {
+            Image(
+                modifier = GithubBtnStyle.toModifier()
+                    .align(Alignment.Center)
+                    .backgroundColor(Theme.HalfWhite.rgb)
+                    .padding(5.px)
+                    .borderRadius(r = 10.px)
+                    .size(64.px),
+                src = Res.Image.move_up
+            )
+        }
+
+
+
 
         Column(
             modifier = Modifier
@@ -160,7 +229,11 @@ fun HeaderPanel(
         )
     } else {
         // Collapsed Header Side Panel
-        CollapseHeaderPanel(onMenuClicked = onMenuClicked, overFlowMenuOpened = overFlowMenuOpened,displayLanguage = displayLanguage,)
+        CollapseHeaderPanel(
+            onMenuClicked = onMenuClicked,
+            overFlowMenuOpened = overFlowMenuOpened,
+            displayLanguage = displayLanguage,
+        )
     }
 }
 
@@ -215,7 +288,7 @@ fun CollapseHeaderPanel(
         }
 
         SpanText(
-            text = getLangString(AppStrings.MostafaN3ma,displayLanguage.value),
+            text = getLangString(AppStrings.MostafaN3ma, displayLanguage.value),
             modifier = Modifier
                 .fontSize(24.px)
                 .fontFamily(FONT_FAMILY)
@@ -388,15 +461,10 @@ fun HeaderNavigationItems(
                 selected = context.route.path == "",
                 title = getLangString(AppStrings.headerAboutMeText, displayLanguage.value),
                 onClick = {
-                          context.router.navigateTo(Screen.AboutMe.route)
+                    context.router.navigateTo(Screen.AboutMe.route)
                 },
                 breakpoint = breakpoint
             )
-
-
-
-
-
 
 
         }
