@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import com.varabyte.kobweb.compose.css.AlignContent
 import com.varabyte.kobweb.compose.css.Cursor
 import com.varabyte.kobweb.compose.css.FontWeight
 import com.varabyte.kobweb.compose.css.Transition
@@ -15,7 +16,9 @@ import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.foundation.layout.Row
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
+import com.varabyte.kobweb.compose.ui.attrsModifier
 import com.varabyte.kobweb.compose.ui.graphics.Colors
+import com.varabyte.kobweb.compose.ui.modifiers.alignContent
 import com.varabyte.kobweb.compose.ui.modifiers.backgroundColor
 import com.varabyte.kobweb.compose.ui.modifiers.borderRadius
 import com.varabyte.kobweb.compose.ui.modifiers.color
@@ -89,13 +92,13 @@ fun ProjectsSection(
 
     if (bigObject.projectsList.isEmpty()){
         LoadingIndicator()
-    }else{
+    }
+    else{
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .maxWidth(100.vw)
                 .id(Constants.PROJECTS_SECTION)
-//            .height(100.vh)
                 .padding(top = if (breakpoint <= Breakpoint.MD) 0.px else Measurements.HEADER_HEIGHT.px)
                 .backgroundColor(
                     if (colorMode.isLight) Theme.Them_bk_light.rgb
@@ -106,7 +109,7 @@ fun ProjectsSection(
                         property = TransitionProperty.All.toString(),
                         duration = 500.ms
                     )
-                )
+                ),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth().padding(leftRight = 40.px).margin(bottom = 20.px),
@@ -157,8 +160,10 @@ fun ProjectsSection(
             }
             SimpleGrid(
                 modifier = Modifier
-                    .fillMaxWidth(),
-                numColumns = numColumns(base = 1, md = 2, lg = 3, xl = 4)
+                    .fillMaxWidth()
+                    .alignContent(AlignContent.Center)
+                ,
+                numColumns = numColumns(base = 1, md = 2, lg = 3, xl = 4),
             ) {
 
                 currentList.forEach { projectItem ->
@@ -179,9 +184,7 @@ fun ProjectsSection(
                             .onClick {
                                      context.router.navigateTo(Screen.ProjectPreview.passProjectId(projectItem._id))
                             }
-
-
-                        ,
+                                ,
                         verticalArrangement = Arrangement.spacedBy(10.px),
                     ) {
                         Image(

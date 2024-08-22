@@ -99,11 +99,14 @@ fun MainHeaderPanel(
     var overFlowMenuOpened by remember { mutableStateOf(false) }
     val breakpoint = rememberBreakpoint()
 
+    val context = rememberPageContext()
 
     Box(
         modifier = Modifier
-            .fillMaxWidth()
-            .height(100.vh),
+            .fillMaxSize()
+//            .fillMaxWidth()
+//            .height(100.vh)
+        ,
         contentAlignment = Alignment.Center
     ) {
         var scrollx by remember { mutableStateOf(0.0) }
@@ -127,19 +130,23 @@ fun MainHeaderPanel(
 
 
 
-
-
         Box(
             modifier = Modifier
                 .size(150.px)
-                .align(Alignment.BottomEnd)
+                .align(Alignment.TopEnd)
+                .translateY(80.vh)
                 .visibility(
                     if (showScrollUpBtn) Visibility.Visible else Visibility.Hidden
                 )
-                .zIndex(9)
+                .zIndex(11)
                 .position(Position.Fixed)
                 .onClick {
-                    document.getElementById(Constants.MAIN_SECTION)?.scrollIntoView()
+                    if (context.route.path == Screen.Home.route ){
+                        document.getElementById(Constants.MAIN_SECTION)?.scrollIntoView()
+                    }else{
+                        document.getElementById(Constants.PROJECT_MAIN_SECTION)?.scrollIntoView()
+                    }
+
                     showScrollUpBtn = false
                 },
         ) {
@@ -149,7 +156,9 @@ fun MainHeaderPanel(
                     .backgroundColor(Theme.HalfWhite.rgb)
                     .padding(5.px)
                     .borderRadius(r = 10.px)
-                    .size(64.px),
+                    .size(
+                        if (breakpoint > Breakpoint.MD) 64.px else 32.px
+                    ),
                 src = Res.Image.move_up
             )
         }
@@ -342,6 +351,7 @@ fun HeaderPanelInternal(
                 .fontFamily(FONT_FAMILY)
                 .fontWeight(FontWeight.Bold)
                 .color(Theme.PrimaryDark.rgb)
+                .cursor(Cursor.Pointer)
                 .onClick {
                     context.router.navigateTo(Screen.Home.route)
                 }

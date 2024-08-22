@@ -22,6 +22,7 @@ import com.varabyte.kobweb.compose.ui.graphics.Colors
 import com.varabyte.kobweb.compose.ui.modifiers.backgroundColor
 import com.varabyte.kobweb.compose.ui.modifiers.backgroundImage
 import com.varabyte.kobweb.compose.ui.modifiers.borderRadius
+import com.varabyte.kobweb.compose.ui.modifiers.boxShadow
 import com.varabyte.kobweb.compose.ui.modifiers.color
 import com.varabyte.kobweb.compose.ui.modifiers.fillMaxWidth
 import com.varabyte.kobweb.compose.ui.modifiers.fontFamily
@@ -41,6 +42,7 @@ import com.varabyte.kobweb.compose.ui.modifiers.resize
 import com.varabyte.kobweb.compose.ui.modifiers.scale
 import com.varabyte.kobweb.compose.ui.modifiers.scrollBehavior
 import com.varabyte.kobweb.compose.ui.modifiers.size
+import com.varabyte.kobweb.compose.ui.modifiers.textShadow
 import com.varabyte.kobweb.compose.ui.modifiers.transition
 import com.varabyte.kobweb.compose.ui.modifiers.width
 import com.varabyte.kobweb.compose.ui.thenIf
@@ -130,7 +132,13 @@ fun MainSection(
                                 .width(250.px)
                                 .height(330.px)
                                 .align(Alignment.TopStart)
-                                .borderRadius(r = 4.px)
+                                .borderRadius(r = 20.px)
+                                .boxShadow(
+                                    offsetX = (-5).px,
+                                    offsetY = 5.px,
+                                    blurRadius = 4.px,
+                                    color =Theme.PrimaryDark.rgb
+                                )
                         )
 
                         Box(
@@ -200,8 +208,7 @@ fun MainSection(
                                     src = Res.Image.java_ic
                                 )
                                 Image(
-                                    modifier = Modifier.size(50.px)
-                                    ,
+                                    modifier = Modifier.size(50.px),
                                     src = Res.Image.kotlin_ic
                                 )
                             }
@@ -265,7 +272,13 @@ fun MainSection(
                                 .width(400.px)
                                 .height(530.px)
                                 .align(Alignment.TopStart)
-                                .borderRadius(r = 4.px)
+                                .borderRadius(r = 20.px)
+                                .boxShadow(
+                                    offsetX = (-5).px,
+                                    offsetY = 5.px,
+                                    blurRadius = 4.px,
+                                    color =Theme.PrimaryDark.rgb
+                                )
                         )
 
                         Box(
@@ -401,8 +414,13 @@ fun MainSection(
                                 .width(200.px)
                                 .height(250.px)
                                 .align(Alignment.CenterHorizontally)
-                                .borderRadius(r = 4.px)
-                        )
+                                .borderRadius(r = 20.px)
+                                .boxShadow(
+                                    offsetX = (-5).px,
+                                    offsetY = 5.px,
+                                    blurRadius = 4.px,
+                                    color =Theme.PrimaryDark.rgb
+                                )                        )
 
                         Box(
                             modifier = Modifier

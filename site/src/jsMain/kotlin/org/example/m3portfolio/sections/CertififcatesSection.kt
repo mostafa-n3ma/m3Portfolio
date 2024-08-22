@@ -112,7 +112,7 @@ fun CertificatesSection(
             }
 
             SimpleGrid(
-                modifier = Modifier.fillMaxWidth().margin(left = 20.px),
+                modifier = Modifier.fillMaxWidth().align(Alignment.CenterHorizontally),
                 numColumns = numColumns(base = 1, xl = 2
                 )){
                 bigObject.certificatesList.forEach {certificateItem->
@@ -189,7 +189,12 @@ fun CertificatesSection(
                         )
 
                         Image(
-                            modifier = Modifier.size(300.px).align(Alignment.BottomEnd),
+                            modifier = Modifier
+                                .size(
+                                    if (breakpoint < Breakpoint.MD) 200.px
+                                    else 300.px
+                                )
+                                .align(Alignment.BottomEnd),
                             src = Res.Image.certificateIcon
                         )
 
