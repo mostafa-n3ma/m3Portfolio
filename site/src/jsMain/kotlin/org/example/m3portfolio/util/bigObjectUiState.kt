@@ -91,7 +91,7 @@ fun BigObjectUiState.splitLanguages(displayLanguage: Constants.Languages): BigOb
                 experiencesList
             },
             projectsList = if (projectsList.isNotEmpty()) {
-                projectsList.map { projectItem ->
+                projectsList.reversed().map { projectItem ->
                     projectItem.copy(
                         title = projectItem.title.split(LANGUAGES_SPLITTER_CODE)
                             .getOrElse(langCode) { projectItem.title.split(LANGUAGES_SPLITTER_CODE)[0] },
