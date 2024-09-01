@@ -15,4 +15,5 @@ server:
       - name: "m3portfolio.onrender.com"
         schemes:
           - "https"
-  port: 8080
+          
+  port: 10000
