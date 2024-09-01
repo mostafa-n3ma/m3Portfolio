@@ -10,5 +10,9 @@ server:
     prod:
       script: "build/dist/js/productionExecutable/m3portfolio.js"
       siteRoot: ".kobweb/site"
-
+  cors:
+    hosts:
+      - name: "https://m3portfolio.onrender.com"
+        schemes:
+          - "https"
   port: 8080
