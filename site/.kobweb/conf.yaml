@@ -12,7 +12,7 @@ server:
       siteRoot: ".kobweb/site"
   cors:
     hosts:
-      - name: "https://m3portfolio.onrender.com"
+      - name: "m3portfolio.onrender.com"
         schemes:
           - "https"
   port: 8080
