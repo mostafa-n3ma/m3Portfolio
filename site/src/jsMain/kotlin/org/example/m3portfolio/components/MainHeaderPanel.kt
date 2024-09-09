@@ -576,7 +576,7 @@ fun overFlowHeaderPanel(
             .borderRadius(r = 4.px)
             .zIndex(9)
             .position(Position.Fixed)
-            .overflow(Overflow.Auto)
+            //.overflow(Overflow.Auto)
             .translateY(translateY)
             .transition(Transition.of(property = "translate", duration = 500.ms))
             .onClick {
